@@ -44,4 +44,3 @@ public class IR_Ballot {
     }
 
 }
-    
