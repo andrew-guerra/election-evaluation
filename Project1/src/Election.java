@@ -7,10 +7,7 @@ public class Election {
     protected String fileName;
     protected Scanner electionFile;
 
-    public Election(int numBallots, String typeElection, String fileName, Scanner electionFile) {
-        this.numBallots = numBallots;
-        this.typeElection = typeElection;
-        this.fileName = fileName;
+    public Election(Scanner electionFile) {
         this.electionFile = electionFile;
     }
 
