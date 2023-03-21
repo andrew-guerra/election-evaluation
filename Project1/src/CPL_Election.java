@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.regex.Matcher;
@@ -21,13 +23,17 @@ public class CPL_Election extends Election {
     public CPL_Election(Scanner electionFile) {
         super(electionFile);
         this.readCPLHeader();
+        this.readCPLBallots();
     }
     public void run() {
+        this.shuffleBallots();
+        /*
         System.out.println(this.getNumParties());
         for (int i = 0; i < this.getNumParties(); i++) {
             System.out.println(parties[i].getPartyName() + " - " + parties[i].getCandidateList());
         }
-        System.out.println(this.getNumBallots());
+        System.out.println(this.getNumBallots()); 
+        */
     }
     private ArrayList<Party> setFirstSeatsAllocation() {
         return null;
@@ -35,8 +41,16 @@ public class CPL_Election extends Election {
     private void setRemainderSeatsAllocation(ArrayList<Party> partiesAvailable) {
 
     }
-    public void readCPLHeader() {
-
+    private void shuffleBallots() {
+        Random rnd = ThreadLocalRandom.current();
+        for (int i = initialBallots.length - 1; i > 0; i--) {
+            int index = rnd.nextInt(i + 1);
+            CPL_Ballot a = initialBallots[index];       // swap ballots
+            initialBallots[index] = initialBallots[i];
+            initialBallots[i] = a;
+        }
+    }
+    private void readCPLHeader() {
         
         int numParties = electionFile.nextInt();        // get number of parties from header
         this.setNumParties(numParties);
@@ -74,8 +88,16 @@ public class CPL_Election extends Election {
         electionFile.nextLine();
 
     }
-    public void readCPLBallots() {
+    private void readCPLBallots() {
 
+        String ballot;
+        initialBallots = new CPL_Ballot[this.getNumBallots()];
+        for (int i = 0; i < this.getNumBallots(); i++) {     // create ballots
+            ballot = electionFile.nextLine();
+            int partyNum = ballot.indexOf("1");              // partyNum is index into parties[]
+            CPL_Ballot temp = new CPL_Ballot(partyNum, i);
+            initialBallots[i] = temp;
+        }
     }
     public int getNumParties() {
         return numParties;
