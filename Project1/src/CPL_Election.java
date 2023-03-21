@@ -23,7 +23,11 @@ public class CPL_Election extends Election {
         this.readCPLHeader();
     }
     public void run() {
-
+        System.out.println(this.getNumParties());
+        for (int i = 0; i < this.getNumParties(); i++) {
+            System.out.println(parties[i].getPartyName() + " - " + parties[i].getCandidateList());
+        }
+        System.out.println(this.getNumBallots());
     }
     private ArrayList<Party> setFirstSeatsAllocation() {
         return null;
@@ -39,27 +43,28 @@ public class CPL_Election extends Election {
         parties = new Party[numParties];
                     
         electionFile.nextLine();                        // set scanner to read party names
-
+        String temp = electionFile.nextLine();
+        
         for (int i = 0; i < numParties; i++) {          // create party objects
-
-            String partyName = electionFile.next();     // get party name
-
-            partyName = partyName.substring(0, partyName.length() - 1);     // remove comma
-            Party temp = new Party(partyName);
-            parties[i] = temp;
+            String partyName;
+            int index = temp.indexOf(",");
+            if (index != -1) {                          // case where >1 parties remain
+                partyName = temp.substring(0, index);   
+                temp = temp.substring(index + 2);
+            } else {                                    // case where one party remains
+                partyName = temp;
+            }
+             
+            Party partyAdd = new Party(partyName);      // add party to list
+            parties[i] = partyAdd;
         }
-        electionFile.nextLine();
-
-        String candidateList = "";                      // String to hold comma deliminated candidates
-        int numCandidates = 0;
+  
+        String candidateList;                           // String to hold comma deliminated candidates
+        int numCandidates;
 
         for (int i = 0; i < numParties; i++) {          // read candidate names for each party
-            while(electionFile.hasNext()) {             // candidates for party
-                numCandidates++;
-                String candidateName = electionFile.next();         // get candidate name
-                candidateList = candidateList + candidateName;      // remove comma
-            }
-            electionFile.nextLine();
+            numCandidates = 0;
+            candidateList = electionFile.nextLine();
             parties[i].setCandidateList(candidateList);
             parties[i].setNumCandidate(numCandidates);
         }

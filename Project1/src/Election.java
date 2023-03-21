@@ -10,6 +10,9 @@ public class Election {
     public Election(Scanner electionFile) {
         this.electionFile = electionFile;
     }
+    public void run() {
+        
+    }
 
     public int getNumBallots() {
         return this.numBallots;
