@@ -1,3 +1,5 @@
+package Project1.src;
+
 import java.util.Locale;
 import java.util.Scanner;
 import java.io.FileInputStream;
@@ -20,11 +22,11 @@ public class Main {
      * @param fileName  file name for election file
      * @return          Scanner object for election file 
      */
-    protected static Scanner loadElectionFile(String fileName) {
+    public static Scanner loadElectionFile(String fileName) {
         Scanner electionFile;
 
         try {
-            electionFile = new Scanner(new FileInputStream("Project1/src/" + fileName));
+            electionFile = new Scanner(new FileInputStream(fileName));
         } catch(FileNotFoundException e) {
             System.out.printf("File \"%s\" cannot be found\n", fileName);
             return null;
@@ -42,14 +44,14 @@ public class Main {
      * @param input     Scanner for user input
      * @return          String of date retrieved from user      
      */
-    protected static String retrieveDate(Scanner input) {
+    public static String retrieveDate(Scanner input) {
         // generate date format based on local US time
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu", Locale.US).withResolverStyle(ResolverStyle.STRICT);
         String dateStr;
 
         do {
             System.out.print("Enter date of election in format mm/dd/yyyy: ");
-		    dateStr = input.nextLine();
+            dateStr = input.nextLine();
             
             try {
                 // use parse error to check for properly formated date
@@ -71,7 +73,7 @@ public class Main {
      * @param electionFile  Scanner of election file
      * @return              Election object of election type in election file
      */
-    protected static Election retrieveElection(Scanner electionFile){
+    public static Election retrieveElection(Scanner electionFile) {
         String electionType = electionFile.nextLine().strip();
         
         if(electionType.equals("IR")) {
