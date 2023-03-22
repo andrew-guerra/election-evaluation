@@ -1,3 +1,5 @@
+package Project1.src;
+
 public class IR_Ballot { 
     private int ballotNum; 
     private int rank; 

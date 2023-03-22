@@ -1,3 +1,5 @@
+package Project1.src;
+
 import java.util.Locale;
 import java.util.Scanner;
 import java.io.FileInputStream;
