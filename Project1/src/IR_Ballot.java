@@ -1,3 +1,9 @@
+/** 
+ * IR_Ballot is a class the handels the ballots for an IR Election
+ * 
+ * @author Tyler Grimm and 
+ */
+
 public class IR_Ballot { 
     private int ballotNum; 
     private int rank; 

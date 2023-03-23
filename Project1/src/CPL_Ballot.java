@@ -1,4 +1,8 @@
-
+/** 
+ * CPL_Ballot is a class that handles the ballots for a CPL Election 
+ * 
+ * @author Tyler Grimm
+ */
 public class CPL_Ballot {
 
     private int partyNum;
