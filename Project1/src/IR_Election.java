@@ -1,9 +1,11 @@
-package Project1.src;
+//package Project1.src;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
+
+//import Project1.src.IR_Audit;
 
 import java.util.Random;
 
@@ -18,6 +20,7 @@ public class IR_Election extends Election {
     private int numRemainingCandidates;
     private IR_Ballot [] currentBallots;
     private int currentBallotCount;
+    private IR_Audit audit; 
 
     // testing
     public static void main(String[] args) {

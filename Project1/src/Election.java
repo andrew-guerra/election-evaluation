@@ -1,4 +1,4 @@
-package Project1.src;
+//package Project1.src;
 import java.util.Scanner;
 
 public class Election {
