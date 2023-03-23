@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
+
 import java.util.Random;
 
 //imports
@@ -30,74 +33,83 @@ public class IR_Election extends Election {
 
         electionFile.next();
         electionFile.nextLine();
+
+        IR_Election ir = new IR_Election(electionFile);
+
+        ir.run();
     // what would be in main
 
-    // testing read ir header
-        System.out.println("Header Test");
-        IR_Election ir = new IR_Election(electionFile);
-        ir.readIRHeader();
-        System.out.println("IR");
-        System.out.println(ir.numCandidates);
-        for (int i = 0; i < ir.numCandidates - 1; i++) {
-            System.out.print(ir.candidates[i].getName() + " " +
-            ir.candidates[i].getParty() + ", ");
-        }
-        System.out.println(ir.candidates[ir.numCandidates - 1].getName() + " " + ir.candidates[ir.numCandidates - 1].getParty());
-        System.out.println(ir.currentBallotCount);
+    // // testing read ir header
+    //     System.out.println("Header Test");
+    //     ir.readIRHeader();
+    //     System.out.println("IR");
+    //     System.out.println(ir.numCandidates);
+    //     for (int i = 0; i < ir.numCandidates - 1; i++) {
+    //         System.out.print(ir.candidates[i].getName() + " " +
+    //         ir.candidates[i].getParty() + ", ");
+    //     }
+    //     System.out.println(ir.candidates[ir.numCandidates - 1].getName() + " " + ir.candidates[ir.numCandidates - 1].getParty());
+    //     System.out.println(ir.currentBallotCount);
 
-        // test ballots read
-        System.out.println();
-        System.out.println("Ballot Reads");
+    //     // test ballots read
+    //     System.out.println();
+    //     System.out.println("Ballot Reads");
 
-        // testing read in ir ballots
-        ir.readIRBallots();
-        for (int i = 0; i < ir.currentBallotCount; i++) {
-            System.out.println(ir.currentBallots[i].getForm());
-            for (int j = 0; j < ir.numCandidates; j++) {
-                System.out.println(ir.currentBallots[i].getCandidateRanking()[j]);
-            }
-            System.out.println();
-        };
+    //     // testing read in ir ballots
+    //     ir.readIRBallots();
+    //     for (int i = 0; i < ir.currentBallotCount; i++) {
+    //         System.out.println(ir.currentBallots[i].getForm());
+    //         for (int j = 0; j < ir.numCandidates; j++) {
+    //             System.out.println(ir.currentBallots[i].getCandidateRanking()[j]);
+    //         }
+    //         System.out.println();
+    //     };
 
-        // testing for ballot allocations
-        System.out.println();
-        System.out.println("Ballot Allocations");
-        ir.allocateBallots();
-        System.out.println();
+    //     // testing for ballot allocations
+    //     System.out.println();
+    //     System.out.println("Ballot Allocations");
+    //     ir.allocateBallots();
+    //     System.out.println();
 
-        for (int i = 0; i < ir.numCandidates; i++) {
-            System.out.print(ir.candidates[i].getName() + " " + i + ": ");
-            for (int j = 0; j < ir.candidates[i].getBallotCount(); j++) {
-                System.out.print(ir.candidates[i].getBallots()[j].getBallotNum() + " ");
-            }
-            System.out.println();
-        }
+    //     for (int i = 0; i < ir.numCandidates; i++) {
+    //         System.out.print(ir.candidates[i].getName() + " " + i + ": ");
+    //         for (int j = 0; j < ir.candidates[i].getBallotCount(); j++) {
+    //             System.out.print(ir.candidates[i].getBallots()[j].getBallotNum() + " ");
+    //         }
+    //         System.out.println();
+    //     }
 
-        // testing coin toss and loses
-        System.out.println();
-        System.out.println("FindLowest Test");
-        int lowest = ir.findLowestCandidate();
-        System.out.println(ir.candidates[lowest].getName());
+    //     // testing coin toss and loses
+    //     System.out.println();
+    //     System.out.println("FindLowest Test");
+    //     int lowest = ir.findLowestCandidate();
+    //     System.out.println(ir.candidates[lowest].getName());
 
-        // remove candidate
-        System.out.println();
-        System.out.println("RemoveLowest Test");
+    //     // remove candidate
+    //     System.out.println();
+    //     System.out.println("RemoveLowest Test");
 
-        while(ir.numRemainingCandidates > 0) {
-            lowest = ir.findLowestCandidate();
-            ir.removeLowestCandidate(lowest);
-            ir.allocateBallots();
-            for (int i = 0; i < ir.numCandidates; i++) {
-                if (ir.candidates[i] != null) {
-                    System.out.print(ir.candidates[i].getName() + " " + i + ": ");
-                    for (int j = 0; j < ir.candidates[i].getBallotCount(); j++) {
-                        System.out.print(ir.candidates[i].getBallots()[j].getBallotNum() + " ");
-                    }
-                    System.out.println();
-                }
-            }
-            System.out.println();
-        }
+    //     while(ir.numRemainingCandidates > 0) {
+    //         lowest = ir.findLowestCandidate();
+    //         ir.removeLowestCandidate(lowest);
+    //         ir.allocateBallots();
+    //         for (int i = 0; i < ir.numCandidates; i++) {
+    //             if (ir.candidates[i] != null) {
+    //                 System.out.print(ir.candidates[i].getName() + " " + i + ": ");
+    //                 for (int j = 0; j < ir.candidates[i].getBallotCount(); j++) {
+    //                     System.out.print(ir.candidates[i].getBallots()[j].getBallotNum() + " ");
+    //                 }
+    //                 System.out.println();
+    //             }
+    //         }
+    //         System.out.println();
+    //     }
+        
+    //     // test run()
+    //     System.out.println();
+    //     System.out.println("run()");
+
+        //ir.run();
  
         return;
     }
@@ -283,7 +295,7 @@ public class IR_Election extends Election {
         int highestVote = candidates[winner].getBallotCount();
 
         for (int i = winner; i < numCandidates; i++) {
-            if (candidates[i] != null && candidates[i].getBallotCount() < highestVote) {
+            if (candidates[i] != null && candidates[i].getBallotCount() > highestVote) {
                 winner = i;
             } else if (candidates[i] != null && candidates[i].getBallotCount() == highestVote) {
                 int[] tieFolk = {winner, i};
@@ -291,6 +303,26 @@ public class IR_Election extends Election {
             }
         }
         return winner;
+    }
+
+    public void run() {
+        //electionFile.reset();
+        readIRHeader();
+        readIRBallots();
+        //shuffleBallots();
+        while(true) {
+            allocateBallots();
+            int winner = checkMajority();
+            if (winner != -1) {
+                // write to audit
+                // display winner
+                System.out.println(candidates[winner].getName());
+                return;
+            }
+            int lowest = findLowestCandidate();
+            removeLowestCandidate(lowest);
+            //write to audit
+        }
     }
 
     // constructers
