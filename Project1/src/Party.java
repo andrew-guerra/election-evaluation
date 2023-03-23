@@ -4,11 +4,14 @@ public class Party {
     private int numCandidate;
     private int seatsWon;
     private int ballotCount;
+    private int initialBallotCount;
     private CPL_Ballot[] ballots;
     private int remainder;
 
     public Party(String partyName) {
         this.partyName = partyName;
+        ballotCount = 0;
+    
     }
 
     public String getPartyName() {
@@ -39,8 +42,8 @@ public class Party {
         return this.seatsWon;
     }
 
-    public void setSeatsWon(int seatsWon) {
-        this.seatsWon = seatsWon;
+    public void incSeatsWon(int seatsWon) {
+        this.seatsWon = this.seatsWon + seatsWon;
     }
 
     public int getBallotCount() {
@@ -49,6 +52,13 @@ public class Party {
 
     public void setBallotCount(int ballotCount) {
         this.ballotCount = ballotCount;
+    }
+    public int getInitialBallotCount() {
+        return this.initialBallotCount;
+    }
+
+    public void setInitialBallotCount(int initialBallotCount) {
+        this.initialBallotCount = initialBallotCount;
     }
 
     public CPL_Ballot[] getBallots() {
@@ -65,6 +75,9 @@ public class Party {
 
     public void setRemainder(int remainder) {
         this.remainder = remainder;
+    }
+    public void incBallot() {
+        ballotCount = ballotCount + 1;
     }
     
 }
