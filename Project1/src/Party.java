@@ -1,3 +1,5 @@
+package Project1.src;
+
 public class Party {
     private String partyName;
     private String candidateList;

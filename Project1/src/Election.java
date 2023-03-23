@@ -1,3 +1,5 @@
+package Project1.src;
+
 import java.util.Scanner;
 
 public class Election {
