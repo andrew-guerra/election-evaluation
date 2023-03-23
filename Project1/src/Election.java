@@ -14,6 +14,10 @@ public class Election {
         this.electionFile = electionFile;
     }
 
+    public Election(Scanner electionFile) {
+        this.electionFile = electionFile;
+    }
+
     public int getNumBallots() {
         return this.numBallots;
     }

@@ -49,7 +49,17 @@ public class Candidate {
         this.name = name;
     }
 
-    // to sring method
+    public String getParty() {
+        return this.party;
+    }
+
+    public void setParty(String party) {
+        this.party = party;
+    }
+
+
+    //METHODS NOT LISTED ON SDD
+    // to string method
     @Override
     public String toString() {
         return "{" +
@@ -57,5 +67,11 @@ public class Candidate {
             ", ballots='" + getBallots() + "'" +
             ", name='" + getName() + "'" +
             "}";
+    }
+
+    //helper, add ballot
+    public void addBallot(IR_Ballot ballot) {
+        ballots[ballotCount] = ballot;
+        ballotCount++;
     }
 }

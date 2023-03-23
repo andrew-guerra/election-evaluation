@@ -1,48 +1,48 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+// import java.util.ArrayList;
+// import java.util.Scanner;
+// import java.io.FileInputStream;
+// import java.io.FileNotFoundException;
+// import java.util.regex.Matcher;
+// import java.util.regex.Pattern;
 
-public class CPL_Election extends Election {
+// public class CPL_Election extends Election {
 
-    private int numParties;
-    private Party[] parties;
-    private int numSeats;
-    private int availableSeats;
-    private CPL_Ballot[] initialBallots;
-    private CPL_Audit audit;
+//     private int numParties;
+//     private Party[] parties;
+//     private int numSeats;
+//     private int availableSeats;
+//     private CPL_Ballot[] initialBallots;
+//     private CPL_Audit audit;
 
 
-    public CPL_Election(Scanner electionFile) {
+//     public CPL_Election(Scanner electionFile) {
         
-    }
-    public void run() {
+//     }
+//     public void run() {
 
-    }
-    private ArrayList<Party> setFirstSeatsAllocation() {
-        return null;
-    }
-    private void setRemainderSeatsAllocation(ArrayList<Party> partiesAvailable) {
+//     }
+//     private ArrayList<Party> setFirstSeatsAllocation() {
+//         return null;
+//     }
+//     private void setRemainderSeatsAllocation(ArrayList<Party> partiesAvailable) {
 
-    }
-    public void readCPLHeader() {
+//     }
+//     public void readCPLHeader() {
 
-    }
-    public void readCPLBallots() {
+//     }
+//     public void readCPLBallots() {
 
-    }
-    public int getNumParties() {
+//     }
+//     public int getNumParties() {
 
-    }
-    public void setNumParties() {
+//     }
+//     public void setNumParties() {
 
-    }
-    public int getNumSeats() {
+//     }
+//     public int getNumSeats() {
 
-    }
-    public int setNumSeats() {
+//     }
+//     public int setNumSeats() {
 
-    }
-}
+//     }
+// }

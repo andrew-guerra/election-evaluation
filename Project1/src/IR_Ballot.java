@@ -2,7 +2,7 @@
 // added toString
 // added constructor with more fields
 
-public class IR_Ballot { 
+public class IR_Ballot {
     private int ballotNum; 
     private int rank; 
     private String form; 
@@ -65,6 +65,12 @@ public class IR_Ballot {
             ", form='" + getForm() + "'" +
             ", candidateRanking='" + getCandidateRanking() + "'" +
             "}";
+    }
+
+
+    //NEW BALLOTS NOT IN UML
+    public int getCandidateAtNum(int i) {
+        return candidateRanking[i];
     }
 
 }
