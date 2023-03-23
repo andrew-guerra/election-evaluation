@@ -24,5 +24,6 @@ public class CPL_Audit extends ElectionAudit {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'returnAudit'");
     }
+public class CPL_Audit {
     
 }
