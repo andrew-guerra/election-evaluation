@@ -1,4 +1,4 @@
-package Project1.src;
+//package Project1.src;
 
 // imports if needed
 // added toString
@@ -14,7 +14,7 @@ public class IR_Ballot {
     public IR_Ballot() {
         ballotNum = 0;
         rank = 0;
-        form = "";
+     // form = "";
         candidateRanking = null;
     }
 

@@ -1,9 +1,12 @@
 //package Project1.src;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
-import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
+//import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
 
 //import Project1.src.IR_Audit;
 
@@ -23,7 +26,7 @@ public class IR_Election extends Election {
     private IR_Audit audit; 
 
     // testing
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner electionFile;
 
     // what would be in main
@@ -40,7 +43,21 @@ public class IR_Election extends Election {
 
         IR_Election ir = new IR_Election(electionFile);
 
+        File audit = new File("audit_test.txt");
+        FileWriter auditWriter;
+        String date = "1/1/1";
+        try {
+            auditWriter = new FileWriter("audit_test.txt");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            System.out.println("crying");
+            return;
+        } 
+        IR_Audit auditer = new IR_Audit(date, audit, auditWriter);
+        ir.setAudit(auditer);
+
         ir.run();
+        auditWriter.close();
     // what would be in main
 
     // // testing read ir header
@@ -222,7 +239,7 @@ public class IR_Election extends Election {
         return tieFolk[randomNumber];
     }
 
-    private int findLowestCandidate() {
+    private int findLowestCandidate() throws IOException {
 
         int remove = 0;
         while (candidates[remove] == null && remove < numCandidates) {
@@ -261,6 +278,7 @@ public class IR_Election extends Election {
         }
         
         // call tieFolk to pick out a loser
+        audit.writeTiedLoserCandidates(candidates, tieFolk);
         return coinToss(tieFolk);
     }
 
@@ -277,7 +295,7 @@ public class IR_Election extends Election {
         return;
     }
 
-    private int checkMajority() {
+    private int checkMajority() throws IOException {
         if (numRemainingCandidates <= 2) {
             return runPopularity();
         }
@@ -291,43 +309,71 @@ public class IR_Election extends Election {
         return -1;
     }
 
-    private int runPopularity() {
+    private int runPopularity() throws IOException {
         int winner = 0;
         while (candidates[winner] == null) {
             winner++;
         }
         int highestVote = candidates[winner].getBallotCount();
 
-        for (int i = winner; i < numCandidates; i++) {
+        for (int i = winner + 1; i < numCandidates; i++) {
             if (candidates[i] != null && candidates[i].getBallotCount() > highestVote) {
                 winner = i;
             } else if (candidates[i] != null && candidates[i].getBallotCount() == highestVote) {
                 int[] tieFolk = {winner, i};
+                //write tie
+                audit.writeTiedWinnerCandidates(candidates, tieFolk);
                 winner = coinToss(tieFolk);
             }
         }
         return winner;
     }
 
-    public void run() {
+    public void run() throws IOException {
         //electionFile.reset();
         readIRHeader();
+        this.audit.writeHeaderToFile(this.typeElection, this.numCandidates, this.candidates, this.numBallots);
         readIRBallots();
         //shuffleBallots();
+        shuffleBallots();
         while(true) {
             allocateBallots();
+            audit.writeCandidatesBallots(candidates, numCandidates);
             int winner = checkMajority();
             if (winner != -1) {
                 // write to audit
+                audit.writeWinner(candidates, winner);
+
                 // display winner
-                System.out.println(candidates[winner].getName());
+                System.out.print("Candidate Winner: " + candidates[winner].getName());
+                System.out.println(" " + candidates[winner].getParty());
+                double percentage = ((double)candidates[winner].getBallotCount()/numBallots) * 100;
+                System.out.println("Votes: " + candidates[winner].getBallotCount());
+                System.out.println("Vote Percentage: " + String.format("%.2f",percentage));
+
                 return;
             }
             int lowest = findLowestCandidate();
+            audit.writeLoser(candidates, lowest);
             removeLowestCandidate(lowest);
+            audit.writeBallotsReallocated(this.currentBallots, this.currentBallotCount);
             //write to audit
         }
     }
+
+    public void shuffleBallots() {
+        Random rnd = ThreadLocalRandom.current();
+        for (int i = currentBallots.length - 1; i > 0; i--) {
+            int index = rnd.nextInt(i + 1);
+            IR_Ballot a = currentBallots[index];
+            currentBallots[index] = currentBallots[i];
+            currentBallots[i] = a;
+        }
+    }
+
+
+
+
 
     // constructers
     public IR_Election(Scanner electionFile) {
@@ -386,6 +432,14 @@ public class IR_Election extends Election {
             ", currentBallots='" + getCurrentBallots() + "'" +
             ", currentBallotCount='" + getCurrentBallotCount() + "'" +
             "}";
+    }
+
+    public IR_Audit getAudit() {
+        return this.audit;
+    }
+
+    public void setAudit(IR_Audit audit) {
+        this.audit = audit;
     }
 
 }

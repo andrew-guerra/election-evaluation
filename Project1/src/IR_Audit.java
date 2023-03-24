@@ -1,14 +1,10 @@
 //package Project1.src;
 
-import java.util.Scanner;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class IR_Audit{
-
-    
 
     // need to have type of voting
     // print number of candidates 
@@ -23,40 +19,9 @@ public class IR_Audit{
     private String date; 
     private File auditFile; 
     private FileWriter auditWriter; 
-    
-    public static void main(String[] args) {
-        File audit = new File("audit_test.txt");
-        FileWriter auditWriter;
-        String date = "1/1/1";
-        try {
-            auditWriter = new FileWriter("audit_test.txt");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            System.out.println("crying");
-            return;
-        } 
-        
-        Scanner electionFile;
-        
-        try {
-            electionFile = new Scanner(new File("Project1/src/header.csv"));
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            System.out.println("crying2");
-            return;
-        }
 
-        electionFile.next();
-        electionFile.nextLine();
-
-        IR_Election ir = new IR_Election(electionFile);
-        IR_Audit auditIR = new IR_Audit(date, audit, auditWriter);
-
-    }
-    
-    
     // do we create the audit object in main, do we create it in IR_Election
-    public IR_Audit(String date, File auditFile, FileWriter auditWriter {
+    public IR_Audit(String date, File auditFile, FileWriter auditWriter) {
         this.date = date;
         this.auditFile = auditFile;
         this.auditWriter = auditWriter;
@@ -84,40 +49,84 @@ public class IR_Audit{
         this.auditFile = auditFile;
     }
 
-    public Scanner getScanner() {
+    public FileWriter getAuditWriter() {
         return this.auditWriter;
     }
 
-    public void setScanner(Scanner auditIR) {
-        this.auditIR = auditIR;
+    public void setAuditWriter(FileWriter auditWriter) {
+        this.auditWriter = auditWriter;
     }
 
-    public void writeHeaderToFile(IR_Election election){
-        //print out type of voting
-        String output = election.getTypeElection();
-        //System.out.println(output);
-
-        //print out number of candiate
-        int numCandidates = election.getNumCandidates(); 
-        //write to file 
-
-        //print out names 
-        for (int i = 0; i < election.getNumCandidates() - 1; i++) {
-            //System.out.println(election.getCandidates()[i].getName() + " " +
-            //election.getCandidates()[i].getParty());
-        } 
-
-        //print out total number of ballots
-        int numBallots = election.getNumBallots();
-        //write to the file. 
-
-
-
+    public void writeHeaderToFile(String electionType, int numCandidates, Candidate[] candidates, int numBallots) throws IOException{
+        auditWriter.write("Election Type: " + electionType + "\n\n");
+        auditWriter.write("Number of Candidates: " + numCandidates + "\n\n");
+        auditWriter.write("Candidates: ");
+        for (int i = 0; i < numCandidates - 1; i++) {
+            auditWriter.write(candidates[i].getName() + " " + candidates[i].getParty() + ", ");
+        }
+        auditWriter.write(candidates[numCandidates - 1].getName() + " " 
+                        + candidates[numCandidates -1].getParty() + "\n\n");
+        auditWriter.write("Total Ballot Count: " + numBallots + "\n\n");
     }
-    
 
+    public void writeBallotsReallocated(IR_Ballot[] currentBallots, int currentBallotCount) throws IOException {
+        auditWriter.write("Reallocating Ballots Numbered: ");
+        if (currentBallotCount != 0) {
+            for (int i = 0; i < currentBallotCount; i++) {
+                auditWriter.write(currentBallots[i].getBallotNum() + " ");
+            }
+        } else {
+            auditWriter.write("N/A");
+        }
+        auditWriter.write("\n\n");
+    } 
 
-    
+    public void writeCandidatesBallots(Candidate[] candidates, int numCandidates) throws IOException {
+        auditWriter.write("Candidates Vote Counts and Ballots: \n");
+        auditWriter.write("________________________\n\n");
+        for(int i = 0; i < numCandidates; i++) {
+            if (candidates[i] != null) {
+                auditWriter.write(candidates[i].getName() + "'s Vote Count: " + candidates[i].getBallotCount() + "\n");
+                auditWriter.write(candidates[i].getName() + "'s Ballots: ");
+                if (candidates[i].getBallotCount() != 0) {
+                    for(int j = 0; j < candidates[i].getBallotCount(); j++) {
+                        auditWriter.write("#" + candidates[i].getBallots()[j].getBallotNum() + " ");
+                    }
+                } else {
+                    auditWriter.write("N/A");
+                }
+                auditWriter.write("\n\n");
+            }
+        }
+        auditWriter.write("________________________\n");
+        auditWriter.write("\n");
+    }
+
+    public void writeTiedLoserCandidates(Candidate[] candidates, int[] tieFolk) throws IOException {
+        auditWriter.write("Candidates Tied with Lowest Votes: ");
+        for (int i = 0; i < tieFolk.length - 1; i++) {
+            auditWriter.write(candidates[tieFolk[i]].getName() + ", ");
+        }
+        auditWriter.write(candidates[tieFolk[tieFolk.length - 1]].getName() + "\n\n");
+    }
+
+    public void writeTiedWinnerCandidates(Candidate[] candidates, int[] tieFolk) throws IOException {
+        auditWriter.write("Candidates Tied with Highest Votes: ");
+        for (int i = 0; i < tieFolk.length - 1; i++) {
+            auditWriter.write(candidates[tieFolk[i]].getName() + ", ");
+        }
+        auditWriter.write(candidates[tieFolk[tieFolk.length - 1]].getName() + "\n\n");
+    }
+
+    public void writeLoser(Candidate[] candidates, int loser) throws IOException {
+        auditWriter.write("Candidate Removed: ");
+        auditWriter.write(candidates[loser].getName() + "\n\n");
+    }
+
+    public void writeWinner(Candidate[] candidates, int winner) throws IOException {
+        auditWriter.write("Candidate Winner: ");
+        auditWriter.write(candidates[winner].getName() + "\n\n");
+    }
 }
 
     
