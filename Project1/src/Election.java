@@ -1,4 +1,6 @@
-//package Project1.src;
+
+package Project1.src;
+
 import java.util.Scanner;
 
 public class Election {
@@ -14,9 +16,11 @@ public class Election {
         this.fileName = fileName;
         this.electionFile = electionFile;
     }
-
     public Election(Scanner electionFile) {
         this.electionFile = electionFile;
+    }
+    public void run() {
+        
     }
 
     public int getNumBallots() {
@@ -50,5 +54,5 @@ public class Election {
     public void setElectionFile(Scanner electionFile) {
         this.electionFile = electionFile;
     }   
-
 }
+

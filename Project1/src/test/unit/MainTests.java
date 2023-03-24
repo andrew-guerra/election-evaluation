@@ -1,4 +1,4 @@
-package Project1.src.test;
+package Project1.src.test.unit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -17,7 +17,8 @@ import Project1.src.Main;
 public class MainTests {
     @Test
     public void testLoadElectionFile() {
-        Scanner electionFileScanner = Main.loadElectionFile("bin/Project1/testing/unit/Main/IR_Election.csv");
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        Scanner electionFileScanner = Main.loadElectionFile("../testing/unit/Main/IR_Election.csv");
         assertNotEquals(null, electionFileScanner);
 
         electionFileScanner.close();
@@ -28,14 +29,14 @@ public class MainTests {
         Scanner datesScanner, datesCorrectScanner; 
 
         try {
-            datesScanner = new Scanner(new File("bin/Project1/testing/unit/Main/dates.txt"));
+            datesScanner = new Scanner(new File("../testing/unit/Main/dates.txt"));
         } catch (Exception e) {
             fail("dates.txt not found");
             return;
         }
 
         try {
-            datesCorrectScanner = new Scanner(new File("bin/Project1/testing/unit/Main/dates-out.txt"));
+            datesCorrectScanner = new Scanner(new File("../testing/unit/Main/dates-out.txt"));
         } catch (Exception e) {
             fail("dates.txt not found");
             return;
@@ -44,7 +45,6 @@ public class MainTests {
         String expectedDate, recievedDate;
         while(datesCorrectScanner.hasNextLine() && datesScanner.hasNextLine()) {
             expectedDate = datesCorrectScanner.nextLine().strip();
-            System.out.println(expectedDate);
             recievedDate = Main.retrieveDate(datesScanner);
 
             assertEquals(expectedDate, recievedDate);
@@ -58,7 +58,7 @@ public class MainTests {
     public void testRetrieveElection() {
         Scanner IRElectionFileScanner;
         try {
-            IRElectionFileScanner = new Scanner(new File("bin/Project1/testing/unit/Main/IR_Election.csv"));
+            IRElectionFileScanner = new Scanner(new File("../testing/unit/Main/IR_Election.csv"));
         } catch (Exception e) {
             fail("IR_Election.csv not found");
             return;
@@ -71,7 +71,7 @@ public class MainTests {
 
         Scanner CPLElectionFileScanner;
         try {
-            CPLElectionFileScanner = new Scanner(new File("bin/Project1/testing/unit/Main/CPL_Election.csv"));
+            CPLElectionFileScanner = new Scanner(new File("../testing/unit/Main/CPL_Election.csv"));
         } catch (Exception e) {
             fail("CPL_Election.csv not found");
             return;
