@@ -1,3 +1,4 @@
+
 package Project1.src;
 
 import java.util.Scanner;
@@ -9,6 +10,12 @@ public class Election {
     protected String fileName;
     protected Scanner electionFile;
 
+    public Election(int numBallots, String typeElection, String fileName, Scanner electionFile) {
+        this.numBallots = numBallots;
+        this.typeElection = typeElection;
+        this.fileName = fileName;
+        this.electionFile = electionFile;
+    }
     public Election(Scanner electionFile) {
         this.electionFile = electionFile;
     }
@@ -47,5 +54,5 @@ public class Election {
     public void setElectionFile(Scanner electionFile) {
         this.electionFile = electionFile;
     }   
-
 }
+
