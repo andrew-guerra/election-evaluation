@@ -2,30 +2,30 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.IOException;
+
 
 public class CPL_Election extends Election {
 
-    private int numParties;
+    private int numParties;                 
     private int numSeats;
     private int availableSeats;
     private int numBallots;
 
-    private CPL_Audit audit;
+    private CPL_Audit auditer;
 
     private CPL_Ballot[] initialBallots;
     private Party[] parties;
 
 
-    public CPL_Election(Scanner electionFile) {
+    public CPL_Election(Scanner electionFile, String date) throws IOException {
         super(electionFile);
+        auditer = new CPL_Audit(date);      
         this.readCPLHeader();
         this.readCPLBallots();
+        
     }
-    public void run() {
+    public void run() throws IOException {
 
         boolean secondRound;
         this.shuffleBallots();                          // shuffle ballots
@@ -33,6 +33,9 @@ public class CPL_Election extends Election {
         if (secondRound) {
             this.setRemainderSeatsAllocation();         // allocate remaining seats
         }
+        auditer.writeTotalSeatDistribution(parties);
+        auditer.writeElectionWinners(parties);
+        auditer.close();
         this.displayWinners();
     
     }
@@ -46,174 +49,211 @@ public class CPL_Election extends Election {
     private void displayWinners() {
         System.out.println("CPL Election Results:");
         for (int i = 0; i < numParties; i++) {
-            System.out.println(parties[i].getPartyName() + " - " + parties[i].getSeatsWon() + " seats won with " + parties[i].getInitialBallotCount() + " votes cast.");
+            System.out.println(parties[i].getPartyName() + " : ");
+            System.out.println("Number of votes cast: " + parties[i].getInitialBallotCount());
+            System.out.printf("Vote percentage: %.2f\n", (double)parties[i].getInitialBallotCount()/numBallots);
+            System.out.println("Number of seats won: " + parties[i].getSeatsWon());
+            System.out.print("Winning Candidates: ");
+            for (int j = 0; j < parties[i].getSeatsWon(); j++) {
+                System.out.print(parties[i].getCandidateList().get(j));
+                if (j != parties[j].getSeatsWon() - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println();
         }
     }
-    private boolean setFirstSeatsAllocation() {
+    private boolean setFirstSeatsAllocation() throws IOException {
 
-        for (int i = 0; i < initialBallots.length; i++) {
-            parties[initialBallots[i].getPartyNum()].incBallot();       // increment ballot count for party
+        for (int i = 0; i < initialBallots.length; i++) {   // increment ballot count for each party
+            int index = initialBallots[i].getPartyNum();
+            parties[index].incBallot();                         
+            parties[index].addBallot(initialBallots[i]);    // add ballot to to respective party
         }
-        // TODO: What if quota has a remainder?
+  
         int quota = numBallots / numSeats;  // quota calculation
         int seatsWon;                       // seats won per party
         int seatsRemain;                    // seatsRemain if not enough candidates in party
         int ballotsRemain;                  // ballots that remain after seat allocation
 
-        for (int i = 0; i < numParties; i++) {
+        for (int i = 0; i < numParties; i++) {                                 // first round seat distribution
             parties[i].setInitialBallotCount(parties[i].getBallotCount());
-            seatsWon = parties[i].getBallotCount() / quota;
-            
-            ballotsRemain = parties[i].getBallotCount() % quota;
-            if (seatsWon > parties[i].getNumCandidate()) {              // check if more seats allocated then candidates
-                seatsRemain = seatsWon - parties[i].getNumCandidate();  // calculate number of seats that cannot be allocated
+            seatsWon = parties[i].getBallotCount() / quota;                    // seats won
+            ballotsRemain = parties[i].getBallotCount() % quota;               // votes outstanding
+            if (seatsWon > parties[i].getNumCandidate()) {                     // check if more seats allocated then candidates
+                seatsRemain = seatsWon - parties[i].getNumCandidate();         // calculate number of seats that cannot be allocated
                 parties[i].setRemainder(0);
                 parties[i].incSeatsWon(seatsWon - seatsRemain);
-                availableSeats = availableSeats - (seatsWon - seatsRemain);
+                availableSeats = availableSeats - (seatsWon - seatsRemain);    // decrement total seats able to be allocated 
+                ballotsRemain = 0;
             } else {
                 parties[i].incSeatsWon(seatsWon);
-                availableSeats = availableSeats - seatsWon;
+                availableSeats = availableSeats - seatsWon;                    // decrement total seats able to be allocated
+                
+                
             }
-            parties[i].setBallotCount(ballotsRemain);                   // set party with remaining ballots
+            parties[i].setBallotCount(ballotsRemain);   // ballots in party unaccounted after first round
 
         }
-        if (availableSeats == 0) {                                      // check if second round is needed
+        auditer.writeInitialPartyVotes(parties, numBallots);
+        auditer.writeFirstSeatsAllocation(parties);
+        auditer.writeRemainingVotes(parties, availableSeats);
+
+        if (availableSeats == 0) {                      // check if second round is needed
             return false;
         } else {
             return true;
         }
         
-        
     }
-    private void setRemainderSeatsAllocation() {
+    private ArrayList<Party> findGreatestRemainderParty() throws IOException {
 
-        ArrayList<Party> tiedParties = new ArrayList<Party>();
-        int quota = numBallots / numSeats;
-        int largestRemainder = 0;
-        int partyToAllocate;
-        while (availableSeats > 0) {
-            largestRemainder = 0;
-            for (int i = 0; i < numParties; i++) {
-                //if (parties[i].getBallotCount() != 0) {                     // find party(s) with largest remainder
-                    System.out.println(parties[i].getBallotCount());
-                    int tempRemainder = parties[i].getBallotCount();
-                    if (tempRemainder > largestRemainder) {
-                        tiedParties.clear();
-                        tiedParties.add(parties[i]);
-                        largestRemainder = tempRemainder;
-                        partyToAllocate = i;
-                    } else if (tempRemainder == largestRemainder) {
-                        tiedParties.add(parties[i]);
-                    }
-                //}
+        ArrayList<Party> tiedParties = new ArrayList<Party>();  // list of tied parties
+        int largestRemainder = 0;                               // the greatest number of remaining ballots in list of parties
+
+        for (int i = 0; i < numParties; i++) {                  // iterate through every party to find greatest remainder of ballots
+            int tempRemainder = parties[i].getBallotCount();
+            if (tempRemainder > largestRemainder) {
+                tiedParties.clear();                            // reset list
+                tiedParties.add(parties[i]);                    // add new party with greatest remainder of ballots   
+                largestRemainder = tempRemainder;
+            } else if (tempRemainder == largestRemainder) {     // add party to list of tie
+                tiedParties.add(parties[i]);
+            }     
+        }
+        if (largestRemainder != 0) {
+            auditer.writeGreatestRemainderParty(tiedParties, largestRemainder, availableSeats);
+        } else {
+            auditer.extraSeats(availableSeats);
+        }
+        return tiedParties;
+    }
+    private void largestRemainderSeatAllocator(ArrayList<Party> tiedParties) throws IOException {
+        for (int i = 0; i < tiedParties.size(); i++) {                                      // loop that iterates through list of tied parties
+            if (tiedParties.get(i).getSeatsWon() < tiedParties.get(i).getNumCandidate()) {  // allocated seat
+                tiedParties.get(i).incSeatsWon(1);
+                tiedParties.get(i).setBallotCount(0);
+                auditer.writeRemainingSeatsAllocated(tiedParties.get(i), 0);
+                tiedParties.remove(i);           
+                availableSeats--;
+            } else {                                                                        // not enough candidates to allocate seat
+                tiedParties.get(i).setBallotCount(0);
+                auditer.writeRemainingSeatsAllocated(tiedParties.get(i), 2);
+                tiedParties.remove(i);
             }
-            if (largestRemainder == 0) {                                    // check if seats left after all seats allocated
-                while (availableSeats > 0) {
+        }
+    }
+    private void setRemainderSeatsAllocation() throws IOException {
+
+        ArrayList<Party> tiedParties = new ArrayList<Party>();              // list to hold iteration of parties with greatest remainder votes
+
+        while (availableSeats > 0) {                                        // complete a cycle if seats still remaining
+            
+            tiedParties = this.findGreatestRemainderParty();                // find party(s) with largest remainder
+
+            if (tiedParties.get(0).getBallotCount() == 0) {                 // check if all ballots have been accounted for
+                while (availableSeats > 0) {                                // coin toss for all parties to win extra seat while seats still remaining
                     Party temp = this.coinToss(tiedParties);                // coin toss returns party removed from list that wins a seat
-                    if (temp.getSeatsWon() < temp.getNumCandidate()) {
+                    if (temp.getSeatsWon() < temp.getNumCandidate()) {      // allocated seat
                         temp.incSeatsWon(1);
+                        auditer.writeRemainingSeatsAllocated(temp, 1);
                         availableSeats--;
-                    } 
+                    } else {                                                // not enough candidates to allocate seat
+                        auditer.writeRemainingSeatsAllocated(temp, 2);
+                    }
                 }
                 break;
             }
-            while(tiedParties.size() > 0) {
+            while(tiedParties.size() > 0) {                                 // loop that accounts for each party in list for potential seat allocation
                 if (availableSeats == 0) {                                  // all seats allocated
                     break;
                 }
                 if (availableSeats < tiedParties.size()) {                  // more tied parties than available seats
-                    Party temp = this.coinToss(tiedParties);
-                    if (temp.getSeatsWon() < temp.getNumCandidate()) {
+                    Party temp = this.coinToss(tiedParties);                // coin toss returns party removed from list that wins a seat
+                    if (temp.getSeatsWon() < temp.getNumCandidate()) {      // allocated seat
                         temp.incSeatsWon(1);
                         temp.setBallotCount(0);
                         availableSeats--;
-                    } else {
+                        auditer.writeRemainingSeatsAllocated(temp, 1);
+                    } else {                                                // not enough candidates to allocate seat
                         temp.setBallotCount(0);
+                        auditer.writeRemainingSeatsAllocated(temp, 2);
                     }
                 }
-                if (availableSeats >= tiedParties.size()) {                 // check if there are enough seats for remainder allocation
-                    for (int i = 0; i < tiedParties.size(); i++) {
-                        if (tiedParties.get(i).getSeatsWon() < tiedParties.get(i).getNumCandidate()) {
-                            tiedParties.get(i).incSeatsWon(1);
-                            tiedParties.get(i).setBallotCount(0);
-                            tiedParties.remove(i);           
-                            availableSeats--;
-                        } else {
-                            System.out.println(tiedParties.get(i).getBallotCount());
-                            tiedParties.get(i).setBallotCount(0);
-                            tiedParties.remove(i);
-                            
-                        }
-                        
-                    }
+                if (availableSeats >= tiedParties.size()) {                 // enough seats for the list of largest remainder parties
+
+                    this.largestRemainderSeatAllocator(tiedParties);        // standard allocation of remainder seats for parties
+
                 }
             }
         }
-        
-
     }
     private void shuffleBallots() {
         Random rnd = ThreadLocalRandom.current();
         for (int i = initialBallots.length - 1; i > 0; i--) {
             int index = rnd.nextInt(i + 1);
-            CPL_Ballot a = initialBallots[index];       // swap ballots
+            CPL_Ballot a = initialBallots[index];            // swap ballots
             initialBallots[index] = initialBallots[i];
             initialBallots[i] = a;
         }
     }
-    private void readCPLHeader() {
+    private void readCPLHeader() throws IOException {
         
-        int numParties = electionFile.nextInt();        // get number of parties from header
+        int numParties = electionFile.nextInt();            // get number of parties from header
         this.setNumParties(numParties);
         parties = new Party[numParties];
                     
-        electionFile.nextLine();                        // set scanner to read party names
+        electionFile.nextLine();                            // set scanner to read party names
         String temp = electionFile.nextLine();
         
-        for (int i = 0; i < numParties; i++) {          // create party objects
+        for (int i = 0; i < numParties; i++) {              // create party objects
             String partyName;
             int index = temp.indexOf(",");
-            if (index != -1) {                          // case where >1 parties remain
+            if (index != -1) {                              // case where >1 parties remain
                 partyName = temp.substring(0, index);   
                 temp = temp.substring(index + 2);
-            } else {                                    // case where one party remains
+            } else {                                        // case where one party remains
                 partyName = temp;
             }
              
-            Party partyAdd = new Party(partyName);      // add party to list
+            Party partyAdd = new Party(partyName);          // add party to list
             parties[i] = partyAdd;
         }
   
-        String candidateList;                           // String to hold comma deliminated candidates
-        int numCandidates;
+        String candidateListString;                         // String to hold comma deliminated candidates
 
-        for (int i = 0; i < numParties; i++) {          // read candidate names for each party
-            numCandidates = 0;
-            candidateList = electionFile.nextLine();
-            parties[i].setCandidateList(candidateList);
-            parties[i].setNumCandidate(getNumberCandidates(candidateList));
+        for (int i = 0; i < numParties; i++) {              // create ArrayList of candidates for each party
+            candidateListString = electionFile.nextLine();
+            ArrayList<String> candidates = this.candidateArray(candidateListString);
+            parties[i].setCandidateList(candidates);
+            parties[i].setNumCandidate(candidates.size());
         }
-        this.setNumSeats(electionFile.nextInt());       // get number of seats
+        this.setNumSeats(electionFile.nextInt());           // get number of seats
         electionFile.nextLine();
-        this.setNumBallots(electionFile.nextInt());     // get number of ballots
+        this.setNumBallots(electionFile.nextInt());         // get number of ballots
         electionFile.nextLine();
+
+        auditer.writeHeaderToFile("CPL", parties, numBallots, numSeats);
 
     }
-    private int getNumberCandidates(String candidates) {
-        int counter = 0;
-        if (candidates == "") {
-            return 0;
+    private ArrayList<String> candidateArray(String candidateListString) {
+
+        ArrayList<String> candidates = new ArrayList<String>();    // list of candidates for party to hold
+        if (candidateListString == "") {                           // return empty if no candidates
+            return null;
         }
-        while (true) {
-            if (candidates.indexOf(",") == -1) {
+        while (true) {                                             // parse through string using comma delimiter
+            if (candidateListString.indexOf(",") == -1) {
                 break;
             } else {
-                counter++;
-                candidates = candidates.substring(candidates.indexOf(",") + 1);
+                String temp = candidateListString.substring(0,candidateListString.indexOf(","));
+                candidates.add(temp);
+                candidateListString = candidateListString.substring(candidateListString.indexOf(",") + 2);
             }
-            
         }
-        return counter + 1;
+        candidates.add(candidateListString);
+        return candidates;
+
     }
     private void readCPLBallots() {
 
@@ -223,7 +263,7 @@ public class CPL_Election extends Election {
             ballot = electionFile.nextLine();
             int partyNum = ballot.indexOf("1");              // partyNum is index into parties[]
             CPL_Ballot temp = new CPL_Ballot(partyNum, i);
-            initialBallots[i] = temp;
+            initialBallots[i] = temp;                        // store ballot in system
         }
     }
     public int getNumParties() {

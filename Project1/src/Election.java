@@ -1,6 +1,7 @@
 
 package Project1.src;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Election {
@@ -19,7 +20,7 @@ public class Election {
     public Election(Scanner electionFile) {
         this.electionFile = electionFile;
     }
-    public void run() {
+    public void run() throws IOException {
         
     }
 

@@ -1,17 +1,20 @@
 package Project1.src;
 
+import java.util.ArrayList;
+
 public class Party {
     private String partyName;
-    private String candidateList;
+    private ArrayList<String> candidates;
     private int numCandidate;
     private int seatsWon;
     private int ballotCount;
     private int initialBallotCount;
-    private CPL_Ballot[] ballots;
+    private ArrayList<CPL_Ballot> ballots;
     private int remainder;
 
     public Party(String partyName) {
         this.partyName = partyName;
+        ballots = new ArrayList<CPL_Ballot>();
         ballotCount = 0;
     
     }
@@ -24,12 +27,12 @@ public class Party {
         this.partyName = partyName;
     }
 
-    public String getCandidateList() {
-        return this.candidateList;
+    public ArrayList<String> getCandidateList() {
+        return this.candidates;
     }
 
-    public void setCandidateList(String candidateList) {
-        this.candidateList = candidateList;
+    public void setCandidateList(ArrayList<String> candidates) {
+        this.candidates = candidates;
     }
 
     public int getNumCandidate() {
@@ -63,12 +66,12 @@ public class Party {
         this.initialBallotCount = initialBallotCount;
     }
 
-    public CPL_Ballot[] getBallots() {
+    public ArrayList<CPL_Ballot> getBallots() {
         return this.ballots;
     }
 
-    public void setBallots(CPL_Ballot[] ballots) {
-        this.ballots = ballots;
+    public void addBallot(CPL_Ballot ballot) {
+        ballots.add(ballot);
     }
 
     public int getRemainder() {
