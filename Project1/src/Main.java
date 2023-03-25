@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
@@ -46,11 +47,11 @@ public class Main {
      */
     public static String retrieveDate(Scanner input) {
         // generate date format based on local US time
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu", Locale.US).withResolverStyle(ResolverStyle.STRICT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-uuuu", Locale.US).withResolverStyle(ResolverStyle.STRICT);
         String dateStr;
 
         do {
-            System.out.print("Enter date of election in format mm/dd/yyyy: ");
+            System.out.print("Enter date of election in format mm-dd-yyyy: ");
             dateStr = input.nextLine();
             
             try {
@@ -72,21 +73,21 @@ public class Main {
      * 
      * @param electionFile  Scanner of election file
      * @return              Election object of election type in election file
+     * @throws IOException
      */
-    public static Election retrieveElection(Scanner electionFile) {
+    public static Election retrieveElection(Scanner electionFile, String date) throws IOException {
         String electionType = electionFile.nextLine().strip();
-        
         if(electionType.equals("IR")) {
             return new IR_Election(electionFile);
         } else if(electionType.equals("CPL")) {
-            return new CPL_Election(electionFile);
+            return new CPL_Election(electionFile, date);
         }
         
         System.out.printf("\"%s\" is not a valid election type\n", electionType);
         return null;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String fileName, dateStr;
         Scanner electionFile, input;
         Election election;
@@ -99,20 +100,20 @@ public class Main {
         } else {
             fileName = args[1];
         }
-		
+	
         if((electionFile = loadElectionFile(fileName)) == null) {
             input.close();
             return;
         }    
-
+        
         if((dateStr = retrieveDate(input)) == null) {
             input.close();
             return;
         }
         
         input.close();
-		
-        if((election = retrieveElection(electionFile)) == null) {
+	
+        if((election = retrieveElection(electionFile, dateStr)) == null) {
             electionFile.close();
             return;
         }
