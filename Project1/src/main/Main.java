@@ -94,7 +94,7 @@ public class Main {
     public static Election retrieveElection(Scanner electionFile, String date) throws IOException {
         String electionType = electionFile.nextLine().strip();
         if(electionType.equals("IR")) {
-            return new IR_Election(electionFile);
+            return new IR_Election(electionFile, date);
         } else if(electionType.equals("CPL")) {
             return new CPL_Election(electionFile, date);
         }
