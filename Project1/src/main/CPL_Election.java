@@ -221,7 +221,7 @@ public class CPL_Election extends Election {
             Party partyAdd = new Party(partyName);          // add party to list
             parties[i] = partyAdd;
         }
-  
+        
         String candidateListString;                         // String to hold comma deliminated candidates
 
         for (int i = 0; i < numParties; i++) {              // create ArrayList of candidates for each party

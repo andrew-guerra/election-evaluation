@@ -24,7 +24,6 @@ public class MainTests {
             input = new Scanner(new File("../testing/unit/Main/filenames.txt"));
         } catch (FileNotFoundException e) {
             fail("filenames.txt not found");
-            input.close();
             return;
         }
 
@@ -67,7 +66,7 @@ public class MainTests {
         String expectedDate, recievedDate;
         while(datesCorrectScanner.hasNextLine() && datesScanner.hasNextLine()) {
             expectedDate = datesCorrectScanner.nextLine().strip();
-            recievedDate = Main.retrieveDate(datesScanner);
+            recievedDate = Main.retrieveDate(new String[]{}, datesScanner);
 
             assertEquals(expectedDate, recievedDate);
         }
@@ -79,6 +78,8 @@ public class MainTests {
     @Test
     public void testRetrieveElection() {
         Scanner IRElectionFileScanner;
+        String date = "03-26-2023";
+
         try {
             IRElectionFileScanner = new Scanner(new File("../testing/unit/Main/IR_Election.csv"));
         } catch (Exception e) {
@@ -86,20 +87,20 @@ public class MainTests {
             return;
         }
         
-        Election IR_election = Main.retrieveElection(IRElectionFileScanner);
+        Election IR_election = Main.retrieveElection(IRElectionFileScanner, date);
         IRElectionFileScanner.close();
         assertNotEquals(null, IR_election);
         assertEquals(IR_Election.class, IR_election.getClass());
 
         Scanner CPLElectionFileScanner;
         try {
-            CPLElectionFileScanner = new Scanner(new File("../testing/unit/Main/CPL_Election.csv"));
+            CPLElectionFileScanner = new Scanner(new File("../testing/unit/Main/small-CPL.csv"));
         } catch (Exception e) {
             fail("CPL_Election.csv not found");
             return;
         }
 
-        Election CPL_election = Main.retrieveElection(CPLElectionFileScanner);
+        Election CPL_election = Main.retrieveElection(CPLElectionFileScanner, date);
         CPLElectionFileScanner.close();
         assertNotEquals(null, CPL_election);
         assertEquals(CPL_Election.class, CPL_election.getClass());
