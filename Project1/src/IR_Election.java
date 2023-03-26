@@ -18,8 +18,10 @@ public class IR_Election extends Election {
 
     
     // constructers
-    public IR_Election(Scanner electionFile) {
+    public IR_Election(Scanner electionFile, String date) {
         super(electionFile);
+        this.typeElection = "IR Election";
+        audit = new IR_Audit(date);
     }
 
     // methods
@@ -426,7 +428,7 @@ public class IR_Election extends Election {
                 double percentage = ((double)candidates[winner].getBallotCount()/numBallots) * 100;
                 System.out.println("Votes Won: " + candidates[winner].getBallotCount());
                 System.out.println("Percentage of Votes Won: " + String.format("%.2f",percentage));
-
+                audit.close();
                 return;
             }
 

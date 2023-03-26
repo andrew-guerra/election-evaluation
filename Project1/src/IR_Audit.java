@@ -188,6 +188,10 @@ public class IR_Audit{
         this.auditWriter = auditWriter;
     }
 
+    public void close() throws IOException {
+        auditWriter.close();
+    }
+
 }
 
     
