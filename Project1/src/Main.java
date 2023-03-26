@@ -17,6 +17,22 @@ import java.time.format.ResolverStyle;
 public class Main {
   
     /**
+     * Retrives the filename from either the command line arugments or user input.
+     * 
+     * @param args      String command line arguments
+     * @param input     Scanner for user input
+     * @return
+     */
+    public static String retrieveFilename(String[] args, Scanner input) {
+        if (args.length < 1) {
+            System.out.print("Enter the file name: ");
+			return input.nextLine();
+        }
+        
+        return args[0];
+    }
+
+    /**
      * Generates a Scanner object based on file name. File name is assumed relative to Project1/src. 
      * Returns null when an exception occurs.
      * 
@@ -93,12 +109,9 @@ public class Main {
         Election election;
 
         input = new Scanner(System.in);
-
-		if (args.length < 2) {
-            System.out.print("Enter the file name: ");
-			fileName = input.nextLine();
-        } else {
-            fileName = args[1];
+		if((fileName = retrieveFilename(args, input)) == null) {
+            input.close();
+            return;
         }
 	
         if((electionFile = loadElectionFile(fileName)) == null) {

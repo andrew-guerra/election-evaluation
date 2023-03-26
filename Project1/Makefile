@@ -1,5 +1,5 @@
 run:
-	bash misc/run-project.sh
+	bash misc/run-project.sh $(filename)
 
 build:
 	javac -d target -cp .:../lib/* ./src/*.java
@@ -21,7 +21,8 @@ clean:
 
 help:
 	@echo 'Typical usage is:'
-	@echo '  > make run                      # runs project in target folder'
+	@echo '  > make run                      # runs project in target folder without filename argument'
+	@echo '  > make run filename=FILEMAME    # runs project in target folder with FILENAME argument'
 	@echo '  > make build                    # builds project classes'
 	@echo '  > make javadocs                 # generates javadocs in documentation folder'
 	@echo '  > make remove-javadocs          # deletes javadocs in documentation folder'
