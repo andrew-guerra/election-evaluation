@@ -24,7 +24,9 @@ This Voting System is designed to determine election results for either Instant 
 * make run-tests                # runs test suite
 * make tests                	 # builds project test classes
 * make clean	                 # deletes compiled build classes
-
+##### To run the system without using the Makefile
+java -cp location-of-build-package main.Main
+java -cp locaion-of-build-package main.Main electionfile.csv
 
 ### File Structure: 
 * #### Project1/ 
