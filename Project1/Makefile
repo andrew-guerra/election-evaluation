@@ -18,7 +18,7 @@ tests:
 
 clean:
 	rm -r target/*
-	rm testing/output/*
+	rm testing/output/*.txt
 
 help:
 	@echo 'Typical usage is:'
