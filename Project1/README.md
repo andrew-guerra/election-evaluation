@@ -14,10 +14,10 @@ This README file will be used to describe the Voting System that is contained in
 ### The Voting System:
 This Voting System is designed to determine election results for either Instant Runoff (IR) or Closed Party List (CPL) elections. This system will be designed to be fair in its election determinations. The benefits of the this Voting System is that it allows multiple election types to be processed through a single program and also removes manual processes by automating the counting of votes and determining the winners. The system requires little user input or interaction. All interaction will happen with a text based interface. The user can either provide an election data file name to the system via a command line argument or provide it via a prompt during runtime. The system will then process the election data as specified in the election data file and display the results of the election to the terminal. Additionally, the system will produce an audit file containing information about winners and the processing of ballots so that users of the system may review how the election unfolded.
 
-### How to run the system: 
+### How to build and run the system: 
 ##### Makefile is used for running the System.
-* make run                      # runs project in target folder without filename argument
-* make run filename=FILEMAME    # runs project in target folder with FILENAME argument
+* make run                      # runs project in target folder without filename argument, election file should be in resources folder
+* make run filename=FILEMAME    # runs project in target folder with FILENAME argument, election file should be in resources folder
 * make build                    # builds project classes
 * make javadocs                 # generates javadocs in documentation folder
 * make remove-javadocs          # deletes javadocs in documentation folder
@@ -33,7 +33,7 @@ This Voting System is designed to determine election results for either Instant 
   * ##### misc/ 
       > Contains all miscellaneous files for the system. 
   * ##### resources/ 
-      > Contains .csv files as well as audit files that were generated with tests.  
+      > Contains election .csv files as well as audit files that were generated with manual running of system.  
   * ##### src/ 
       > Contains all of the source code for the Voting System. 
       > * CPL_Audit.java 
