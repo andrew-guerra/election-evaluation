@@ -288,7 +288,5 @@ public class CPL_ElectionTests {
         assertEquals(0 , test.getNumBallots());
         assertNotNull(test.getParties());
         assertNotNull(test.getBallots());
-
-
     }
 }
