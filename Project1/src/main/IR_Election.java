@@ -203,9 +203,8 @@ public class IR_Election extends Election {
     /**
      * Determines the index of the winning candidate who won a coin toss.
      * Used as a helper function for findLowestCandidate() and runPopularity().
-     * @param tieFolk, an array of ints that correlates to the index number of candidates that have ties 
-     * @return, returns an integer corresponding the to index number of the candidate that has won
-     * the coin toss.
+     * @param tieFolk   an array of ints that correlates to the index number of candidates that have ties 
+     * @return          returns an integer corresponding the to index number of the candidate that has won the coin toss.
      */
     private int coinToss(int[] tieFolk) {
         Random random = new Random();
@@ -407,10 +406,11 @@ public class IR_Election extends Election {
      * and winner information of the election to the screen.
      * Assumes the electionScanner begins on the second line, all information contained in the IR election
      * ballot file is entered properly, there is at least one ballot in the file and at least
-     * one candidate. Takes no parameters and returns nothing.
+     * one candidate. Takes no parameters and returns nothing. Generates an audit file.
      * 
-     * Assumes election class has been initalized properly and so has audit class.
+     * Assumes election class has been initalized properly and so has audit object.
      * 
+     * @throws IOException
      */
     public void run() throws IOException {
         // read the header infor form the file and write header to audit
@@ -455,18 +455,13 @@ public class IR_Election extends Election {
             audit.writeBallotsReallocated(this.currentBallots, this.currentBallotCount);
         }
     }
-    
     /** 
      * get the array of candidates contained in IR_eleciton 
      * @return Candidate[] a list of candidate objects that represent candidates
      */
-    // getters and setters
     public Candidate[] getCandidates() {
         return this.candidates;
-    }
-
-
-    
+    } 
     /** 
      * set the array candidates in IR to candidates
      * @param candidates of type Candidate array used to set IR_Elections candidates
@@ -474,9 +469,6 @@ public class IR_Election extends Election {
     public void setCandidates(Candidate[] candidates) {
         this.candidates = candidates;
     }
-
-
-    
     /** 
      * get the total number of candidates in an IR_Election
      * @return an int representing the number of candidates in an IR_Election
@@ -484,9 +476,6 @@ public class IR_Election extends Election {
     public int getNumCandidates() {
         return this.numCandidates;
     }
-
-
-    
     /** 
      * set the total number of candidates in an IR_Election
      * @param numCandidates an int parameter used to set the total number of cnadidates
@@ -494,9 +483,6 @@ public class IR_Election extends Election {
     public void setNumCandidates(int numCandidates) {
         this.numCandidates = numCandidates;
     }
-
-
-    
     /** 
      * get the number of remaining candidates
      * @return int, the number of candidates still in the running
@@ -504,7 +490,6 @@ public class IR_Election extends Election {
     public int getNumRemainingCandidates() {
         return this.numRemainingCandidates;
     }
-
     /**
      * set the number of remaining candidates
      * @param numRemainingCandidates an int that represents the number of remaining candidates
@@ -558,6 +543,7 @@ public class IR_Election extends Election {
      * set the audit that represents how the audit file is written into 
      * @param audit type IR_Audit that represents how the audit file is written into
      */
+     
     public void setAudit(IR_Audit audit) {
         this.audit = audit;
     }
