@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import org.junit.Test;
@@ -16,8 +17,29 @@ import Project1.src.Main;
 
 public class MainTests {
     @Test
+    public void testRetrieveFilename() {
+        String[] args = new String[]{};
+        Scanner input;
+        try  {
+            input = new Scanner(new File("../testing/unit/Main/filenames.txt"));
+        } catch (FileNotFoundException e) {
+            fail("filenames.txt not found");
+            input.close();
+            return;
+        }
+
+        String filename = Main.retrieveFilename(args, input);
+        assertEquals("filename.txt", filename);
+
+        args = new String[]{"filename.txt"};
+        filename = Main.retrieveFilename(args, input);
+        assertEquals("filename.txt", filename);
+
+        input.close();
+    }
+
+    @Test
     public void testLoadElectionFile() {
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
         Scanner electionFileScanner = Main.loadElectionFile("../testing/unit/Main/IR_Election.csv");
         assertNotEquals(null, electionFileScanner);
 

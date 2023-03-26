@@ -1,4 +1,5 @@
-//package Project1.src;
+package Project1.src;
+
 // add imports
 // added toString
 // added constructor with more fields
