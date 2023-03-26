@@ -30,6 +30,7 @@ public class CPL_ElectionTests {
         assertEquals(electionFile, test.getElectionFile());
         test.getAuditObject().close();
     }
+
     // automatic
     @Test
     public void testCPL_ElectionReadCPLHeader() throws IOException {
@@ -64,6 +65,7 @@ public class CPL_ElectionTests {
         electionFile.close();
 
     }
+
     // automatic
     @Test
     public void testCPL_ElectionCandidateArray() throws IOException {
@@ -95,6 +97,7 @@ public class CPL_ElectionTests {
         test.getAuditObject().close();
         electionFile.close();
     }
+
     // automatic
     @Test
     public void testCPL_ElectionReadCPLBallots() throws IOException {
@@ -148,6 +151,7 @@ public class CPL_ElectionTests {
         test.getAuditObject().close();
         electionFile.close();
     }
+
     // manual
     @Test
     public void testSetFirstSeatsAllocation() throws IOException {
@@ -192,6 +196,7 @@ public class CPL_ElectionTests {
         test.getAuditObject().close();
         electionFile.close();
     }
+
     // manual
     @Test
     public void testRemainderSeatsAllocation() throws IOException {
@@ -235,6 +240,7 @@ public class CPL_ElectionTests {
         test.getAuditObject().close();
         electionFile.close();
     }
+    
     // manual
     @Test
     public void testCPL_ElectionRun() throws IOException {
