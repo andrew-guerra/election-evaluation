@@ -1,11 +1,11 @@
 package test.system;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -69,5 +69,15 @@ public class CPL_ElectionIntegrationTests {
         
         System.setIn(oldIn);
         System.setOut(oldOut);
+    }
+
+    @Test
+    public void testLargeCPL_Election() {
+        final long startTime = System.currentTimeMillis();
+        String date = "03-26-2023";
+        Main.main(new String[]{"../testing/system/CPL_ElectionIntegration/large-CPL.csv", date});
+
+        final long elapsedTimeMinutes = (System.currentTimeMillis() - startTime) / 60000;
+        assertTrue(elapsedTimeMinutes < 4.0);
     }
 }
