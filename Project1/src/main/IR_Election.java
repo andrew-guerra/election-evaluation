@@ -6,9 +6,17 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import java.util.Random;
 
+/**
+ * File Name: IR_Election.java
+ * 
+ * Description: Creates an object that represents an IR_Election and contains methods
+ * to run the entirity of IR_Election, produce an audit file, and display
+ * the winner of an IR_Election.
+ * 
+ * @Authors Hady Kotifani
+ */
 public class IR_Election extends Election {
 
-    // attributes
     private Candidate [] candidates;
     private int numCandidates;
     private int numRemainingCandidates;
@@ -17,14 +25,19 @@ public class IR_Election extends Election {
     private IR_Audit audit; 
 
     
-    // constructers
+    /**
+     * Constructor for IR_Election
+     * @param electionFile is a Scanner that should read from
+     * a IR_Election ballot file. Should point at the second line
+     * of the file or else other methods may fail.
+     * @param date is a string that represent the date at which
+     * the election was run
+     */
     public IR_Election(Scanner electionFile, String date) {
         super(electionFile);
         this.typeElection = "IR Election";
         audit = new IR_Audit(date);
     }
-
-    // methods
 
     /**
      * Reads header information from an IR_Election.csv file. Assumes the electionFile Scanner
@@ -171,8 +184,9 @@ public class IR_Election extends Election {
             int currentBallotRank = ballotToAllocate.getRank();
             int candidateNum = ballotToAllocate.getCandidateAtNum(currentBallotRank);
 
-            // give ballot to candidate if he is still in the running
-            if (candidates[candidateNum] != null) {
+            // give ballot to candidate if he is still in the running and ballot
+            // is ranked up there
+            if (candidateNum != -1 && candidates[candidateNum] != null) {
                 candidates[candidateNum].addBallot(ballotToAllocate);
             }
         }
@@ -223,7 +237,7 @@ public class IR_Election extends Election {
         int numberOfLowest = 1;
 
         // find the lowest Vote Count,
-        for (int i = 0; i < numCandidates; i++) {
+        for (int i = remove + 1; i < numCandidates; i++) {
             // check if candidates in running and if theie vote count 
             if (candidates[i] != null && candidates[i].getBallotCount() < lowestVote) {
                 // set lowest vote to new lowest
@@ -477,41 +491,61 @@ public class IR_Election extends Election {
         return this.numRemainingCandidates;
     }
     /**
-     * 
-     * @param numRemainingCandidates
+     * set the number of remaining candidates
+     * @param numRemainingCandidates an int that represents the number of remaining candidates
      */
     public void setNumRemainingCandidates(int numRemainingCandidates) {
         this.numRemainingCandidates = numRemainingCandidates;
     }
+
+    
+    /** 
+     * get array of current ballots
+     * @return IR_Ballot[] representing a list of unallocated ballots
+     */
     public IR_Ballot[] getCurrentBallots() {
         return this.currentBallots;
     }
+
+    /**
+     * set the array of current ballots
+     * @param currentBallots an IR_Ballot[] that represents a list off unallocated ballots
+     */
     public void setCurrentBallots(IR_Ballot[] currentBallots) {
         this.currentBallots = currentBallots;
     }
+
+    /**
+     * get the current count of ballots
+     * @return an int representing the number of unallocated ballots
+     */
     public int getCurrentBallotCount() {
         return this.currentBallotCount;
     }
+
+    /**
+     * set the current count of ballots
+     * @param currentBallotCount an int representing the number of unallocated ballots
+     */
     public void setCurrentBallotCount(int currentBallotCount) {
         this.currentBallotCount = currentBallotCount;
     }
+
+    /**
+     * get the audit that represents how the audit file is written into 
+     * @return IR_Audit that represents how the audit file is written into
+     */
     public IR_Audit getAudit() {
         return this.audit;
     }
+
+    /**
+     * set the audit that represents how the audit file is written into 
+     * @param audit type IR_Audit that represents how the audit file is written into
+     */
+     
     public void setAudit(IR_Audit audit) {
         this.audit = audit;
-    }
-
-    // toString
-    @Override
-    public String toString() {
-        return "{" +
-            " candidates='" + getCandidates() + "'" +
-            ", numCandidates='" + getNumCandidates() + "'" +
-            ", numRemainingCandidates='" + getNumRemainingCandidates() + "'" +
-            ", currentBallots='" + getCurrentBallots() + "'" +
-            ", currentBallotCount='" + getCurrentBallotCount() + "'" +
-            "}";
     }
 
 }

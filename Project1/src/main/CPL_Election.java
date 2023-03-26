@@ -359,10 +359,6 @@ public class CPL_Election extends Election {
             System.out.println();
         }
     }
-    
-    
-   
-    
     /**
      * get the total number of parties in a CPL_Election
      * @return  int representing the number of parties in a CPL_Election
