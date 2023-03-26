@@ -1,4 +1,4 @@
-package Project1.src.test.unit;
+package test.unit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -10,10 +10,10 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
-import Project1.src.CPL_Election;
-import Project1.src.Election;
-import Project1.src.IR_Election;
-import Project1.src.Main;
+import main.CPL_Election;
+import main.Election;
+import main.IR_Election;
+import main.Main;
 
 public class MainTests {
     @Test

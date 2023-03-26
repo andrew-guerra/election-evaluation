@@ -1,10 +1,10 @@
-package Project1.src.test.unit;
+package test.unit;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import Project1.src.CPL_Ballot;
+import main.CPL_Ballot;
 
 public class CPL_BallotTests {
     @Test

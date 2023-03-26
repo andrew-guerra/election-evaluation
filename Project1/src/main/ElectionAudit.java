@@ -1,4 +1,4 @@
-package Project1.src;
+package main;
 
 /**
  * ElectionAudit is an abstract class for representing an audit for an election

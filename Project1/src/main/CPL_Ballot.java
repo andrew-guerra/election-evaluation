@@ -1,4 +1,4 @@
-package Project1.src;
+package main;
 
 public class CPL_Ballot {
 

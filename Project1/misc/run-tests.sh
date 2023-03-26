@@ -1,4 +1,4 @@
-javac -d target -cp .:../lib/* ./src/*.java ./src/test/unit/*.java ./src/test/system/*.java 
+javac -d target -cp .:./lib/* ./src/main/*.java ./src/test/unit/*.java ./src/test/system/*.java 
 cd target
 
 echo "Running Unit Tests"

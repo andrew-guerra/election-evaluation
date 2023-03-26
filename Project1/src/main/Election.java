@@ -1,5 +1,4 @@
-
-package Project1.src;
+package main;
 
 import java.io.IOException;
 import java.util.Scanner;

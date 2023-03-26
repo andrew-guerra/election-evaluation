@@ -1,4 +1,4 @@
-package Project1.src;
+package main;
 
 import java.util.ArrayList;
 import java.util.Random;

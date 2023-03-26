@@ -1,3 +1,3 @@
-javac -d target -cp .:../lib/* ./src/*.java
-cd target
-java Project1.src.Main $1
+javac -d target -cp .:../lib/* ./src/main/*.java
+cd resources
+java -cp ../target Project1.src.Main $1
