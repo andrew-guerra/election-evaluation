@@ -41,6 +41,14 @@ public class Election {
     }
 
     /**
+     * run method is inherited and overrided by CPL and IR
+     * @throws IOException if write fails
+     */
+    public void run() throws IOException {
+
+    }
+
+    /**
      * get the number of total ballots
      * @return int, number of total ballots
      */
