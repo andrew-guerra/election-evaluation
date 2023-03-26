@@ -4,6 +4,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * File Name: IR_Audit.java
+ * 
+ * Description: Creates an object that represents an IR_Audit and contains methods
+ * to print to an audit file.
+ * 
+ * @Author Hady Kotifani and Tyler Grimm
+ */
 public class IR_Audit{
 
     private String date; 
@@ -11,6 +19,11 @@ public class IR_Audit{
     private File auditFile; 
     private FileWriter auditWriter; 
 
+    /**
+     * Constructor for IR_Audit. Initallizes fields filename,
+     * auditFile, and audit writer. Sets date to parameter date.
+     * @param date string, represents the date at which the election was run
+     */
     public IR_Audit(String date) {
         // initalize the date
         this.date = date;
@@ -30,6 +43,10 @@ public class IR_Audit{
         }
     }
 
+    /**
+     * default constructor for IR_Audit. Initalizes date and file name
+     * to be empty and auditFile and auditWriter to be null
+     */
     public IR_Audit() {
         this.date = "";
         this.filename = "";
@@ -37,7 +54,15 @@ public class IR_Audit{
         this.auditWriter = null;
     }
 
-
+    /**
+     * Writes header information about election type, total number of candidates, name of candidates, and number of total
+     * ballots of an IR Election to an audit file
+     * @param electionType String, represents type of election
+     * @param numCandidates int, represents total number of candidates
+     * @param candidates, Candidate[], array of candidate objects to get name and party of candidate
+     * @param numBallots int, number of total ballots sent in the election
+     * @throws IOException, raised if write fails
+     */
     public void writeHeaderToFile(String electionType, int numCandidates, Candidate[] candidates, int numBallots) throws IOException{
         // write the election type to the file
         auditWriter.write("Election Type: " + electionType + "\n\n");
@@ -58,8 +83,14 @@ public class IR_Audit{
         auditWriter.write("Total Ballot Count: " + numBallots + "\n\n");
     }
 
-
-    // also prints out audit being redistributed if it is thrown out ???
+    /**
+     * Writes what ballots are being reallocated and/or may thrown out upon next reallocation
+     * to the audit file. Does not check if current ballot count is in bound and may fail
+     * too high.
+     * @param currentBallots IR_Ballot[], represents a list of ballots that will be reallocated
+     * @param currentBallotCount int, represents the number of ballots that will be reallocated
+     * @throws IOException raised if write failes
+     */
     public void writeBallotsReallocated(IR_Ballot[] currentBallots, int currentBallotCount) throws IOException {
         // writes the ballot IDs that are being reallocated
         auditWriter.write("Reallocating Ballots Numbered: ");
@@ -68,10 +99,10 @@ public class IR_Audit{
         if (currentBallotCount != 0) {
             // loop over all ballots being reallocated and writes their respective IDs to the audit file
             for (int i = 0; i < currentBallotCount; i++) {
-                auditWriter.write(currentBallots[i].getBallotNum() + " ");
+                auditWriter.write("#" + currentBallots[i].getBallotNum() + " ");
             }
         } else {
-            // write N/A to the audit file if no ballots are check and sent for redistribution
+            // write N/A to the audit file if no ballots are checked and sent for redistribution
             auditWriter.write("N/A");
         }
 
@@ -79,6 +110,13 @@ public class IR_Audit{
         auditWriter.write("\n\n");
     } 
 
+    /**
+     * Writes candidates who are still in the running to the audit file with their vote count
+     * and the respetive IDs of the ballots given to the candidates.
+     * @param candidates Candidate[], the list of total candidates
+     * @param numCandidates int, the number of total candidates
+     * @throws IOException raised if write fails
+     */
     public void writeCandidatesBallots(Candidate[] candidates, int numCandidates) throws IOException {
         // write Candidates current ballots and vote counts header
         auditWriter.write("Candidates Vote Counts and Ballots: \n");
@@ -114,6 +152,12 @@ public class IR_Audit{
         auditWriter.write("\n\n");
     }
 
+    /**
+     * Writes the candidates who tied with the lowest vote to the audit file.
+     * @param candidates Cadidate[], represents the list of total candidates
+     * @param tieFolk int[], an array with index's that correlate to the tied candidates
+     * @throws IOException raised if write fails
+     */
     public void writeTiedLoserCandidates(Candidate[] candidates, int[] tieFolk) throws IOException {
         // writes out candidates names with lowest vote header
         auditWriter.write("Candidates Tied with Lowest Votes: ");
@@ -127,7 +171,12 @@ public class IR_Audit{
         auditWriter.write(candidates[tieFolk[tieFolk.length - 1]].getName() + "\n\n");
     }
 
-
+    /**
+     * write the names of tied candidates who tied in popularity vote
+     * @param candidates Cadidate[], array of all candidates
+     * @param tieFolk int[], and array of ints with the indecies corresponding to the tied candidates 
+     * @throws IOException raised if write fails
+     */
     public void writeTiedWinnerCandidates(Candidate[] candidates, int[] tieFolk) throws IOException {
         // write candidates tied with highest votes header
         auditWriter.write("Candidates Tied in Popularity: ");
@@ -141,53 +190,99 @@ public class IR_Audit{
         auditWriter.write(candidates[tieFolk[tieFolk.length - 1]].getName() + "\n\n");
     }
 
-
+    /**
+     * Writes the name of the candidate removed from the audit file. Does not error check 
+     * if index of loser is in bound.
+     * @param candidates Candidate[], list of all candidates
+     * @param loser int, index corresponding to the removed candidate
+     * @throws IOException raised if write fails
+     */
     public void writeLoser(Candidate[] candidates, int loser) throws IOException {
         // write out the name of the candidate removed to file
         auditWriter.write("Candidate Removed: ");
         auditWriter.write(candidates[loser].getName() + "\n\n");
     }
 
+    /**
+     * Writes the name of the candidate who won to the audit file.
+     * @param candidates Cadidate[], array of all candidates
+     * @param winner int, index correlating to the winning candidate
+     * @throws IOException raised if write fails
+     */
     public void writeWinner(Candidate[] candidates, int winner) throws IOException {
         // write out the name of the candidate who won to file
         auditWriter.write("Candidate Winner: ");
         auditWriter.write(candidates[winner].getName() + "\n\n");
     }
 
-
+    /**
+     * get the date
+     * @return String, date of election
+     */
     public String getDate() {
         return this.date;
     }
 
+    /**
+     * set the date
+     * @param date, String, date of election
+     */
     public void setDate(String date) {
         this.date = date;
     }
 
-    
+    /**
+     * get name of audit file
+     * @return String, the name of the audit file
+     */
     public String getFilename() {
         return this.filename;
     }
 
+    /**
+     * set the name of the audit file
+     * @param filename String, name of the audit file
+     */
     public void setFilename(String filename) {
         this.filename = filename;
     }
 
+    /**
+     * get the file of audit file
+     * @return File, the file of audit file
+     */
     public File getAuditFile() {
         return this.auditFile;
     }
 
+    /**
+     * set the audit file's file
+     * @param auditFile File, the file of audit file
+     */
     public void setAuditFile(File auditFile) {
         this.auditFile = auditFile;
     }
 
+    /**
+     * get the audit writer
+     * @return FileWriter, the object writing to the audit file
+     */
     public FileWriter getAuditWriter() {
         return this.auditWriter;
     }
 
+    /**
+     * set the audit writer
+     * @param auditWriter FileWriter, the object writing to the audit file
+     */
     public void setAuditWriter(FileWriter auditWriter) {
         this.auditWriter = auditWriter;
     }
 
+    /**
+     * closes the auditWriter
+     * @throws IOException raised if closing the auditWriter fails
+     */
     public void close() throws IOException {
         auditWriter.close();
     }
