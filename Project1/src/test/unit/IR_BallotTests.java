@@ -12,6 +12,7 @@ public class IR_BallotTests {
     public void testIR_Ballot() {
         String form = "";
         int[] candidateRanking = {};
+        //test get and set IR_ballotNum, rank, form, and candidateRanking
         IR_Ballot ballot = new IR_Ballot(0, 0, form, candidateRanking);
         assertEquals(0, ballot.getBallotNum());
         assertEquals(0, ballot.getRank());
@@ -26,5 +27,10 @@ public class IR_BallotTests {
         assertEquals(1, ballot.getRank());
         assertEquals("abc", ballot.getForm());
         assertArrayEquals(new int[]{1, 2, 3}, ballot.getCandidateRanking());
+
+        // test getCandidateAtNum
+        assertEquals(2, ballot.getCandidateAtNum(1));
+        assertEquals(-1, ballot.getCandidateAtNum(-3));
+        assertEquals(-1, ballot.getCandidateAtNum(20));
     }
 }
