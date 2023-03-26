@@ -10,7 +10,7 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 
 /**
- * Main is a class that handles user input, UI, and running of IR and CPL elections
+ * A class that handles user input, UI, and running of IR and CPL elections
  * 
  * @author  Andrew Guerra
  */
@@ -21,7 +21,7 @@ public class Main {
      * 
      * @param args      String command line arguments
      * @param input     Scanner for user input
-     * @return
+     * @return          String filename
      */
     public static String retrieveFilename(String[] args, Scanner input) {
         if (args.length < 1) {
@@ -99,7 +99,6 @@ public class Main {
      * 
      * @param electionFile  Scanner of election file
      * @return              Election object of election type in election file
-     * @throws IOException
      */
     public static Election retrieveElection(Scanner electionFile, String date) {
         String electionType = electionFile.nextLine().strip();
@@ -123,6 +122,11 @@ public class Main {
         return null;
     }
 
+    /**
+     * Runs program for running of elections
+     * 
+     * @param args      command line arguments for main, first arugment is filename, second is election date
+     */
     public static void main(String[] args) {
         String fileName, dateStr;
         Scanner electionFile, input;

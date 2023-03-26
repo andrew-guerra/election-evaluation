@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
- * CPL_Audit is a class that handles writing information regarding CPL_Election to an audit file. It creates an audit file and uses a FileWriter
+ * A class that handles writing information regarding CPL_Election to an audit file. It creates an audit file and uses a FileWriter
  * to add information to the file. Each method writes some sequence of attributes to a file under the assumption the file has been opened. CPL_Audit
  * finishes when the close() method is invoked which closes the FileWriter.
  * 
@@ -38,6 +38,7 @@ public class CPL_Audit {
             e.printStackTrace();
         }
     }
+
     /**
      * Writes header information for CPL_Election to the audit file. Writes each party and candidates associated with each party.
      * Writes the total seats to be allocated, the number of ballots cast, and the quota. 
@@ -68,6 +69,7 @@ public class CPL_Audit {
         auditWriter.write("Total # of Ballots Cast: " + numBallots + "\n");
         auditWriter.write("Quota: " + numBallots/numSeats + "\n\n");
     }
+
     /**
      * Writes initial tally of vote per party information for the CPL_Election to the audit file. Writes information for each party
      * regarding how many votes recieved including what ballots they recieved, and percentage of votes recieved.
@@ -105,6 +107,7 @@ public class CPL_Audit {
         }
         auditWriter.write("\n");
     }
+
     /**
      * Writes first round of seat delegation information for the CPL_Election to the audit file. Writes information for each party
      * regarding each party on how many seats they recieved.
@@ -119,6 +122,7 @@ public class CPL_Audit {
         }
         auditWriter.write("\n");
     }
+
     /**
      * Writes information regarding remaining ballots outstanding for each party for the CPL_Election to the audit file. Writes information
      * regarding how many seats are left to be allocated and whether a second round is needed.
@@ -142,6 +146,7 @@ public class CPL_Audit {
         }
         auditWriter.write("\n");
     }
+
     /**
      * Writes information regarding a list of parties that have the largest remainder of ballots in remainder allocation for the CPL_Election
      * to the audit file. It writes the current number of seats left to be allocated, the number of ballots outstanding, and the parties
@@ -165,6 +170,7 @@ public class CPL_Audit {
         auditWriter.write("\n\n");
         auditWriter.write("Seat Allocation Result: \n");
     }
+
     /**
      * Writes information regarding the success of attempting to allocate an additional seat to a party for the CPL_Election
      * to the audit file. If status is 0, a seat is to be successfully allocated. If status is 1, a seat is to be successfully allocated via a coin toss. If status
@@ -188,6 +194,7 @@ public class CPL_Audit {
         }
         auditWriter.write("Total seats won by party: " + p.getSeatsWon() + "\n\n");
     }
+
     /**
      * Writes that all remaining votes have been considered in a CPL_Election to the audit file. Writes the number of seats
      * left to be allocated.
@@ -198,6 +205,7 @@ public class CPL_Audit {
     public void extraSeats(int availableSeats) throws IOException {
         auditWriter.write("All remaining votes have been considered. Allocating remaining " + availableSeats + " seats by coin toss.\n\n");
     }
+
     /**
      * Writes total seat distribution of a CPL_Eleciton to the audit file. Writes number of seats won for each party.
      * 
@@ -211,6 +219,7 @@ public class CPL_Audit {
         }
         auditWriter.write("\n");
     }
+
     /**
      * Writes election winners of a CPL_Election to the audit file. Writes each party and which candidate won the seat.
      * 
@@ -232,6 +241,7 @@ public class CPL_Audit {
         }
         auditWriter.write("\n");
     }
+
     /**
      * Closes the FileWriter object to the audit file. Assumed file has been opened and FileWriter object initialized.
      * 
@@ -240,6 +250,7 @@ public class CPL_Audit {
     public void close() throws IOException {
         auditWriter.close();
     }
+
     /**
      * get the String representation of the date
      * @return  String representing the date
@@ -247,6 +258,7 @@ public class CPL_Audit {
     public String getDate() {
         return date;
     }
+
     /**
      * set the String representation of the date
      * @param date  String representing the date
@@ -254,6 +266,7 @@ public class CPL_Audit {
     public void setDate(String date) {
         this.date = date;
     } 
+
     /**
      * get the audit File of the CPL_Election
      * @return  audit File representing the CPL_Election
@@ -261,6 +274,7 @@ public class CPL_Audit {
     public File getAuditFile() {
         return this.auditFile;
     }
+
     /**
      * set the audit File of the CPL_Election
      * @param auditFile audit File representing the CPL_Election
@@ -268,6 +282,7 @@ public class CPL_Audit {
     public void setAuditFile(File auditFile) {
         this.auditFile = auditFile;
     }
+
     /**
      * get the FileWriter object of the audit file
      * @return  FileWriter object of the audit file
@@ -275,6 +290,7 @@ public class CPL_Audit {
     public FileWriter getAuditWriter() {
         return auditWriter;
     }
+
     /**
      * set the FileWriter object of the audit file
      * @param auditWriter   FileWriter object of the audit file  
@@ -282,7 +298,4 @@ public class CPL_Audit {
     public void setAuditWriter(FileWriter auditWriter) {
         this.auditWriter = auditWriter;
     }
-    
-
-    
 }

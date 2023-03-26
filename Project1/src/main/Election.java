@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * File Name: Election.java
- * 
- * Description: Creates an object that represents an Election and contains methods
+ * A class that represents an Election and contains methods
  * set attributes of an election being the type, file name, file scanner, and number of total ballots.
  * 
  * @Authors Tyler Grimm

@@ -1,9 +1,7 @@
 package main;
 
 /**
- * File Name: Candidate.java
- * 
- * Description: An object that represents a Candidate, their respective ballot counts,
+ * A class that represents a Candidate, their respective ballot counts,
  * ballots delinated for them, their name, and their party. Contains methods to add ballots
  * and set features of the candidate
  * 

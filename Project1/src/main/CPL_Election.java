@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.io.IOException;
 
 /**
- * CPL_Election is a class that handles functionality for the CPL_Election. It uses a Scanner of the electionFile
+ * A class that handles functionality for the CPL_Election. It uses a Scanner of the electionFile
  * to read in the contents of the CPL_Election, including election info and all ballots. There are two rounds of seat allocation,
  * the first round is done by a quota, and the second round is done by a remainder of the ballots within a party. CPL_Election has
  * a CPL_Audit object that it writes to as the election progresses. Any method that writes to the CPL_Audit object throws an
@@ -42,6 +42,7 @@ public class CPL_Election extends Election {
         this.readCPLHeader();
         this.readCPLBallots();
     }
+    
     /**
      * Helper method for run(). Reads header information from a CPL_Election.csv file. Assumes the electionFile Scanner
      * is at the second line of a IR_Election ballot file. Updates an CPL_elections list of parties along with their candidates,
@@ -90,6 +91,7 @@ public class CPL_Election extends Election {
         auditer.writeHeaderToFile("CPL", parties, numBallots, numSeats);
 
     } 
+
     /**
      * Helper method for readCPLHeader(). Takes in a single String that contains the candidates of the party. Parses
      * the String using a comma delimiter and adds each candidate to an ArrayList.
@@ -114,8 +116,8 @@ public class CPL_Election extends Election {
         }
         candidates.add(candidateListString);
         return candidates;
-
     }
+
     /**
      * Helper method for run(). Reads ballot information from a CPL_Election.csv file. Assumes readCPLHeader() has been
      * previously called and Scanner is ready to read in the first ballot in the file. Creates a CPL_Ballot for each ballot read
@@ -133,6 +135,7 @@ public class CPL_Election extends Election {
             initialBallots[i] = temp;                        // store ballot in system
         }
     }
+
     /** 
      * Runs the CPL algorithm and writes audit information to the audit file and displays the results and winner
      * information of the eleciton to the screen. Assumes the electionFile Scanner object begins on the second line, all
@@ -156,6 +159,7 @@ public class CPL_Election extends Election {
         auditer.close();
         this.displayWinners();
     }
+
     /**
      * Helper method for run(). Shuffles the array of ballots contained in CPL_Election.
      * Takes no parameters and returns nothing.
@@ -169,6 +173,7 @@ public class CPL_Election extends Election {
             initialBallots[i] = a;
         }
     }
+
     /**
      * Helper method for run(). For each ballot, it is added to its respective party for which a vote was casted.
      * The function then calculates the number of seats won by each party via a quota, taken from an integer division of numBallots/numSeats. 
@@ -220,6 +225,7 @@ public class CPL_Election extends Election {
         }
         
     }
+
     /**
      * Helper method for run(). While there are seats available to be allocated, the function will allocate an additional seat to a
      * party based on the size of the remaining ballots calculated from the quota. It does this through looping - for each iteration it generates a list of parties
@@ -274,6 +280,7 @@ public class CPL_Election extends Election {
             }
         }
     }
+
     /** 
      * Helper method for setRemainderSeatsAllocation(). Determines the Party from the remainder list who won a coin toss.
      * Used as a helper function for setRemainderSeatsAllocation().
@@ -287,6 +294,7 @@ public class CPL_Election extends Election {
         tiedParties.remove(randomNumber);
         return temp;
     }
+
     /**
      * Helper method for setRemainderSeatsAllocation(). Iterates through list of parties and creates an ArrayList of parties
      * that share the largest remainder of ballots. Writes to the CPL_Audit object the ArrayList of parties.
@@ -316,6 +324,7 @@ public class CPL_Election extends Election {
         }
         return tiedParties;
     }
+
     /**
      * Helper method for setRemainderSeatsAllocation(). Iterates through list of parties and allocates them each one additional
      * seat if a party has enough candidates
@@ -338,6 +347,7 @@ public class CPL_Election extends Election {
             }
         }
     }
+
     /**
      * Helper method for run(). Displays election results to the screen, including party(s) participating in the election,
      * the number of votes cast for each party, vote percentage, number of seats won, and winning candidates for each party.
@@ -359,6 +369,7 @@ public class CPL_Election extends Election {
             System.out.println();
         }
     }
+
     /**
      * get the total number of parties in a CPL_Election
      * @return  int representing the number of parties in a CPL_Election
@@ -366,6 +377,7 @@ public class CPL_Election extends Election {
     public int getNumParties() {
         return numParties;
     }
+
     /**
      * set the total number of parties in a CPL_Election
      * @param numParties    int representing the number of parties in a CPL_Election
@@ -373,6 +385,7 @@ public class CPL_Election extends Election {
     public void setNumParties(int numParties) {
         this.numParties = numParties;
     }
+
     /**
      * get the total number of seats in a CPL_Election
      * @return  int representing the number of seats in a CPL_Election
@@ -380,14 +393,16 @@ public class CPL_Election extends Election {
     public int getNumSeats() {
         return numSeats;
     }
+
     /**
      * set the total number of seats in a CPL_Election
-     * @param numParties    int representing the number of seats in a CPL_Election
+     * @param numSeats    int representing the number of seats in a CPL_Election
      */
     public void setNumSeats(int numSeats) {
         this.numSeats = numSeats;
         this.availableSeats = numSeats;
     }
+
     /**
      * get the total number of ballots in a CPL_Election
      * @return  int representing the number of ballots in a CPL_Election
@@ -395,9 +410,10 @@ public class CPL_Election extends Election {
     public int getNumBallots() {
         return numBallots;
     }
+
     /**
      * set the total number of ballots in a CPL_Election
-     * @param numParties    int representing the number of ballots in a CPL_Election
+     * @param numBallots    int representing the number of ballots in a CPL_Election
      */
     public void setNumBallots(int numBallots) {
         this.numBallots = numBallots;

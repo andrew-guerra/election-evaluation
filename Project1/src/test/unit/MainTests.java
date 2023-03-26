@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 import org.junit.Test;
@@ -18,6 +19,15 @@ import main.Main;
 public class MainTests {
     @Test
     public void testRetrieveFilename() {
+        PrintStream oldOut = System.out;
+        try {
+            System.setOut(new PrintStream(new File("../testing/output/testLargeCPL_Election.txt")));
+        } catch(Exception e) {
+            e.printStackTrace();
+            fail("testSmallCPL_Election.txt not found");
+            return;
+        }
+
         String[] args = new String[]{};
         Scanner input;
         try  {
@@ -35,6 +45,7 @@ public class MainTests {
         assertEquals("filename.txt", filename);
 
         input.close();
+        System.setOut(oldOut);
     }
 
     @Test
@@ -47,6 +58,15 @@ public class MainTests {
 
     @Test
     public void testRetrieveDate() {
+        PrintStream oldOut = System.out;
+        try {
+            System.setOut(new PrintStream(new File("../testing/output/testLargeCPL_Election.txt")));
+        } catch(Exception e) {
+            e.printStackTrace();
+            fail("testSmallCPL_Election.txt not found");
+            return;
+        }
+
         Scanner datesScanner, datesCorrectScanner; 
 
         try {
@@ -73,6 +93,7 @@ public class MainTests {
 
         datesScanner.close();
         datesCorrectScanner.close();
+        System.setOut(oldOut);
     }
 
     @Test
@@ -104,12 +125,5 @@ public class MainTests {
         CPLElectionFileScanner.close();
         assertNotEquals(null, CPL_election);
         assertEquals(CPL_Election.class, CPL_election.getClass());
-    }
-
-    @Test
-    public void testMain() {
-        testLoadElectionFile();
-        testRetrieveDate();
-        testRetrieveElection();
     }
 }

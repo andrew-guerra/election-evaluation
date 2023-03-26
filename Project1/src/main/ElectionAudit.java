@@ -6,6 +6,7 @@ package main;
  * @author Andrew Guerra
  */
 public abstract class ElectionAudit {
+    
     private String date;
 
     /**

@@ -2,14 +2,13 @@ package main;
 
 
 /**
- * File Name: IR_Ballot.java
- * 
- * Description: An object that represents a ballot includes it's ID,
+ * A class that represents a ballot includes it's ID,
  * current rank, form, and candidate rankings
  * 
  * @Author Hady Kotifani
  */
 public class IR_Ballot {
+    
     private int ballotNum; 
     private int rank; 
     private String form; 

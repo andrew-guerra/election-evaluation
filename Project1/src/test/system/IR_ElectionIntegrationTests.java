@@ -23,7 +23,7 @@ public class IR_ElectionIntegrationTests {
             expectedAuditFile = new File("../testing/system/IR_ElectionIntegration/small-IR-audit.txt");
         } catch (Exception e) {
             e.printStackTrace();
-            fail("small-IR-audit.csv not found");
+            fail("small-IR-audit.txt not found");
             return;
         }
 
@@ -51,7 +51,7 @@ public class IR_ElectionIntegrationTests {
             actualAuditScanner = new Scanner(actualAuditFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            fail("small-IR.csv or IR_03-26-2023.txt not found");
+            fail("small-IR-audit.txt or IR_03-26-2023.txt not found");
             return;
         }
 
@@ -73,11 +73,22 @@ public class IR_ElectionIntegrationTests {
 
     @Test
     public void testLargeIR_Election() {
+        PrintStream oldOut = System.out;
+        try {
+            System.setOut(new PrintStream(new File("../testing/output/testSmallIR_Election.txt")));
+        } catch(Exception e) {
+            e.printStackTrace();
+            fail("testSmallIR_Election.txt not found");
+            return;
+        }
+
         final long startTime = System.currentTimeMillis();
         String date = "03-26-2023";
         Main.main(new String[]{"../testing/system/IR_ElectionIntegration/large-IR.csv", date});
 
         final long elapsedTimeMinutes = (System.currentTimeMillis() - startTime) / 60000;
         assertTrue(elapsedTimeMinutes < 4.0);
+
+        System.setOut(oldOut);
     }
 }

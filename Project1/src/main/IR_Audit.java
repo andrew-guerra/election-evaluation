@@ -5,9 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * File Name: IR_Audit.java
- * 
- * Description: Creates an object that represents an IR_Audit and contains methods
+ * A class that represents an IR_Audit and contains methods
  * to print to an audit file.
  * 
  * @Author Hady Kotifani and Tyler Grimm

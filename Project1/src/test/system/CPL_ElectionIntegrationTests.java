@@ -23,7 +23,7 @@ public class CPL_ElectionIntegrationTests {
             expectedAuditFile = new File("../testing/system/CPL_ElectionIntegration/small-CPL-audit.txt");
         } catch (Exception e) {
             e.printStackTrace();
-            fail("small-CPL-audit.csv not found");
+            fail("small-CPL-audit.txt not found");
             return;
         }
 
@@ -51,7 +51,7 @@ public class CPL_ElectionIntegrationTests {
             actualAuditScanner = new Scanner(actualAuditFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            fail("small-CPL.csv or CPL_03-26-2023.txt not found");
+            fail("small-CPL.txt or CPL_03-26-2023.txt not found");
             return;
         }
 
@@ -73,11 +73,22 @@ public class CPL_ElectionIntegrationTests {
 
     @Test
     public void testLargeCPL_Election() {
+        PrintStream oldOut = System.out;
+        try {
+            System.setOut(new PrintStream(new File("../testing/output/testLargeCPL_Election.txt")));
+        } catch(Exception e) {
+            e.printStackTrace();
+            fail("testSmallCPL_Election.txt not found");
+            return;
+        }
+
         final long startTime = System.currentTimeMillis();
         String date = "03-26-2023";
         Main.main(new String[]{"../testing/system/CPL_ElectionIntegration/large-CPL.csv", date});
 
         final long elapsedTimeMinutes = (System.currentTimeMillis() - startTime) / 60000;
         assertTrue(elapsedTimeMinutes < 4.0);
+
+        System.setOut(oldOut);
     }
 }

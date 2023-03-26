@@ -6,10 +6,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import java.util.Random;
 
-/**
- * File Name: IR_Election.java
- * 
- * Description: Creates an object that represents an IR_Election and contains methods
+/** 
+ * A class that represents an IR_Election and contains methods
  * to run the entirity of IR_Election, produce an audit file, and display
  * the winner of an IR_Election.
  * 
