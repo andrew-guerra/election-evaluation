@@ -189,9 +189,8 @@ public class IR_Election extends Election {
     /**
      * Determines the index of the winning candidate who won a coin toss.
      * Used as a helper function for findLowestCandidate() and runPopularity().
-     * @param tieFolk, an array of ints that correlates to the index number of candidates that have ties 
-     * @return, returns an integer corresponding the to index number of the candidate that has won
-     * the coin toss.
+     * @param tieFolk   an array of ints that correlates to the index number of candidates that have ties 
+     * @return          returns an integer corresponding the to index number of the candidate that has won the coin toss.
      */
     private int coinToss(int[] tieFolk) {
         Random random = new Random();
@@ -393,10 +392,11 @@ public class IR_Election extends Election {
      * and winner information of the election to the screen.
      * Assumes the electionScanner begins on the second line, all information contained in the IR election
      * ballot file is entered properly, there is at least one ballot in the file and at least
-     * one candidate. Takes no parameters and returns nothing.
+     * one candidate. Takes no parameters and returns nothing. Generates an audit file.
      * 
-     * Assumes election class has been initalized properly and so has audit class.
+     * Assumes election class has been initalized properly and so has audit object.
      * 
+     * @throws IOException
      */
     public void run() throws IOException {
         // read the header infor form the file and write header to audit
