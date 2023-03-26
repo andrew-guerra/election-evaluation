@@ -157,10 +157,10 @@ public class CPL_Election extends Election {
         this.displayWinners();
     }
     /**
-     * Helper method for run(). Shuffles the array of ballots contained in CPL_Election.
+     * Shuffles the array of ballots contained in CPL_Election.
      * Takes no parameters and returns nothing.
      */
-    private void shuffleBallots() {
+    public void shuffleBallots() {
         Random rnd = ThreadLocalRandom.current();
         for (int i = initialBallots.length - 1; i > 0; i--) {
             int index = rnd.nextInt(i + 1);
@@ -177,7 +177,7 @@ public class CPL_Election extends Election {
      * @return  returns boolean value indicating whether setRemainderSeatsAllocation() needs to be called.
      * @throws IOException
      */
-    private boolean setFirstSeatsAllocation() throws IOException {
+    public boolean setFirstSeatsAllocation() throws IOException {
 
         for (int i = 0; i < initialBallots.length; i++) {   // increment ballot count for each party
             int index = initialBallots[i].getPartyNum();
@@ -229,7 +229,7 @@ public class CPL_Election extends Election {
      * 
      * @throws IOException
      */
-    private void setRemainderSeatsAllocation() throws IOException {
+    public void setRemainderSeatsAllocation() throws IOException {
 
         ArrayList<Party> tiedParties = new ArrayList<Party>();              // list to hold iteration of parties with greatest remainder votes
 
@@ -382,7 +382,7 @@ public class CPL_Election extends Election {
     }
     /**
      * set the total number of seats in a CPL_Election
-     * @param numParties    int representing the number of seats in a CPL_Election
+     * @param numSeats    int representing the number of seats in a CPL_Election
      */
     public void setNumSeats(int numSeats) {
         this.numSeats = numSeats;
@@ -397,9 +397,52 @@ public class CPL_Election extends Election {
     }
     /**
      * set the total number of ballots in a CPL_Election
-     * @param numParties    int representing the number of ballots in a CPL_Election
+     * @param numBallots    int representing the number of ballots in a CPL_Election
      */
     public void setNumBallots(int numBallots) {
         this.numBallots = numBallots;
     }
+    /**
+     * get the auditer in a CPL_Election
+     * @return  auditer of a CPL_Election
+     */
+    public CPL_Audit getAuditObject() {
+        return auditer;
+    }
+    /**
+     * set the auditer in a CPL_Election
+     * @param auditer    auditer in a CPL_Election
+     */
+    public void setAuditObject(CPL_Audit auditer) {
+        this.auditer = auditer;
+    }
+    /**
+     * get the parties[] in a CPL_Election
+     * @return  parties[] of a CPL_Election
+     */
+    public Party[] getParties() {
+        return parties;
+    }
+    /**
+     * set the parties[] in a CPL_Election
+     * @param parties    parties[] in a CPL_Election
+     */
+    public void setParties(Party[] parties) {
+        this.parties = parties;
+    }
+     /**
+     * get the ballots[] in a CPL_Election
+     * @return  ballots[] of a CPL_Election
+     */
+    public CPL_Ballot[] getBallots() {
+        return initialBallots;
+    }
+    /**
+     * set the ballots[] in a CPL_Election
+     * @param initialBallots    ballots[] in a CPL_Election
+     */
+    public void setBallots(CPL_Ballot[] initialBallots) {
+        this.initialBallots = initialBallots;
+    }
+    
 }
