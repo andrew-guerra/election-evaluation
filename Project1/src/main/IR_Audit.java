@@ -54,7 +54,8 @@ public class IR_Audit{
 
     /**
      * Writes header information about election type, total number of candidates, name of candidates, and number of total
-     * ballots of an IR Election to an audit file
+     * ballots of an IR Election to an audit file. Does not check if candidates is null
+     * orif numCandidates is out of bounds
      * @param electionType String, represents type of election
      * @param numCandidates int, represents total number of candidates
      * @param candidates, Candidate[], array of candidate objects to get name and party of candidate
@@ -83,8 +84,8 @@ public class IR_Audit{
 
     /**
      * Writes what ballots are being reallocated and/or may thrown out upon next reallocation
-     * to the audit file. Does not check if current ballot count is in bound and may fail
-     * too high.
+     * to the audit file. Does not check if current ballot count is in bound and may fail if
+     * too high or too low. Does not check if IR_Ballot is null
      * @param currentBallots IR_Ballot[], represents a list of ballots that will be reallocated
      * @param currentBallotCount int, represents the number of ballots that will be reallocated
      * @throws IOException raised if write failes
@@ -110,7 +111,8 @@ public class IR_Audit{
 
     /**
      * Writes candidates who are still in the running to the audit file with their vote count
-     * and the respetive IDs of the ballots given to the candidates.
+     * and the respetive IDs of the ballots given to the candidates. Does not check if candidates is null
+     * or if numCandidates is out of bounds, may fail
      * @param candidates Candidate[], the list of total candidates
      * @param numCandidates int, the number of total candidates
      * @throws IOException raised if write fails
@@ -152,6 +154,8 @@ public class IR_Audit{
 
     /**
      * Writes the candidates who tied with the lowest vote to the audit file.
+     * Does not check if indexes of tie folk is in bounds or if candidates or tieFolk is null
+     * Will fail is so.
      * @param candidates Cadidate[], represents the list of total candidates
      * @param tieFolk int[], an array with index's that correlate to the tied candidates
      * @throws IOException raised if write fails
@@ -171,6 +175,9 @@ public class IR_Audit{
 
     /**
      * write the names of tied candidates who tied in popularity vote
+     * Only works with to candidates and with a tieFolk array of size 2.
+     * Does not error check and will fail if tieFolk is greater than size
+     * 2, if any idexes are out of bouds, or if either is null
      * @param candidates Cadidate[], array of all candidates
      * @param tieFolk int[], and array of ints with the indecies corresponding to the tied candidates 
      * @throws IOException raised if write fails
@@ -190,7 +197,7 @@ public class IR_Audit{
 
     /**
      * Writes the name of the candidate removed from the audit file. Does not error check 
-     * if index of loser is in bound.
+     * if index of loser is in bound and will fail if not in bound
      * @param candidates Candidate[], list of all candidates
      * @param loser int, index corresponding to the removed candidate
      * @throws IOException raised if write fails

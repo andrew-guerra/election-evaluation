@@ -110,7 +110,7 @@ public class IR_Ballot {
      * @return int, the index of the candidate at the ranking
      */
     public int getCandidateAtNum(int i) {
-        if (i >= candidateRanking.length) {
+        if (i >= candidateRanking.length || i < 0) {
             return -1;
         } else {
             return candidateRanking[i];
