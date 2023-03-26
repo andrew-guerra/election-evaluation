@@ -22,8 +22,8 @@ clean:
 
 help:
 	@echo 'Typical usage is:'
-	@echo '  > make run                      # runs project in target folder without filename argument, resources will hold input and output files'
-	@echo '  > make run filename=FILEMAME    # runs project in target folder with FILENAME argument'
+	@echo '  > make run                      # runs project in target folder without filename argument, election file should be in resources folder'
+	@echo '  > make run filename=FILEMAME    # runs project in target folder with FILENAME argument, election file should be in resources folder'
 	@echo '  > make build                    # builds project classes'
 	@echo '  > make javadocs                 # generates javadocs in documentation folder'
 	@echo '  > make remove-javadocs          # deletes javadocs in documentation folder'
