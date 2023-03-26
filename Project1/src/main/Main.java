@@ -61,24 +61,34 @@ public class Main {
      * @param input     Scanner for user input
      * @return          String of date retrieved from user      
      */
-    public static String retrieveDate(Scanner input) {
+    public static String retrieveDate(String[] args, Scanner input) {
         // generate date format based on local US time
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-uuuu", Locale.US).withResolverStyle(ResolverStyle.STRICT);
         String dateStr;
 
-        do {
-            System.out.print("Enter date of election in format mm-dd-yyyy: ");
-            dateStr = input.nextLine();
-            
+        if(args.length < 2) {
+            do {
+                System.out.print("Enter date of election in format mm-dd-yyyy: ");
+                dateStr = input.nextLine();
+                
+                try {
+                    // use parse error to check for properly formated date
+                    dateFormatter.parse(dateStr);
+                } catch(DateTimeParseException e) {
+                    continue;
+                }
+    
+                break;
+            } while(true);
+        } else {
+            dateStr = args[1];
             try {
-                // use parse error to check for properly formated date
                 dateFormatter.parse(dateStr);
             } catch(DateTimeParseException e) {
-                continue;
+                System.out.printf("%s is an invalid date format\n", dateStr);
+                return null;
             }
-
-            break;
-        } while(true);
+        }
 
         return dateStr;
     }
@@ -91,19 +101,29 @@ public class Main {
      * @return              Election object of election type in election file
      * @throws IOException
      */
-    public static Election retrieveElection(Scanner electionFile, String date) throws IOException {
+    public static Election retrieveElection(Scanner electionFile, String date) {
         String electionType = electionFile.nextLine().strip();
+        Election election;
+
         if(electionType.equals("IR")) {
             return new IR_Election(electionFile, date);
         } else if(electionType.equals("CPL")) {
-            return new CPL_Election(electionFile, date);
+            try {
+                election = new CPL_Election(electionFile, date);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("CPL election not loaded");
+                election = null;
+            }
+
+            return election;
         }
         
         System.out.printf("\"%s\" is not a valid election type\n", electionType);
         return null;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         String fileName, dateStr;
         Scanner electionFile, input;
         Election election;
@@ -113,25 +133,30 @@ public class Main {
             input.close();
             return;
         }
-	
+        
         if((electionFile = loadElectionFile(fileName)) == null) {
             input.close();
             return;
         }    
         
-        if((dateStr = retrieveDate(input)) == null) {
+        if((dateStr = retrieveDate(args, input)) == null) {
             input.close();
             return;
         }
         
         input.close();
-	
+
         if((election = retrieveElection(electionFile, dateStr)) == null) {
             electionFile.close();
             return;
         }
             
-        election.run();
+        try {
+            election.run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         electionFile.close();
     }
 }
