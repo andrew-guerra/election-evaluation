@@ -1,4 +1,4 @@
-package Project1.src;
+package main;
 
 // imports if needed
 // added toString

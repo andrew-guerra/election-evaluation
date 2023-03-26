@@ -1,11 +1,11 @@
-package Project1.src.test.unit;
+package test.unit;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import Project1.src.IR_Ballot;
+import main.IR_Ballot;;
 
 public class IR_BallotTests {
     @Test

@@ -2,7 +2,7 @@ run:
 	bash misc/run-project.sh $(filename)
 
 build:
-	javac -d target -cp .:../lib/* ./src/*.java
+	javac -d target -cp .:../lib/* ./src/main/*.java
 
 javadocs:
 	bash misc/generate-javadocs.sh
@@ -14,14 +14,14 @@ run-tests:
 	bash misc/run-tests.sh
 
 tests:
-	javac -d target -cp .:../lib/* ./src/*.java ./src/test/unit/*.java ./src/test/system/*.java 
+	javac -d target -cp .:./lib/* ./src/main/*.java ./src/test/unit/*.java ./src/test/system/*.java 
 
 clean:
 	rm -r target/*
 
 help:
 	@echo 'Typical usage is:'
-	@echo '  > make run                      # runs project in target folder without filename argument'
+	@echo '  > make run                      # runs project in target folder without filename argument, resources will hold input and output files'
 	@echo '  > make run filename=FILEMAME    # runs project in target folder with FILENAME argument'
 	@echo '  > make build                    # builds project classes'
 	@echo '  > make javadocs                 # generates javadocs in documentation folder'

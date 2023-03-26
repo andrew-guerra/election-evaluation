@@ -1,4 +1,4 @@
-package Project1.src;
+package main;
 
 import java.io.File;
 import java.io.FileNotFoundException;

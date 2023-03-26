@@ -1,4 +1,4 @@
-package Project1.src.test.system;
+package test.system;
 
 import static org.junit.Assert.assertEquals;
 
