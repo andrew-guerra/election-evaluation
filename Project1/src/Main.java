@@ -17,6 +17,22 @@ import java.time.format.ResolverStyle;
 public class Main {
   
     /**
+     * Retrives the filename from either the command line arugments or user input.
+     * 
+     * @param args      String command line arguments
+     * @param input     Scanner for user input
+     * @return
+     */
+    public static String retrieveFilename(String[] args, Scanner input) {
+        if (args.length < 1) {
+            System.out.print("Enter the file name: ");
+			return input.nextLine();
+        }
+        
+        return args[0];
+    }
+
+    /**
      * Generates a Scanner object based on file name. File name is assumed relative to Project1/src. 
      * Returns null when an exception occurs.
      * 
@@ -47,11 +63,11 @@ public class Main {
      */
     public static String retrieveDate(Scanner input) {
         // generate date format based on local US time
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu", Locale.US).withResolverStyle(ResolverStyle.STRICT);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-uuuu", Locale.US).withResolverStyle(ResolverStyle.STRICT);
         String dateStr;
 
         do {
-            System.out.print("Enter date of election in format mm/dd/yyyy: ");
+            System.out.print("Enter date of election in format mm-dd-yyyy: ");
             dateStr = input.nextLine();
             
             try {
@@ -73,14 +89,14 @@ public class Main {
      * 
      * @param electionFile  Scanner of election file
      * @return              Election object of election type in election file
+     * @throws IOException
      */
-    public static Election retrieveElection(Scanner electionFile) {
+    public static Election retrieveElection(Scanner electionFile, String date) throws IOException {
         String electionType = electionFile.nextLine().strip();
-        
         if(electionType.equals("IR")) {
             return new IR_Election(electionFile);
         } else if(electionType.equals("CPL")) {
-            return new CPL_Election(electionFile);
+            return new CPL_Election(electionFile, date);
         }
         
         System.out.printf("\"%s\" is not a valid election type\n", electionType);
@@ -93,27 +109,24 @@ public class Main {
         Election election;
 
         input = new Scanner(System.in);
-
-		if (args.length < 2) {
-            System.out.print("Enter the file name: ");
-			fileName = input.nextLine();
-        } else {
-            fileName = args[1];
+		if((fileName = retrieveFilename(args, input)) == null) {
+            input.close();
+            return;
         }
-		
+	
         if((electionFile = loadElectionFile(fileName)) == null) {
             input.close();
             return;
         }    
-
+        
         if((dateStr = retrieveDate(input)) == null) {
             input.close();
             return;
         }
         
         input.close();
-		
-        if((election = retrieveElection(electionFile)) == null) {
+	
+        if((election = retrieveElection(electionFile, dateStr)) == null) {
             electionFile.close();
             return;
         }
