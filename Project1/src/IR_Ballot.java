@@ -1,8 +1,4 @@
-//package Project1.src;
-
-// imports if needed
-// added toString
-// added constructor with more fields
+package Project1.src;
 
 public class IR_Ballot {
     private int ballotNum; 
@@ -14,7 +10,7 @@ public class IR_Ballot {
     public IR_Ballot() {
         ballotNum = 0;
         rank = 0;
-     // form = "";
+        form = "";
         candidateRanking = null;
     }
 
@@ -25,7 +21,6 @@ public class IR_Ballot {
         this.candidateRanking = candidateRanking;
     }
 
-    // all getters and setters
     public int getBallotNum() {
         return this.ballotNum;
     }
@@ -69,9 +64,8 @@ public class IR_Ballot {
             "}";
     }
 
-
-    //NEW BALLOTS NOT IN UML
     public int getCandidateAtNum(int i) {
+        // return the candidate number that is ranked at position i
         return candidateRanking[i];
     }
 

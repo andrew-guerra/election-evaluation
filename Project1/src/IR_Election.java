@@ -1,19 +1,10 @@
-//package Project1.src;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
+package Project1.src;
+
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
-//import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
-
-//import Project1.src.IR_Audit;
-
 import java.util.Random;
-
-//imports
-// doesn't include audit object stuff
 
 public class IR_Election extends Election {
 
@@ -25,125 +16,34 @@ public class IR_Election extends Election {
     private int currentBallotCount;
     private IR_Audit audit; 
 
-    // testing
-    public static void main(String[] args) throws IOException {
-        Scanner electionFile;
-
-    // what would be in main
-        try {
-            electionFile = new Scanner(new File("header.csv"));
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            System.out.println("crying");
-            return;
-        }
-
-        electionFile.next();
-        electionFile.nextLine();
-
-        IR_Election ir = new IR_Election(electionFile);
-
-        File audit = new File("audit_test.txt");
-        FileWriter auditWriter;
-        String date = "1/1/1";
-        try {
-            auditWriter = new FileWriter("audit_test.txt");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            System.out.println("crying");
-            return;
-        } 
-        IR_Audit auditer = new IR_Audit(date, audit, auditWriter);
-        ir.setAudit(auditer);
-
-        ir.run();
-        auditWriter.close();
-    // what would be in main
-
-    // // testing read ir header
-    //     System.out.println("Header Test");
-    //     ir.readIRHeader();
-    //     System.out.println("IR");
-    //     System.out.println(ir.numCandidates);
-    //     for (int i = 0; i < ir.numCandidates - 1; i++) {
-    //         System.out.print(ir.candidates[i].getName() + " " +
-    //         ir.candidates[i].getParty() + ", ");
-    //     }
-    //     System.out.println(ir.candidates[ir.numCandidates - 1].getName() + " " + ir.candidates[ir.numCandidates - 1].getParty());
-    //     System.out.println(ir.currentBallotCount);
-
-    //     // test ballots read
-    //     System.out.println();
-    //     System.out.println("Ballot Reads");
-
-    //     // testing read in ir ballots
-    //     ir.readIRBallots();
-    //     for (int i = 0; i < ir.currentBallotCount; i++) {
-    //         System.out.println(ir.currentBallots[i].getForm());
-    //         for (int j = 0; j < ir.numCandidates; j++) {
-    //             System.out.println(ir.currentBallots[i].getCandidateRanking()[j]);
-    //         }
-    //         System.out.println();
-    //     };
-
-    //     // testing for ballot allocations
-    //     System.out.println();
-    //     System.out.println("Ballot Allocations");
-    //     ir.allocateBallots();
-    //     System.out.println();
-
-    //     for (int i = 0; i < ir.numCandidates; i++) {
-    //         System.out.print(ir.candidates[i].getName() + " " + i + ": ");
-    //         for (int j = 0; j < ir.candidates[i].getBallotCount(); j++) {
-    //             System.out.print(ir.candidates[i].getBallots()[j].getBallotNum() + " ");
-    //         }
-    //         System.out.println();
-    //     }
-
-    //     // testing coin toss and loses
-    //     System.out.println();
-    //     System.out.println("FindLowest Test");
-    //     int lowest = ir.findLowestCandidate();
-    //     System.out.println(ir.candidates[lowest].getName());
-
-    //     // remove candidate
-    //     System.out.println();
-    //     System.out.println("RemoveLowest Test");
-
-    //     while(ir.numRemainingCandidates > 0) {
-    //         lowest = ir.findLowestCandidate();
-    //         ir.removeLowestCandidate(lowest);
-    //         ir.allocateBallots();
-    //         for (int i = 0; i < ir.numCandidates; i++) {
-    //             if (ir.candidates[i] != null) {
-    //                 System.out.print(ir.candidates[i].getName() + " " + i + ": ");
-    //                 for (int j = 0; j < ir.candidates[i].getBallotCount(); j++) {
-    //                     System.out.print(ir.candidates[i].getBallots()[j].getBallotNum() + " ");
-    //                 }
-    //                 System.out.println();
-    //             }
-    //         }
-    //         System.out.println();
-    //     }
-        
-    //     // test run()
-    //     System.out.println();
-    //     System.out.println("run()");
-
-        //ir.run();
- 
-        return;
+    
+    // constructers
+    public IR_Election(Scanner electionFile) {
+        super(electionFile);
     }
 
+    // methods
+
+    /**
+     * Reads header information from an IR_Election.csv file. Assumes the electionFile Scanner
+     * is at the second line of a IR_Election ballot file. Updates an IR_elections list of candidates,
+     * number of candidates, number of remaining candidates, current ballots, and current ballot count
+     * information. Addidtally initalizes each candidates names, party, ballot count, and list of ballots.
+     * Takes no parameters and returns nothing. Used as a helper function for run().
+     */
     private void readIRHeader() {
         // read second line of file and get the number of candidates
         // and move scanner to the next line with candidates afterwards
         numCandidates = electionFile.nextInt();
         electionFile.nextLine();
-        // number of candidates still in the running
+
+        // number of candidates still in the running, set equal to total number of candidates
         numRemainingCandidates = numCandidates;
-        // fill in candidates fields for each candidate
+
+        // create an array of candidates
         candidates = new Candidate[numCandidates];
+
+        // loop for the total number of candidates and fill in candidates fields for each candidate
         for (int i = 0; i < numCandidates; i++) {
             // get name and party of candidate
             String name = electionFile.next();
@@ -159,66 +59,113 @@ public class IR_Election extends Election {
             candidates[i].setParty(party);
         }
         electionFile.nextLine();
-        // on line with ballot count
+
+        // get the total number of Ballots
         numBallots = electionFile.nextInt();
+
+        // set the current number of undistributed ballots to equal the total number of ballots
         currentBallotCount = numBallots;
-        electionFile.nextLine();
+
         // scanner, now on lines with ballots
+        electionFile.nextLine();
         return;
     }
 
-    // ballot num goes from 0 to total - 1, for 6 ballots, numbered 0 to 5
+    /**
+     * Reads ballot information from an IR_Election.csv file and initalizes corresponding fields.
+     * Assumes electionScanner is at the first line correlating to a ballots form information.
+     * Creates a series of ballot objects and initalizes each ballot object using a ballot's form information.
+     * Updates the IR_Elections ballots list to include each ballot object and initalizes
+     * each candidate to have an array of ballots that can hold the total number of ballots.
+     * Takes no parameters and returns nothing. Used as a helper function for run().
+     */
     private void readIRBallots() {
-        IR_Ballot[] ballots = new IR_Ballot[currentBallotCount];
-        for (int i = 0; i < currentBallotCount; i++) {
-            // create and initalize candidate Ranking Array
-            int[] candidateRanking = new int[numCandidates];
-            for (int k = 0; k < numCandidates; k++) {
-                candidateRanking[k] = -1;
-            }
+        // create an array of ballots equal to the number of total ballots in the file
+        IR_Ballot[] ballots = new IR_Ballot[numBallots];
 
-            // create new ballot and initalize rank, ballot number, and form (use constructor?)
+        // loop over all ballots in the file and create a ballot for each ballot and add to total list of undistributed ballots
+        for (int i = 0; i < numBallots; i++) {
+            
+            // ballot num goes from 0 to total - 1, for 6 ballots, numbered 0 to 5
+
+            // create a new ballot object and initalize rank, ballot number, and form
             IR_Ballot ballot = new IR_Ballot();
             ballot.setRank(0);
             ballot.setBallotNum(i);
             ballot.setForm(electionFile.next());
 
-            // using form, update candidate ranking array, position starts at array
-            // may modify to be 1
+            // create and initalize a candidate Ranking Array
+            int[] candidateRanking = new int[numCandidates];
+
+            // initalize the rankings for each candidate to be -1
+            for (int k = 0; k < numCandidates; k++) {
+                candidateRanking[k] = -1;
+            }
+
+            // using form, update candidate ranking array. Position correlates to candidate number
+            // where position = 0, correlates to candidates[0]
             int position = 0;
+
+            // loop over every character of the ballots form. example of form format: "1,,2,3"
             for (int j = 0; j < ballot.getForm().length(); j++) {
+                // get current character
                 char curChar = ballot.getForm().charAt(j);
+
+                // check if the character is a ranking or a comma
                 if (curChar == ',') {
+                    // update position correlating to candidate number if a comma
                     position++;
                 } else {
+                    // get the candidates ranking of the candidates corresponding position/index
                     int rank = Character.getNumericValue(curChar);
+
+                    // the candidates indexes are sorted in the candidate ranking array
+                    // according to their rank, ex. a form "3,,1,2" would result in "{2,3,0, -1, -1}",
+                    // candidate with index 2 is ranked first and candidate with index 0 is ranked third.
+                    // Set candidates ranking at [rank -1] (since arrays start at 0), and set it equal
+                    // to the candidates position in the candidates array
                     candidateRanking[rank - 1] = position;
                 }
             }
 
-            //update ballots candidate ranking, and add ballot to ballots
+            // set ballots candidate ranking
             ballot.setCandidateRanking(candidateRanking);
+            
+            // add the newly made and initalized ballot to the list of ballots
             ballots[i] = ballot;
         }
 
-        // update IR_Elections current unallocated ballots
+        // update IR_Elections current unallocated ballots to equal the list of processed ballots
+        // read in from the file
         currentBallots = ballots;
 
-        // initalize ballot aspect for each candidate
+        // initalize an empty array of ballots for each candidate correlating
+        // to the size of the total possible number ballots a candidate can have
         for (int i = 0; i < numCandidates; i++) {
-            IR_Ballot [] ballotbox = new IR_Ballot[currentBallotCount];
+            IR_Ballot [] ballotbox = new IR_Ballot[numBallots];
             candidates[i].setBallots(ballotbox);
         }
 
         return;
     }
 
+
+    /**
+     * Allocates all unallocated ballots contained in IR_Election to its respective candidate based 
+     * on the ballots ranking of candidates. Only gives the candidate the ballot if they are still in the
+     * running, elsewise the ballot is discarded. Takes no parameters and returns nothing.
+     * Used as a helper function for run().
+     */
     private void allocateBallots() {
+        // loop over all ballots that have not been allocated
+        // and exist in IR_Election
         for (int i = 0; i < currentBallotCount; i++) {
-            // get current ballots to allocate
+
+            // get current ballot to allocate
             IR_Ballot ballotToAllocate = currentBallots[i];
 
             // get the candidate number that the ballot should go to
+            // use the ballots current rank position
             int currentBallotRank = ballotToAllocate.getRank();
             int candidateNum = ballotToAllocate.getCandidateAtNum(currentBallotRank);
 
@@ -227,25 +174,48 @@ public class IR_Election extends Election {
                 candidates[candidateNum].addBallot(ballotToAllocate);
             }
         }
-        // reset current ballot objects
+
+        // IR_Election has distributed all ballots in position
+        // so current ballots is set to null and current ballot count
+        // set to 0
         currentBallots = null;
         currentBallotCount = 0;
         return;
     }
 
+
+    /**
+     * Determines the index of the winning candidate who won a coin toss.
+     * Used as a helper function for findLowestCandidate() and runPopularity().
+     * @param tieFolk, an array of ints that correlates to the index number of candidates that have ties 
+     * @return, returns an integer corresponding the to index number of the candidate that has won
+     * the coin toss.
+     */
     private int coinToss(int[] tieFolk) {
         Random random = new Random();
         int randomNumber = random.nextInt(tieFolk.length);
         return tieFolk[randomNumber];
     }
 
+    /**
+     * Finds the index number of the candidate with the fewest number of votes. If their is a tie
+     * between two or more candidates with the fewest number of votes, randomly choose one candidate
+     * from the tied candidates to be the candidate corresponding to the fewest number of votes.
+     * Writes information to the audit file, writing the name of the candidate(s) with the fewest number
+     * of votes.
+     * Used as a helper function for run().
+     * @return an int corresponding to the index number of the candidate with the fewest number of votes
+     * @throws IOException if a write fails
+     */
     private int findLowestCandidate() throws IOException {
-
+        // find the index of the first candidate still in the running
         int remove = 0;
         while (candidates[remove] == null && remove < numCandidates) {
             remove++;
         }
 
+        // initalize the lowest vote count to the vote count of the
+        // first candidate still in the running
         int lowestVote = candidates[remove].getBallotCount();
 
         // number of candidates with the lowest votes
@@ -253,114 +223,159 @@ public class IR_Election extends Election {
 
         // find the lowest Vote Count,
         for (int i = 0; i < numCandidates; i++) {
+            // check if candidates in running and if theie vote count 
             if (candidates[i] != null && candidates[i].getBallotCount() < lowestVote) {
+                // set lowest vote to new lowest
                 lowestVote = candidates[i].getBallotCount();
+                // update the index of the candidate to be removed
                 remove = i;
+                // set the number of candidates with this lowest vote count to 1
                 numberOfLowest = 1;
             } else if (candidates[i] != null && candidates[i].getBallotCount() == lowestVote) {
+                // another candidate has tied with lowest vote count
+                // increase the number of candidates who have that same lowest vote count
                 numberOfLowest++;
             }
         }
 
-        // create remove array if more than one tie folk, else wise return the index of the lowest
+        // if only one candidate has the lowest number of votes
+        // remove the candidate at that index
         if (numberOfLowest == 1) {
             return remove;
         }
 
-        // if more than one with same lowest number of votes
+        // a tie has occured with two or more candidates, find the indexes of all losers
         int[] tieFolk = new int[numberOfLowest];
         int tieIndex = 0;
+
+        // loop over all candidates
         for (int i = 0; i < numCandidates; i++) {
+            // if candidate exists and has the lowest vote count, add their
+            // index to the tieFolk array
             if (candidates[i] != null && candidates[i].getBallotCount() == lowestVote) {
                 tieFolk[tieIndex] = i;
                 tieIndex++;
             }
         }
         
-        // call tieFolk to pick out a loser
+        // write to audit, the names of all candidates who tied with
+        // lowest vote count
         audit.writeTiedLoserCandidates(candidates, tieFolk);
+
+        // call tieFolk to pick out a loser
         return coinToss(tieFolk);
     }
 
-
+    /**
+     * Removes the candidate with the lowest number of votes from the running. All ballots
+     * that were originally delegated the the candidate are returned to IR_Election, and
+     * the ballots are updated to point to their next top ranked vote. The number of
+     * remaining candidates decreases by 1.
+     * @param lowest is an integer that corresponds to the index of the candidate
+     * with the lowest number of votes
+     * 
+     * No error handling if lowest is out of range or if candidate at lowest is
+     * null. Seg faults upon error.
+     * 
+     * Is a helper function for run
+     */
     private void removeLowestCandidate(int lowest) {
+        // increment the ranks of all ballots that belong
+        // to the candidate at index "lowest"
         for (int i = 0; i < candidates[lowest].getBallotCount(); i++) {
             int curRank = candidates[lowest].getBallots()[i].getRank();
             candidates[lowest].getBallots()[i].setRank(curRank + 1);
         }
+
+        // give candidate's ballots back to IR_Election
         currentBallots = candidates[lowest].getBallots();
         currentBallotCount = candidates[lowest].getBallotCount();
+
+        // remove candidate from the running
         candidates[lowest] = null;
         numRemainingCandidates -= 1;
+
         return;
     }
 
+    /**
+     * Checks if a majority or a popularity with fewer than two candidates has occured. If a majority
+     * or a popularity with fewer than two candidates has occured, the index number of the winning
+     * candidate is returned. If no majority or popularity has occured, -1 is returned.
+     * Writes 
+     * @return an integer corrresponding to the winning candidate or -1 if no candidate has won.
+     * @throws IOException if a write fails in runPopularity().
+     * 
+     * Is a helper function for run()
+     */
     private int checkMajority() throws IOException {
-        if (numRemainingCandidates <= 2) {
-            return runPopularity();
-        }
-
+        // check if a candidate has a majority, over half the total number of ballots
+        // return that candidates index number if there is a majority
         for (int i = 0; i < numCandidates; i++) {
             if (candidates[i] != null && candidates[i].getBallotCount() > numBallots/2) {
                 return i;
             }
         }
 
+        // if there is no majority and there are 2 or fewer candidates
+        // run a popularity vote and return the results of popularity
+        if (numRemainingCandidates <= 2) {
+            return runPopularity();
+        }
+
+        // return -1 if no majority or popularity winner
         return -1;
     }
 
+    /**
+     * Checks if a candidate has won by popularity of votes. Assumes there are only two candidates
+     * in the running. If a tie occurs with the highest number of votes, randomly chooses
+     * a candidate to win through a coin toss and returns the winner. Writes to audit
+     * if a tie occurs.
+     * @return an int corresponding to the index number of the winning candidate
+     * @throws IOException
+     * 
+     * A helper function for checkMajority()
+     */
     private int runPopularity() throws IOException {
+        // find the index of the first candidate still in the running
         int winner = 0;
         while (candidates[winner] == null) {
             winner++;
         }
+
+        // initalize the highest vote count to the vote count of the
+        // first candidate still in the running
         int highestVote = candidates[winner].getBallotCount();
 
+        // loop over all candidates starting after first candidate still in the running
         for (int i = winner + 1; i < numCandidates; i++) {
+            // check if candidate exists and its vote count
             if (candidates[i] != null && candidates[i].getBallotCount() > highestVote) {
-                winner = i;
+                // set winner index to candidate with higher vote count
+                return i;
             } else if (candidates[i] != null && candidates[i].getBallotCount() == highestVote) {
+                // a tie has occured
                 int[] tieFolk = {winner, i};
-                //write tie
+                //write that tie has occured in popularity with the names of the tied candidates
                 audit.writeTiedWinnerCandidates(candidates, tieFolk);
-                winner = coinToss(tieFolk);
+                // return the winner of the coin toss
+                return coinToss(tieFolk);
             }
         }
+
+        // if other candidates have not tied or have a higher vote
+        // return the candidate initally designated as the winner
         return winner;
     }
 
-    public void run() throws IOException {
-        //electionFile.reset();
-        readIRHeader();
-        this.audit.writeHeaderToFile(this.typeElection, this.numCandidates, this.candidates, this.numBallots);
-        readIRBallots();
-        //shuffleBallots();
-        shuffleBallots();
-        while(true) {
-            allocateBallots();
-            audit.writeCandidatesBallots(candidates, numCandidates);
-            int winner = checkMajority();
-            if (winner != -1) {
-                // write to audit
-                audit.writeWinner(candidates, winner);
 
-                // display winner
-                System.out.print("Candidate Winner: " + candidates[winner].getName());
-                System.out.println(" " + candidates[winner].getParty());
-                double percentage = ((double)candidates[winner].getBallotCount()/numBallots) * 100;
-                System.out.println("Votes: " + candidates[winner].getBallotCount());
-                System.out.println("Vote Percentage: " + String.format("%.2f",percentage));
-
-                return;
-            }
-            int lowest = findLowestCandidate();
-            audit.writeLoser(candidates, lowest);
-            removeLowestCandidate(lowest);
-            audit.writeBallotsReallocated(this.currentBallots, this.currentBallotCount);
-            //write to audit
-        }
-    }
-
+    /**
+     * Shuffles the array of ballots contained in IR_Election.
+     * Takes no parameters and returns nothing.
+     * 
+     * A helper funtion for run()
+     */
     public void shuffleBallots() {
         Random rnd = ThreadLocalRandom.current();
         for (int i = currentBallots.length - 1; i > 0; i--) {
@@ -371,55 +386,145 @@ public class IR_Election extends Election {
         }
     }
 
+    /**
+     * Runs the IR algorithm and writes audit information to the audit file and displays the results
+     * and winner information of the election to the screen.
+     * Assumes the electionScanner begins on the second line, all information contained in the IR election
+     * ballot file is entered properly, there is at least one ballot in the file and at least
+     * one candidate. Takes no parameters and returns nothing.
+     * 
+     * Assumes election class has been initalized properly and so has audit class.
+     * 
+     */
+    public void run() throws IOException {
+        // read the header infor form the file and write header to audit
+        readIRHeader();
+        this.audit.writeHeaderToFile(this.typeElection, this.numCandidates, this.candidates, this.numBallots);
 
+        // read in all ballots and shuffle the ballots
+        readIRBallots();
+        shuffleBallots();
 
+        // loop until election won
+        while(true) {
+            // delegate ballots to candidates, and write the current vote count and
+            // ballots given to each candidate still in the running
+            allocateBallots();
+            audit.writeCandidatesBallots(candidates, numCandidates);
 
+            // check if a candidate has won
+            int winner = checkMajority();
+            if (winner != -1) {
+                // write winner to audit
+                audit.writeWinner(candidates, winner);
 
-    // constructers
-    public IR_Election(Scanner electionFile) {
-        super(electionFile);
-        //readIRHeader();
+                // display winner stats to screen
+                System.out.println("Election Type: IR_Election");
+                System.out.print("Candidate Winner: " + candidates[winner].getName());
+                System.out.println(" " + candidates[winner].getParty());
+                System.out.println("Total Ballots Cast: " + numBallots);
+                double percentage = ((double)candidates[winner].getBallotCount()/numBallots) * 100;
+                System.out.println("Votes Won: " + candidates[winner].getBallotCount());
+                System.out.println("Percentage of Votes Won: " + String.format("%.2f",percentage));
+
+                return;
+            }
+
+            // find candidate with fewest votes if no-one has won and write to audit
+            int lowest = findLowestCandidate();
+            audit.writeLoser(candidates, lowest);
+
+            // remove andidate with fewest votes and write to audit
+            removeLowestCandidate(lowest);
+            audit.writeBallotsReallocated(this.currentBallots, this.currentBallotCount);
+        }
     }
-
+    
+    /** 
+     * get the array of candidates contained in IR_eleciton 
+     * @return Candidate[] a list of candidate objects that represent candidates
+     */
     // getters and setters
     public Candidate[] getCandidates() {
         return this.candidates;
     }
 
+
+    
+    /** 
+     * set the array candidates in IR to candidates
+     * @param candidates of type Candidate array used to set IR_Elections candidates
+     */
     public void setCandidates(Candidate[] candidates) {
         this.candidates = candidates;
     }
 
+
+    
+    /** 
+     * get the total number of candidates in an IR_Election
+     * @return an int representing the number of candidates in an IR_Election
+     */
     public int getNumCandidates() {
         return this.numCandidates;
     }
 
+
+    
+    /** 
+     * set the total number of candidates in an IR_Election
+     * @param numCandidates an int parameter used to set the total number of cnadidates
+     */
     public void setNumCandidates(int numCandidates) {
         this.numCandidates = numCandidates;
     }
 
+
+    
+    /** 
+     * get the number of remaining candidates
+     * @return int, the number of candidates still in the running
+     */
     public int getNumRemainingCandidates() {
         return this.numRemainingCandidates;
     }
 
+    /**
+     * 
+     * @param numRemainingCandidates
+     */
     public void setNumRemainingCandidates(int numRemainingCandidates) {
         this.numRemainingCandidates = numRemainingCandidates;
     }
+
 
     public IR_Ballot[] getCurrentBallots() {
         return this.currentBallots;
     }
 
+
     public void setCurrentBallots(IR_Ballot[] currentBallots) {
         this.currentBallots = currentBallots;
     }
+
 
     public int getCurrentBallotCount() {
         return this.currentBallotCount;
     }
 
+
     public void setCurrentBallotCount(int currentBallotCount) {
         this.currentBallotCount = currentBallotCount;
+    }
+
+    
+    public IR_Audit getAudit() {
+        return this.audit;
+    }
+
+    
+    public void setAudit(IR_Audit audit) {
+        this.audit = audit;
     }
 
     // toString
@@ -432,14 +537,6 @@ public class IR_Election extends Election {
             ", currentBallots='" + getCurrentBallots() + "'" +
             ", currentBallotCount='" + getCurrentBallotCount() + "'" +
             "}";
-    }
-
-    public IR_Audit getAudit() {
-        return this.audit;
-    }
-
-    public void setAudit(IR_Audit audit) {
-        this.audit = audit;
     }
 
 }

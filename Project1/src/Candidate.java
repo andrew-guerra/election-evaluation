@@ -1,7 +1,4 @@
-//package Project1.src;
-// add imports
-// added toString
-// added constructor with more fields
+package Project1.src;
 
 public class Candidate {
 
@@ -72,6 +69,8 @@ public class Candidate {
 
     //helper, add ballot
     public void addBallot(IR_Ballot ballot) {
+        // increment number of ballots a candidate has and adds it
+        // to a candidates array of ballots
         ballots[ballotCount] = ballot;
         ballotCount++;
     }
