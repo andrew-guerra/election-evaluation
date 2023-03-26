@@ -441,18 +441,13 @@ public class IR_Election extends Election {
             audit.writeBallotsReallocated(this.currentBallots, this.currentBallotCount);
         }
     }
-    
     /** 
      * get the array of candidates contained in IR_eleciton 
      * @return Candidate[] a list of candidate objects that represent candidates
      */
-    // getters and setters
     public Candidate[] getCandidates() {
         return this.candidates;
-    }
-
-
-    
+    } 
     /** 
      * set the array candidates in IR to candidates
      * @param candidates of type Candidate array used to set IR_Elections candidates
@@ -460,9 +455,6 @@ public class IR_Election extends Election {
     public void setCandidates(Candidate[] candidates) {
         this.candidates = candidates;
     }
-
-
-    
     /** 
      * get the total number of candidates in an IR_Election
      * @return an int representing the number of candidates in an IR_Election
@@ -470,9 +462,6 @@ public class IR_Election extends Election {
     public int getNumCandidates() {
         return this.numCandidates;
     }
-
-
-    
     /** 
      * set the total number of candidates in an IR_Election
      * @param numCandidates an int parameter used to set the total number of cnadidates
@@ -480,9 +469,6 @@ public class IR_Election extends Election {
     public void setNumCandidates(int numCandidates) {
         this.numCandidates = numCandidates;
     }
-
-
-    
     /** 
      * get the number of remaining candidates
      * @return int, the number of candidates still in the running
@@ -490,7 +476,6 @@ public class IR_Election extends Election {
     public int getNumRemainingCandidates() {
         return this.numRemainingCandidates;
     }
-
     /**
      * 
      * @param numRemainingCandidates
@@ -498,33 +483,21 @@ public class IR_Election extends Election {
     public void setNumRemainingCandidates(int numRemainingCandidates) {
         this.numRemainingCandidates = numRemainingCandidates;
     }
-
-
     public IR_Ballot[] getCurrentBallots() {
         return this.currentBallots;
     }
-
-
     public void setCurrentBallots(IR_Ballot[] currentBallots) {
         this.currentBallots = currentBallots;
     }
-
-
     public int getCurrentBallotCount() {
         return this.currentBallotCount;
     }
-
-
     public void setCurrentBallotCount(int currentBallotCount) {
         this.currentBallotCount = currentBallotCount;
     }
-
-    
     public IR_Audit getAudit() {
         return this.audit;
     }
-
-    
     public void setAudit(IR_Audit audit) {
         this.audit = audit;
     }
