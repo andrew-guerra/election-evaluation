@@ -27,7 +27,7 @@ public class Party {
         this.partyName = partyName;
         ballots = new ArrayList<CPL_Ballot>();
         ballotCount = 0;
-    
+        seatsWon = 0;
     }
 
     /**
