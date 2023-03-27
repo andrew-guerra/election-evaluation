@@ -179,14 +179,18 @@ public class IR_Election extends Election {
         // and exist in IR_Election
         for (int i = 0; i < currentBallotCount; i++) {
 
-            // get current ballot to allocate
-            IR_Ballot ballotToAllocate = currentBallots[i];
-
+            
             // get the candidate number that the ballot should go to
             // use the ballots current rank position
+            IR_Ballot ballotToAllocate = currentBallots[i];
             int currentBallotRank = ballotToAllocate.getRank();
             int candidateNum = ballotToAllocate.getCandidateAtNum(currentBallotRank);
-
+            while(candidateNum != -1 && candidates[candidateNum] == null) {
+                currentBallotRank++;
+                ballotToAllocate.setRank(currentBallotRank);
+                candidateNum = ballotToAllocate.getCandidateAtNum(currentBallotRank);
+            }
+            
             // give ballot to candidate if he is still in the running and ballot
             // is ranked up there
             if (candidateNum != -1 && candidates[candidateNum] != null) {
@@ -300,10 +304,11 @@ public class IR_Election extends Election {
     private void removeLowestCandidate(int lowest) {
         // increment the ranks of all ballots that belong
         // to the candidate at index "lowest"
-        for (int i = 0; i < candidates[lowest].getBallotCount(); i++) {
-            int curRank = candidates[lowest].getBallots()[i].getRank();
-            candidates[lowest].getBallots()[i].setRank(curRank + 1);
-        }
+        
+        // for (int i = 0; i < candidates[lowest].getBallotCount(); i++) {
+        //     int curRank = candidates[lowest].getBallots()[i].getRank();
+        //     candidates[lowest].getBallots()[i].setRank(curRank + 1);
+        // }
 
         // give candidate's ballots back to IR_Election
         currentBallots = candidates[lowest].getBallots();
