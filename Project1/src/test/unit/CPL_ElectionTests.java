@@ -30,6 +30,7 @@ public class CPL_ElectionTests {
         assertEquals(electionFile, test.getElectionFile());
         test.getAuditObject().close();
     }
+
     // automatic
     @Test
     public void testCPL_ElectionReadCPLHeader() throws IOException {
@@ -64,6 +65,7 @@ public class CPL_ElectionTests {
         electionFile.close();
 
     }
+
     // automatic
     @Test
     public void testCPL_ElectionCandidateArray() throws IOException {
@@ -95,6 +97,7 @@ public class CPL_ElectionTests {
         test.getAuditObject().close();
         electionFile.close();
     }
+
     // automatic
     @Test
     public void testCPL_ElectionReadCPLBallots() throws IOException {
@@ -148,6 +151,7 @@ public class CPL_ElectionTests {
         test.getAuditObject().close();
         electionFile.close();
     }
+
     // manual
     @Test
     public void testSetFirstSeatsAllocation() throws IOException {
@@ -192,6 +196,7 @@ public class CPL_ElectionTests {
         test.getAuditObject().close();
         electionFile.close();
     }
+
     // manual
     @Test
     public void testRemainderSeatsAllocation() throws IOException {
@@ -235,6 +240,7 @@ public class CPL_ElectionTests {
         test.getAuditObject().close();
         electionFile.close();
     }
+    
     // manual
     @Test
     public void testCPL_ElectionRun() throws IOException {
@@ -257,5 +263,36 @@ public class CPL_ElectionTests {
         test = new CPL_Election(electionFile, date);
         test.run();
         electionFile.close();
+    }
+    // automatic
+    @Test
+    public void testCPL_GettersAndSetters() throws IOException {
+        Scanner electionFile;
+        String date;
+        CPL_Election test;
+
+        // test CPL_Election on CPL_Standard.csv - multiple candidates for multiple parties
+        electionFile = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard.csv"));
+        electionFile.nextLine().strip();
+        date = "52-11-1111";
+        test = new CPL_Election(electionFile, date);
+        test.setNumParties(0);
+        test.setNumSeats(0);
+        test.setNumBallots(0);
+        test.setAuditObject(new CPL_Audit("test"));
+        Party p = new Party("partyName");
+        Party[] pList = new Party[1];
+        pList[0] = p;
+        test.setParties(pList);
+        CPL_Ballot b = new CPL_Ballot(0,0);
+        CPL_Ballot[] bList = new CPL_Ballot[1];
+        bList[0] = b;
+        test.setBallots(bList);
+
+        assertEquals(0, test.getNumParties());
+        assertEquals(0, test.getNumSeats());
+        assertEquals(0 , test.getNumBallots());
+        assertNotNull(test.getParties());
+        assertNotNull(test.getBallots());
     }
 }
