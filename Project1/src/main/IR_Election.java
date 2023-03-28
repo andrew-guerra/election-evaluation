@@ -135,7 +135,17 @@ public class IR_Election extends Election {
                     position++;
                 } else {
                     // get the candidates ranking of the candidates corresponding position/index
-                    int rank = Character.getNumericValue(curChar);
+                    String ranks = "";
+                    ranks += curChar;
+                    //add letters if number is double digits
+                    if ((j + 1) < ballot.getForm().length()) {
+                        while (((j + 1) < ballot.getForm().length()) && (ballot.getForm().charAt(j + 1) != ',')) {
+                            j++;
+                            curChar = ballot.getForm().charAt(j);
+                            ranks += curChar;
+                        }
+                    }
+                    int rank = Integer.parseInt(ranks);
 
                     // the candidates indexes are sorted in the candidate ranking array
                     // according to their rank, ex. a form "3,,1,2" would result in "{2,3,0, -1, -1}",

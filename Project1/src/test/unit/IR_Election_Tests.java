@@ -190,5 +190,59 @@ public class IR_Election_Tests {
         IR_Election ir = new IR_Election(electionFile, date);
         ir.run();
     }
+
+    // manual checks, ensure ballots are allocated properly in event 2rank candidate removed before ballot allocated
+    @Test
+    public void testIR_Election_allocationAdvanced_test() throws IOException {
+
+        Scanner electionFile = null;
+        String fileName = "../testing/unit/IR_Election/allocateBallotAdvanced.csv";
+        try {
+            electionFile = new Scanner(new FileInputStream(fileName));
+        } catch(FileNotFoundException e) {
+            System.out.printf("File \"%s\" cannot be found\n", fileName);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        electionFile.next();
+        electionFile.nextLine();
+
+        String date = "IR_allocateBallotAdvanced";
+        IR_Election ir = new IR_Election(electionFile, date);
+        ir.run();
+    }
+
+    // manual checks, ensure ballots can handle double digt or more candidates
+    @Test
+    public void testIR_Election_doubleDigit_test() throws IOException {
+
+        Scanner electionFile = null;
+        String fileName = "../testing/unit/IR_Election/DoubleDigitCandidates.csv";
+        try {
+            electionFile = new Scanner(new FileInputStream(fileName));
+        } catch(FileNotFoundException e) {
+            System.out.printf("File \"%s\" cannot be found\n", fileName);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        electionFile.next();
+        electionFile.nextLine();
+
+        String date = "IR_DoubleDigitCandidates";
+        IR_Election ir = new IR_Election(electionFile, date);
+        ir.run();
+    }
+
+
+
+
+
+
+
+
+
+
 }
 
