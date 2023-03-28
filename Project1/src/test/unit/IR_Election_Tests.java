@@ -301,15 +301,27 @@ public class IR_Election_Tests {
         ir.run();
     }
 
+    // check for ballots being properly thrown out
+    @Test
+    public void testIR_Election_throwout_test() throws IOException {
 
+        Scanner electionFile = null;
+        String fileName = "../testing/unit/IR_Election/throwOutBallot.csv";
+        try {
+            electionFile = new Scanner(new FileInputStream(fileName));
+        } catch(FileNotFoundException e) {
+            System.out.printf("File \"%s\" cannot be found\n", fileName);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
+        electionFile.next();
+        electionFile.nextLine();
 
-
-
-
-
-
-
+        String date = "IR_throwOutBallot";
+        IR_Election ir = new IR_Election(electionFile, date);
+        ir.run();
+    }
 
 }
 

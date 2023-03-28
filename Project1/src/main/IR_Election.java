@@ -67,7 +67,7 @@ public class IR_Election extends Election {
             String name = electionFile.next();
             String party = electionFile.next();
 
-            //get party name in form of "(*)" where * is letter of the party
+            //get party name in form of "(*)" where * is letter of the party and remove comma at end if present
             if (party.charAt(party.length() - 1) == ',') {
                 party = party.substring(0, party.length() - 1);
             } else {
