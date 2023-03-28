@@ -68,7 +68,12 @@ public class IR_Election extends Election {
             String party = electionFile.next();
 
             //get party name in form of "(*)" where * is letter of the party
-            party = party.substring(0, 3);
+            if (party.charAt(party.length() - 1) == ',') {
+                party = party.substring(0, party.length() - 1);
+            } else {
+                party = party.substring(0, party.length());
+            }
+            
             //fill fields of candidates
             candidates[i] = new Candidate();
             candidates[i].setBallotCount(0);

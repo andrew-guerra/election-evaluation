@@ -235,6 +235,73 @@ public class IR_Election_Tests {
         ir.run();
     }
 
+    // test that IR can handle 100,000 ballots in under 4 minutes with 10 candidates
+    @Test
+    public void testIR_Election_stress_test() throws IOException {
+
+        Scanner electionFile = null;
+        String fileName = "../testing/unit/IR_Election/stressTestIR.csv";
+        try {
+            electionFile = new Scanner(new FileInputStream(fileName));
+        } catch(FileNotFoundException e) {
+            System.out.printf("File \"%s\" cannot be found\n", fileName);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        electionFile.next();
+        electionFile.nextLine();
+
+        String date = "IR_stressTestIR";
+        IR_Election ir = new IR_Election(electionFile, date);
+        ir.run();
+    }
+
+    // check for only one candidate with long party name
+    @Test
+    public void testIR_Election_oneCandidate_oneBallot_test() throws IOException {
+
+        Scanner electionFile = null;
+        String fileName = "../testing/unit/IR_Election/oneCandidate.csv";
+        try {
+            electionFile = new Scanner(new FileInputStream(fileName));
+        } catch(FileNotFoundException e) {
+            System.out.printf("File \"%s\" cannot be found\n", fileName);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        electionFile.next();
+        electionFile.nextLine();
+
+        String date = "IR_oneCandidate";
+        IR_Election ir = new IR_Election(electionFile, date);
+        ir.run();
+    }
+
+    // check for only two candidate, pluraliry, with long party name
+    @Test
+    public void testIR_Election_twoCandidate_twoBallot_test() throws IOException {
+
+        Scanner electionFile = null;
+        String fileName = "../testing/unit/IR_Election/twoCandidateLongName.csv";
+        try {
+            electionFile = new Scanner(new FileInputStream(fileName));
+        } catch(FileNotFoundException e) {
+            System.out.printf("File \"%s\" cannot be found\n", fileName);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        electionFile.next();
+        electionFile.nextLine();
+
+        String date = "twoCandidateLongName";
+        IR_Election ir = new IR_Election(electionFile, date);
+        ir.run();
+    }
+
+
 
 
 
