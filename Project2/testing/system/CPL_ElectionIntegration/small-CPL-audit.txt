@@ -1,0 +1,91 @@
+CPL Election Audit
+
+Parties
+Democratic - 1 candidates: A
+Reublican - 1 candidates: B
+New Wave - 1 candidates: C
+Reform - 1 candidates: D
+Green - 1 candidates: E
+Independent - 1 candidates: F
+
+Total # of Seats to be Allocated: 3
+Total # of Ballots Cast: 9
+Quota: 3
+
+Votes by Party
+Democratic - recieved %55.56 of all votes with 5 votes.
+Democratic - recieved 5 votes.
+Associated Ballot ID's: 
+#3 #0 #4 #1 #2 
+Reublican - recieved %33.33 of all votes with 3 votes.
+Reublican - recieved 3 votes.
+Associated Ballot ID's: 
+#7 #6 #5 
+New Wave - recieved %11.11 of all votes with 1 votes.
+New Wave - recieved 1 votes.
+Associated Ballot ID's: 
+#8 
+Reform - recieved %0 of all votes with 0 votes.
+Reform - recieved 0 votes.
+Associated Ballot ID's: 
+
+Green - recieved %0 of all votes with 0 votes.
+Green - recieved 0 votes.
+Associated Ballot ID's: 
+
+Independent - recieved %0 of all votes with 0 votes.
+Independent - recieved 0 votes.
+Associated Ballot ID's: 
+
+
+Initial Seat Allocation
+Democratic : 1 seats allocated.
+Reublican : 1 seats allocated.
+New Wave : 0 seats allocated.
+Reform : 0 seats allocated.
+Green : 0 seats allocated.
+Independent : 0 seats allocated.
+
+Party Votes Remaining After First Round
+Democratic : 2 votes remaining.
+Reublican : 0 votes remaining.
+New Wave : 1 votes remaining.
+Reform : 0 votes remaining.
+Green : 0 votes remaining.
+Independent : 0 votes remaining.
+
+Remaining Seats Outstanding - 1
+Remainder Seat Distribution Needed.
+
+Seats Remaining to be Allocated: 1
+Largest Vote Remainder: 2
+Party(s) With largest Vote Remainder: Democratic
+
+Seat Allocation Result: 
+Democratic - Failed to allocate extra seat (not enough candidates)
+Total seats won by party: 1
+
+Seats Remaining to be Allocated: 1
+Largest Vote Remainder: 1
+Party(s) With largest Vote Remainder: New Wave
+
+Seat Allocation Result: 
+New Wave - Successfully allocated one seat
+Total seats won by party: 1
+
+Total Seat Distribution
+Democratic : 1 seats allocated.
+Reublican : 1 seats allocated.
+New Wave : 1 seats allocated.
+Reform : 0 seats allocated.
+Green : 0 seats allocated.
+Independent : 0 seats allocated.
+
+Election Winners
+Democratic : A
+Reublican : B
+New Wave : C
+Reform : 
+Green : 
+Independent : 
+
