@@ -25,27 +25,19 @@ public class Main {
      * @return          String[] s
      */
     public static String[] retrieveFilenames(String[] args, Scanner input) {
-        String[] filenames, subArgs;
+        String[] filenames;
         int numFilenames;
 
         if(args.length < 1) {
             System.out.print("Enter number of files to process: ");
             numFilenames = Integer.parseInt(input.nextLine().strip());
         } else {
-            numFilenames = args.length;
+            return args;
         }
         
-        System.out.printf("Num filename %d", numFilenames);
         filenames = new String[numFilenames];
-        subArgs = new String[args.length];
         for(int i = 0; i < numFilenames; i++) {
-            System.out.printf("File %d %d\n", i, args.length);
-            
-            if(args.length != 0) {
-                subArgs = Arrays.copyOfRange(subArgs, i, args.length);
-            }
-            
-            filenames[i] = retrieveFilename(subArgs, input);
+            filenames[i] = retrieveFilename(args, input);
         }
 
         return filenames;
