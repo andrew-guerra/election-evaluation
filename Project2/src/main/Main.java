@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 import java.io.FileInputStream;
@@ -17,17 +18,43 @@ import java.time.format.ResolverStyle;
 public class Main {
   
     /**
+     * Retrives the filenames from either the command line arugments or user input.
+     * 
+     * @param args      String command line arguments
+     * @param input     Scanner for user input
+     * @return          String[] s
+     */
+    public static String[] retrieveFilenames(String[] args, Scanner input) {
+        String[] filenames;
+        int numFilenames;
+
+        if(args.length < 1) {
+            System.out.print("Enter number of files to process: ");
+            numFilenames = Integer.parseInt(input.nextLine().strip());
+        } else {
+            return args;
+        }
+        
+        filenames = new String[numFilenames];
+        for(int i = 0; i < numFilenames; i++) {
+            filenames[i] = retrieveFilename(args, input);
+        }
+
+        return filenames;
+    }
+
+    /**
      * Retrives the filename from either the command line arugments or user input.
      * 
      * @param args      String command line arguments
      * @param input     Scanner for user input
-     * @return          String filename
+     * @return          String s
      */
     public static String retrieveFilename(String[] args, Scanner input) {
         if (args.length < 1) {
             System.out.print("Enter the file name: ");
-			return input.nextLine();
-        }
+			return input.nextLine().strip();
+        } 
         
         return args[0];
     }
@@ -128,17 +155,18 @@ public class Main {
      * @param args      command line arguments for main, first arugment is filename, second is election date
      */
     public static void main(String[] args) {
-        String fileName, dateStr;
+        String[] filenames;
+        String dateStr;
         Scanner electionFile, input;
         Election election;
 
         input = new Scanner(System.in);
-		if((fileName = retrieveFilename(args, input)) == null) {
+		if((filenames = retrieveFilenames(args, input)) == null) {
             input.close();
             return;
         }
         
-        if((electionFile = loadElectionFile(fileName)) == null) {
+        if((electionFile = loadElectionFile(filenames[0])) == null) {
             input.close();
             return;
         }    
