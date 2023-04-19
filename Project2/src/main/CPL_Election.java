@@ -90,6 +90,8 @@ public class CPL_Election extends Election {
         int numBallotsFirstFile = electionFile.nextInt();
         this.setNumBallots(numBallotsFirstFile);            // set total number of ballots
         electionFile.nextLine();
+
+        numBallotsFile = new int[electionFiles.length];     // initializes the numBallotsFile array 
         numBallotsFile[0] = numBallotsFirstFile;            // set total number of ballots for file      
 
     
@@ -129,7 +131,7 @@ public class CPL_Election extends Election {
      * @throws IOException
      */
     private void setFileScanners() throws IOException {
-        numBallotsFile = new int[electionFiles.length];      // initializes the numBallotsFile array          
+                 
         for (int i = 0; i < electionFiles.length; i++) {     // iterate through Scanner objects for files
             Scanner electionFile = electionFiles[i];
             if (i != 0) {                                    // do not read in Scanner used in CPL_Header
@@ -145,10 +147,14 @@ public class CPL_Election extends Election {
                 int fileBallots = electionFile.nextInt();
                 numBallots = numBallots + fileBallots;       // add to total number of ballots
                 numBallotsFile[i] = fileBallots;             // add to file total of ballots
-                        
+                for (int k = 0; k < numBallotsFile.length; k++) {
+                    System.out.println(numBallotsFile[k]);
+                }
                 electionFile.nextLine();                     // Scanner ready to read in ballots
             }
         }
+        System.out.println(numBallots);
+        System.out.println(electionFiles.length);
         
         auditer.writeHeaderToFile("CPL", parties, numBallots, numSeats);
     }
@@ -160,18 +166,21 @@ public class CPL_Election extends Election {
      * Takes no parameters and returns nothing.
      */
     private void readCPLBallots() {
-        
+        int index = 0;
+        initialBallots = new CPL_Ballot[numBallots];
         for (int i = 0; i < electionFiles.length; i++) {            // iterate through files
             Scanner electionFile = electionFiles[i];
             String ballot;
-            initialBallots = new CPL_Ballot[this.getNumBallots()];
+            
             for (int j = 0; j < numBallotsFile[i]; j++) {           // iterate through a file and create ballots
                 ballot = electionFile.nextLine();
                 int partyNum = ballot.indexOf("1");                 // partyNum is index into parties[]
-                CPL_Ballot temp = new CPL_Ballot(partyNum, (i+1)*j);
-                initialBallots[(i+1)*j] = temp;                       // store ballot in system
+                CPL_Ballot temp = new CPL_Ballot(partyNum, index);
+                initialBallots[index] = temp;                       // store ballot in system
+                index++;
             }
         }
+        System.out.println("IB length" + initialBallots.length);
         
     }
 
@@ -225,6 +234,7 @@ public class CPL_Election extends Election {
 
         for (int i = 0; i < initialBallots.length; i++) {   // increment ballot count for each party
             int index = initialBallots[i].getPartyNum();
+            System.out.println("PartyNum for ballot " + i + ": index");
             parties[index].incBallot();                         
             parties[index].addBallot(initialBallots[i]);    // add ballot to to respective party
         }

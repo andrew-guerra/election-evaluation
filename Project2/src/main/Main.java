@@ -66,20 +66,23 @@ public class Main {
      * @param fileName  file name for election file
      * @return          Scanner object for election file 
      */
-    public static Scanner loadElectionFile(String fileName) {
+    public static Scanner[] loadElectionFile(String[] fileNames) {
+        Scanner[] electionFiles = new Scanner[fileNames.length];            
         Scanner electionFile;
-
-        try {
-            electionFile = new Scanner(new FileInputStream(fileName));
-        } catch(FileNotFoundException e) {
-            System.out.printf("File \"%s\" cannot be found\n", fileName);
-            return null;
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
+        for (int i = 0; i < fileNames.length; i++) {                        // create scanner objects for each file
+            try {
+                electionFile = new Scanner(new FileInputStream(fileNames[i]));
+            } catch(FileNotFoundException e) {
+                System.out.printf("File \"%s\" cannot be found\n", fileNames[i]);
+                return null;
+            } catch(Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+            electionFiles[i] = electionFile;
         }
-
-        return electionFile;
+    
+        return electionFiles;
     }
 
     /**
@@ -127,15 +130,15 @@ public class Main {
      * @param electionFile  Scanner of election file
      * @return              Election object of election type in election file
      */
-    public static Election retrieveElection(Scanner electionFile, String date) {
-        String electionType = electionFile.nextLine().strip();
+    public static Election retrieveElection(Scanner[] electionFiles, String date) {
+        String electionType = electionFiles[0].nextLine().strip();
         Election election;
 
         if(electionType.equals("IR")) {
-            return new IR_Election(electionFile, date);
+            //return new IR_Election(electionFiles, date);
         } else if(electionType.equals("CPL")) {
             try {
-                election = new CPL_Election(electionFile, date);
+                election = new CPL_Election(electionFiles, date);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("CPL election not loaded");
@@ -157,7 +160,8 @@ public class Main {
     public static void main(String[] args) {
         String[] filenames;
         String dateStr;
-        Scanner electionFile, input;
+        Scanner[] electionFiles;
+        Scanner input;
         Election election;
 
         input = new Scanner(System.in);
@@ -166,7 +170,7 @@ public class Main {
             return;
         }
         
-        if((electionFile = loadElectionFile(filenames[0])) == null) {
+        if((electionFiles = loadElectionFile(filenames)) == null) {
             input.close();
             return;
         }    
@@ -178,8 +182,10 @@ public class Main {
         
         input.close();
 
-        if((election = retrieveElection(electionFile, dateStr)) == null) {
-            electionFile.close();
+        if((election = retrieveElection(electionFiles, dateStr)) == null) {
+            for (int i = 0; i < electionFiles.length; i++) {
+                electionFiles[i].close();
+            }
             return;
         }
             
@@ -188,7 +194,9 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        electionFile.close();
+        for (int i = 0; i < electionFiles.length; i++) {
+            electionFiles[i].close();
+        }
+        
     }
 }
