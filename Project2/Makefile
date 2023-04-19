@@ -1,5 +1,5 @@
 run:
-	bash misc/run-project.sh $(filename)
+	bash misc/run-project.sh $(MAKECMDGOALS) 
 
 build:
 	javac -d target -cp .:../lib/* ./src/main/*.java
