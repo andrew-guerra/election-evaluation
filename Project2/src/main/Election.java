@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -27,15 +28,15 @@ public class Election {
         this.numBallots = numBallots;
         this.typeElection = typeElection;
         this.fileName = fileName;
-        this.electionFiles = electionFiles;
+        this.electionFiles = Arrays.copyOf(electionFiles, electionFiles.length);
     }
 
     /**
      * Constructor for election
      * @param electionFile Scanner, scanner for parsing file
      */
-    public Election(Scanner[] electionFile) {
-        this.electionFiles = electionFiles;
+    public Election(Scanner[] electionFiles) {
+        this.electionFiles = Arrays.copyOf(electionFiles, electionFiles.length);
     }
 
     /**
@@ -98,7 +99,7 @@ public class Election {
      * get the scanner scanning the election file
      * @return Scanner, the scanner scanning the election file
      */
-    public Scanner[] getElectionFile() {
+    public Scanner[] getElectionFiles() {
         return this.electionFiles;
     }
 
@@ -106,7 +107,7 @@ public class Election {
      * set the scanner scanning the election file
      * @param electionFile Scanner, the scanner scanning the election file
      */
-    public void setElectionFile(Scanner[] electionFiles) {
+    public void setElectionFiles(Scanner[] electionFiles) {
         this.electionFiles = electionFiles;
     }   
 }
