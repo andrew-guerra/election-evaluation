@@ -93,29 +93,29 @@ public class Main {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-uuuu", Locale.US).withResolverStyle(ResolverStyle.STRICT);
         String dateStr;
 
-        if(args.length < 2) {
-            do {
-                System.out.print("Enter date of election in format mm-dd-yyyy: ");
-                dateStr = input.nextLine();
-                
-                try {
-                    // use parse error to check for properly formated date
-                    dateFormatter.parse(dateStr);
-                } catch(DateTimeParseException e) {
-                    continue;
-                }
-    
-                break;
-            } while(true);
-        } else {
-            dateStr = args[1];
+        //if(args.length < 2) {
+        do {
+            System.out.print("Enter date of election in format mm-dd-yyyy: ");
+            dateStr = input.nextLine();
+            
+            try {
+                // use parse error to check for properly formated date
+                dateFormatter.parse(dateStr);
+            } catch(DateTimeParseException e) {
+                continue;
+            }
+
+            break;
+        } while(true);
+        /*} /*else {
+            dateStr = args[args.length - 1];
             try {
                 dateFormatter.parse(dateStr);
             } catch(DateTimeParseException e) {
                 System.out.printf("%s is an invalid date format\n", dateStr);
                 return null;
             }
-        }
+        }*/
 
         return dateStr;
     }
