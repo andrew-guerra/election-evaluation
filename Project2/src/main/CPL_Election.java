@@ -147,14 +147,9 @@ public class CPL_Election extends Election {
                 int fileBallots = electionFile.nextInt();
                 numBallots = numBallots + fileBallots;       // add to total number of ballots
                 numBallotsFile[i] = fileBallots;             // add to file total of ballots
-                for (int k = 0; k < numBallotsFile.length; k++) {
-                    System.out.println(numBallotsFile[k]);
-                }
                 electionFile.nextLine();                     // Scanner ready to read in ballots
             }
         }
-        System.out.println(numBallots);
-        System.out.println(electionFiles.length);
         
         auditer.writeHeaderToFile("CPL", parties, numBallots, numSeats);
     }
@@ -180,7 +175,6 @@ public class CPL_Election extends Election {
                 index++;
             }
         }
-        System.out.println("IB length" + initialBallots.length);
         
     }
 

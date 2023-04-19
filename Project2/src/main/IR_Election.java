@@ -21,6 +21,7 @@ public class IR_Election extends Election {
     private IR_Ballot [] currentBallots;
     private int currentBallotCount;
     private IR_Audit audit; 
+    private int numBallotsFile[];
 
     
     /**
@@ -40,6 +41,26 @@ public class IR_Election extends Election {
         numRemainingCandidates = 0;
         currentBallots = null;
         currentBallotCount = 0;
+    }
+
+     /**
+     * Constructor for IR_Election. Initalizes fields
+     * @param electionFile is a Scanner that should read from
+     * a IR_Election ballot file. Scanner Should point at the second line
+     * of the file or else other methods may fail.
+     * @param date is a string that represent the date at which
+     * the election was run
+     */
+    public IR_Election(Scanner[] electionFiles, String date) {
+        super(electionFiles);
+        this.typeElection = "IR Election";
+        audit = new IR_Audit(date);
+        candidates = null;
+        numCandidates = 0;
+        numRemainingCandidates = 0;
+        currentBallots = null;
+        currentBallotCount = 0;
+        numBallotsFile = null;
     }
 
     /**
@@ -93,6 +114,7 @@ public class IR_Election extends Election {
         electionFile.nextLine();
         return;
     }
+    
 
     /**
      * Reads ballot information from an IR_Election.csv file and initalizes corresponding fields.
@@ -437,11 +459,21 @@ public class IR_Election extends Election {
      */
     public void run() throws IOException {
         // read the header infor form the file and write header to audit
-        readIRHeader();
+        if (electionFile != null) {
+            readIRHeader();
+        } else {
+            readIRHeaderMultiple();
+        }
+
         this.audit.writeHeaderToFile(this.typeElection, this.numCandidates, this.candidates, this.numBallots);
 
         // read in all ballots and shuffle the ballots
-        readIRBallots();
+        if (electionFile != null) {
+            readIRBallots();
+        } else {
+            readIRBallotsMultiple();
+        }
+        
         shuffleBallots();
 
         // loop until election won
@@ -571,5 +603,166 @@ public class IR_Election extends Election {
         this.audit = audit;
     }
 
-}
 
+    /**
+     * Reads header information from an IR_Election.csv file. Assumes the electionFile Scanner
+     * is at the second line of a IR_Election ballot file. Updates an IR_elections list of candidates,
+     * number of candidates, number of remaining candidates, current ballots, and current ballot count
+     * information. Addidtally initalizes each candidates names, party, ballot count, and list of ballots.
+     * Takes no parameters and returns nothing. Used as a helper function for run().
+     */
+    private void readIRHeaderMultiple() {
+        // read second line of file and get the number of candidates
+        // and move scanner to the next line with candidates afterwards
+        Scanner electionFile = electionFiles[0];
+        numCandidates = electionFile.nextInt();
+        electionFile.nextLine();
+
+        // number of candidates still in the running, set equal to total number of candidates
+        numRemainingCandidates = numCandidates;
+
+        // create an array of candidates
+        candidates = new Candidate[numCandidates];
+
+        // loop for the total number of candidates and fill in candidates fields for each candidate
+        for (int i = 0; i < numCandidates; i++) {
+            // get name and party of candidate
+            String name = electionFile.next();
+            String party = electionFile.next();
+
+            //get party name in form of "(*)" where * is letter of the party and remove comma at end if present
+            if (party.charAt(party.length() - 1) == ',') {
+                party = party.substring(0, party.length() - 1);
+            } else {
+                party = party.substring(0, party.length());
+            }
+            
+            //fill fields of candidates
+            candidates[i] = new Candidate();
+            candidates[i].setBallotCount(0);
+            candidates[i].setBallots(null);
+            candidates[i].setName(name);
+            candidates[i].setParty(party);
+        }
+        electionFile.nextLine();
+
+        // initialize numBallotsFile array
+        numBallotsFile = new int[electionFiles.length];
+        // get the total number of Ballots for first file
+        numBallotsFile[0] = electionFile.nextInt();
+        // scanner, now on lines with ballots
+        electionFile.nextLine();
+
+        numBallots = numBallotsFile[0];
+
+        // iterate on all other Scanner objects to begin reading in ballots
+        for (int i = 1; i < electionFiles.length; i++) {
+            electionFiles[i].nextLine();
+            electionFiles[i].nextLine();
+            electionFiles[i].nextLine();
+            numBallotsFile[i] = electionFiles[i].nextInt();
+            electionFiles[i].nextLine();
+            numBallots += numBallotsFile[i];
+        }
+
+        // set the current number of undistributed ballots to equal the total number of ballots
+        currentBallotCount = numBallots;
+
+        return;
+    }
+    /**
+     * Reads ballot information from an IR_Election.csv file and initalizes corresponding fields.
+     * Assumes electionScanner is at the first line correlating to a ballots form information.
+     * Creates a series of ballot objects and initalizes each ballot object using a ballot's form information.
+     * Updates the IR_Elections ballots list to include each ballot object and initalizes
+     * each candidate to have an array of ballots that can hold the total number of ballots.
+     * Takes no parameters and returns nothing. Used as a helper function for run().
+     */
+    private void readIRBallotsMultiple() {
+        // create an array of ballots equal to the number of total ballots in the file
+        IR_Ballot[] ballots = new IR_Ballot[numBallots];
+        int index = 0;
+        // loop over all IR_Election files
+        for (int d = 0; d < electionFiles.length; d++) {
+            
+            // loop over all ballots in the file and create a ballot for each ballot and add to total list of undistributed ballots
+            Scanner electionFile = electionFiles[d];
+            for (int i = 0; i < numBallotsFile[d]; i++) {
+                
+                // ballot num goes from 0 to total - 1, for 6 ballots, numbered 0 to 5
+
+                // create a new ballot object and initalize rank, ballot number, and form
+                IR_Ballot ballot = new IR_Ballot();
+                ballot.setRank(0);
+                ballot.setBallotNum(i);
+                ballot.setForm(electionFile.next());
+
+                // create and initalize a candidate Ranking Array
+                int[] candidateRanking = new int[numCandidates];
+
+                // initalize the rankings for each candidate to be -1
+                for (int k = 0; k < numCandidates; k++) {
+                    candidateRanking[k] = -1;
+                }
+
+                // using form, update candidate ranking array. Position correlates to candidate number
+                // where position = 0, correlates to candidates[0]
+                int position = 0;
+
+                // loop over every character of the ballots form. example of form format: "1,,2,3"
+                for (int j = 0; j < ballot.getForm().length(); j++) {
+                    // get current character
+                    char curChar = ballot.getForm().charAt(j);
+
+                    // check if the character is a ranking or a comma
+                    if (curChar == ',') {
+                        // update position correlating to candidate number if a comma
+                        position++;
+                    } else {
+                        // get the candidates ranking of the candidates corresponding position/index
+                        String ranks = "";
+                        ranks += curChar;
+                        //add letters if number is double digits
+                        if ((j + 1) < ballot.getForm().length()) {
+                            while (((j + 1) < ballot.getForm().length()) && (ballot.getForm().charAt(j + 1) != ',')) {
+                                j++;
+                                curChar = ballot.getForm().charAt(j);
+                                ranks += curChar;
+                            }
+                        }
+                        int rank = Integer.parseInt(ranks);
+
+                        // the candidates indexes are sorted in the candidate ranking array
+                        // according to their rank, ex. a form "3,,1,2" would result in "{2,3,0, -1, -1}",
+                        // candidate with index 2 is ranked first and candidate with index 0 is ranked third.
+                        // Set candidates ranking at [rank -1] (since arrays start at 0), and set it equal
+                        // to the candidates position in the candidates array
+                        candidateRanking[rank - 1] = position;
+                    }
+                }
+
+                // set ballots candidate ranking
+                ballot.setCandidateRanking(candidateRanking);
+                
+                // add the newly made and initalized ballot to the list of ballots
+                ballots[index] = ballot;
+                index++;
+            }
+        }
+       
+
+        // update IR_Elections current unallocated ballots to equal the list of processed ballots
+        // read in from the file
+        currentBallots = ballots;
+
+        // initalize an empty array of ballots for each candidate correlating
+        // to the size of the total possible number ballots a candidate can have
+        for (int i = 0; i < numCandidates; i++) {
+            IR_Ballot [] ballotbox = new IR_Ballot[numBallots];
+            candidates[i].setBallots(ballotbox);
+        }
+
+        return;
+    }
+
+}
