@@ -16,14 +16,16 @@ This Voting System is designed to determine election results for either Instant 
 
 ### How to build and run the system: 
 ##### Makefile is used for running the System.
-* make run                          # runs project in target folder without filename argument(s), election file(s) should be in resources folder
-* make run filename1 filename2 ...  # runs project in target folder with filename argument(s), election file(s) should be in resources folder
-* make build                        # builds project classes
-* make javadocs                     # generates javadocs in documentation folder
-* make remove-javadocs              # deletes javadocs in documentation folder
-* make run-tests                    # runs test suite
-* make tests                	      # builds project test classes
-* make clean	                      # deletes compiled build classes
+* make run                                 # runs project in target folder without filename argument(s), election file(s) should be in resources folder
+* make run filename1 filename2 ...         # runs project in target folder with filename argument(s), election file(s) should be in resources folder
+* make build                               # builds project classes
+* make javadocs                            # generates javadocs in documentation folder
+* make remove-javadocs                     # deletes javadocs in documentation folder
+* make run-tests                           # runs test 
+* make run-unit-tests filename=FILENAME    # runs FILENAME unit test
+* make run-system-tests filename=FILENAME  # runs FILENAME system test
+* make tests                	             # builds project test classes
+* make clean	                             # deletes compiled build classes
 ##### To run the system without using the Makefile
 java -cp location-of-build-package main.Main <br>
 java -cp locaion-of-build-package main.Main electionfile.csv
