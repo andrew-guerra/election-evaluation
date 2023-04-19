@@ -135,7 +135,12 @@ public class Main {
         Election election;
 
         if(electionType.equals("IR")) {
-            //return new IR_Election(electionFiles, date);
+            if (electionFiles.length == 1) {
+                return new IR_Election(electionFiles[0], date);      // One file in IR_Election
+            } else {
+                return new IR_Election(electionFiles, date);         // Multiple files in IR_Election
+            }
+            
         } else if(electionType.equals("CPL")) {
             try {
                 election = new CPL_Election(electionFiles, date);
