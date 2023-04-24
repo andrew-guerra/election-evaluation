@@ -14,22 +14,39 @@ public class PO_Election extends Election {
     private int numCandidates;
     private PO_Ballot[] ballots;
     private int ballotCount;
+    private int[] filesBallotCount;
     
     /**
-     * Constructor for PO_Election. Initalizes fields
-     * @param electionFile is a Scanner that should read from
-     * a IR_Election ballot file. Scanner Should point at the second line
-     * of the file or else other methods may fail.
-     * @param date is a string that represent the date at which
-     * the election was run
+     * Instantiates a PO_Election object. It is passed a Scanner object array of an election files to retrieve election data, and also 
+     * a String represenation of the date of the election.
+     * The constructor calls two private methods, readCPLHeader() and readCPLBallots() to set up the PO_Election.
+     * 
+     * @param electionFile
+     * @param date
+     * @throws IOException
+     */
+    public PO_Election(Scanner[] electionFiles, String date) {
+        super(electionFiles);  
+        filesBallotCount = new int[electionFiles.length];
+
+        readPOHeader();
+        setFileScanners();
+        readPOBallots();
+    }
+
+    /**
+     * Instantiates a PO_Election object. It is passed a Scanner object of an election file to retrieve election data, and also 
+     * a String represenation of the date of the election.
+     * The constructor calls two private methods, readPOHeader() and readPOBallots() to set up the PO_Election.
+     * 
+     * @param electionFile
+     * @param date
+     * @throws IOException
      */
     public PO_Election(Scanner electionFile, String date) {
         super(electionFile);
-        this.typeElection = "IR Election";
-        candidates = null;
-        numCandidates = 0;
-        ballots = null;
-        ballotCount = 0;
+        readPOHeader();
+        readPOBallots();
     }
 
     /**
@@ -40,6 +57,10 @@ public class PO_Election extends Election {
      * Takes no parameters and returns nothing. Used as a helper function for run().
      */
     private void readPOHeader() {
+        if(electionFiles != null) {
+            electionFile = electionFiles[0];
+        }
+
         // read second line of file and get the number of candidates
         // and move scanner to the next line with candidates afterwards
         numCandidates = electionFile.nextInt();
@@ -66,7 +87,6 @@ public class PO_Election extends Election {
                 party = party.substring(0, party.length() - 1);
             }
             
-            
             //fill fields of candidates
             candidates[i] = new Candidate();
             candidates[i].setBallotCount(0);
@@ -79,9 +99,36 @@ public class PO_Election extends Election {
         // get the total number of Ballots
         numBallots = electionFile.nextInt();
 
+        if(electionFiles != null) {
+            filesBallotCount[0] = numBallots;
+        }
+
         // scanner, now on lines with ballots
         electionFile.nextLine();
         return;
+    }
+
+    /**
+     * Helper method for readPOBallots(). Sets the Scanner object of each file to the place to read in ballots. 
+     * Initializes the numBallotsFile[] array. Assumes Scanner objects are pointing at first line of a PO.csv file.
+     * Takes no parameters and returns nothing
+     */
+    private void setFileScanners() {
+        if(electionFiles != null) {
+            for (int i = 0; i < electionFiles.length; i++) {     // iterate through Scanner objects for files
+                Scanner electionFile = electionFiles[i];
+                if (i != 0) {                                    // do not read in Scanner used in PO_Header
+                    electionFile.nextLine();
+                    electionFile.nextLine();
+                    electionFile.nextLine();
+
+                    int fileBallots = electionFile.nextInt();
+                    numBallots = numBallots + fileBallots;       // add to total number of ballots
+                    filesBallotCount[i] = fileBallots;             // add to file total of ballots
+                    electionFile.nextLine();                     // Scanner ready to read in ballots
+                }
+            }
+        }
     }
 
     /**
