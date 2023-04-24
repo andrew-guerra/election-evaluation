@@ -12,9 +12,8 @@ import java.util.Scanner;
 public class PO_Election extends Election {
     private Candidate[] candidates;
     private int numCandidates;
-    private IR_Ballot[] ballots;
+    private PO_Ballot[] ballots;
     private int ballotCount;
-    
     
     /**
      * Constructor for PO_Election. Initalizes fields
@@ -83,5 +82,25 @@ public class PO_Election extends Election {
         // scanner, now on lines with ballots
         electionFile.nextLine();
         return;
+    }
+
+    /**
+     * Helper method for run(). Reads ballot information from a PO_Election.csv file. Assumes readPOHeader() has been
+     * previously called and Scanner is ready to read in the first ballot in the file. Creates a PO_Ballot for each ballot read
+     * in and stores in an array of PO_Ballots.
+     * Takes no parameters and returns nothing.
+     */
+    private void readPOBallots() {
+        int index = 0;
+        ballots = new PO_Ballot[ballotCount];
+
+        String ballot;
+        for (int j = 0; j < numBallots; j++) {                      // iterate through a file and create ballots
+            ballot = electionFile.nextLine();
+            int partyNum = ballot.indexOf("1");                     // partyNum is index into parties[]
+            PO_Ballot temp = new PO_Ballot(partyNum, index);
+            ballots[index] = temp;                                  // store ballot in system
+            index++;
+        }
     }
 }
