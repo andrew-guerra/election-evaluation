@@ -91,4 +91,59 @@ public class IR_ElectionIntegrationTests {
 
         System.setOut(oldOut);
     }
+
+    @Test
+    public void testMultifileIR_Election() {
+        File expectedAuditFile, actualAuditFile;
+        try  {
+            expectedAuditFile = new File("../testing/system/IR_ElectionIntegration/multifile-IR-audit.txt");
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("multifile-IR-audit.txt not found");
+            return;
+        }
+
+        InputStream oldIn = System.in;
+        String date = "11-11-1111";
+        System.setIn(new ByteArrayInputStream(date.getBytes()));
+
+        PrintStream oldOut = System.out;
+        try {
+            System.setOut(new PrintStream(new File("../testing/output/testMultifileIR_Election.txt")));
+        } catch(Exception e) {
+            e.printStackTrace();
+            fail("testMultifileIR_Election.txt not found");
+            return;
+        }
+
+        Main.main(new String[]{"../testing/system/IR_ElectionIntegration/small-IR.csv", "../testing/system/IR_ElectionIntegration/small-IR.csv"});
+        actualAuditFile = new File("IR_11-11-1111.txt");
+
+        Scanner expectedAuditScanner;
+        Scanner actualAuditScanner;
+
+        try {
+            expectedAuditScanner = new Scanner(expectedAuditFile);
+            actualAuditScanner = new Scanner(actualAuditFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail("multifile-IR-audit.txt or IR_11-11-1111.txt not found");
+            return;
+        }
+
+        while(expectedAuditScanner.hasNextLine() && actualAuditScanner.hasNextLine()) {
+            String line1 = expectedAuditScanner.nextLine().trim();
+            String line2 = actualAuditScanner.nextLine().trim();
+            if(line1.contains("#") && line2.contains("#")) {
+                continue;
+            }
+            assertEquals(line1, line2);
+        }
+
+        expectedAuditScanner.close();
+        actualAuditScanner.close();
+        
+        System.setIn(oldIn);
+        System.setOut(oldOut);
+    }
 }
