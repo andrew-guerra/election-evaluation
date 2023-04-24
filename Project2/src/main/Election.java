@@ -113,6 +113,14 @@ public class Election {
      * get the scanner scanning the election file
      * @return Scanner, the scanner scanning the election file
      */
+    public Scanner getElectionFile() {
+        return this.electionFile;
+    }
+
+    /**
+     * get the scanner scanning the election files
+     * @return Scanner[], the scanner[] scanning the election file
+     */
     public Scanner[] getElectionFiles() {
         return this.electionFiles;
     }

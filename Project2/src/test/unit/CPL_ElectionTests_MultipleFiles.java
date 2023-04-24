@@ -41,14 +41,18 @@ public class CPL_ElectionTests_MultipleFiles {
     public void testCPL_ElectionHeader() throws IOException {
         
         Scanner electionFile = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard.csv"));
-        Scanner[] electionFiles = {electionFile}
+        electionFile.nextLine();  // throw away CPL header
+
+        Scanner[] electionFiles = {electionFile};
         String date = "11-11-1111";
         CPL_Election test = new CPL_Election(electionFiles, date);
         test.run();
 
-        Scanner electionFile1 = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard1.csv"));
-        Scanner electionFile2 = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard1.csv"));
-        Scanner[] electionFiles2 = {electionFile1, electionFile2}
+        Scanner electionFile1 = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard.csv"));
+        Scanner electionFile2 = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard2.csv"));
+        electionFile1.nextLine();  // throw away CPL header
+
+        Scanner[] electionFiles2 = {electionFile1, electionFile2};
         date = "11-11-1111";
         test = new CPL_Election(electionFiles2, date);
         test.run();
@@ -58,7 +62,7 @@ public class CPL_ElectionTests_MultipleFiles {
     @Test
     public void testMainScannerArray() throws IOException {
         
-        Scanner[] electionFileScanners = Main.loadElectionFile({"../testing/unit/Main/CPL_Standard.csv", "../testing/unit/Main/CPL_Standard.csv"});
+        Scanner[] electionFileScanners = Main.loadElectionFile(new String[]{"../testing/unit/Main/CPL_Election.csv", "../testing/unit/Main/CPL_Election.csv"});
         assertNotEquals(null, electionFileScanners);
 
         electionFileScanners[0].close();
@@ -70,14 +74,18 @@ public class CPL_ElectionTests_MultipleFiles {
     public void testCPL_ElectionReadInBallots() throws IOException {
         
         Scanner electionFile = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard.csv"));
-        Scanner[] electionFiles = {electionFile}
+        electionFile.nextLine();  // throw away CPL header
+        
+        Scanner[] electionFiles = {electionFile};
         String date = "11-11-1111";
         CPL_Election test = new CPL_Election(electionFiles, date);
         test.run();
 
-        Scanner electionFile1 = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard1.csv"));
-        Scanner electionFile2 = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard1.csv"));
-        Scanner[] electionFiles2 = {electionFile1, electionFile2}
+        Scanner electionFile1 = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard.csv"));
+        Scanner electionFile2 = new Scanner(new FileInputStream("../testing/unit/CPL_Election/CPL_Standard2.csv"));
+        electionFile1.nextLine();  // throw away CPL header
+
+        Scanner[] electionFiles2 = {electionFile1, electionFile2};
         date = "11-11-1111";
         test = new CPL_Election(electionFiles2, date);
         test.run();
