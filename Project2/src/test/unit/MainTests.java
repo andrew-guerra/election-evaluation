@@ -1,6 +1,7 @@
 package test.unit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
@@ -125,5 +126,53 @@ public class MainTests {
         CPLElectionFileScanner.close();
         assertNotEquals(null, CPL_election);
         assertEquals(CPL_Election.class, CPL_election.getClass());
+    }
+
+    @Test
+    public void testRetrieveMultipleFilenames() {
+        PrintStream oldOut = System.out;
+        try {
+            System.setOut(new PrintStream(new File("../testing/output/testLargeCPL_Election.txt")));
+        } catch(Exception e) {
+            e.printStackTrace();
+            fail("testSmallCPL_Election.txt not found");
+            return;
+        }
+
+        // test args empty, scanner full
+        String[] args = new String[]{};
+
+        // only one file name
+        Scanner input;
+        try  {
+            input = new Scanner(new File("../testing/unit/Main/multiple_files_singular.txt"));
+        } catch (FileNotFoundException e) {
+            fail("multiple_files_singular.txt not found");
+            return;
+        }
+
+        String[] expectedOut = {"filename.txt"};
+        String[] filename = Main.retrieveFilenames(args, input);
+        assertArrayEquals(expectedOut, filename);
+
+        // more than one file name
+        Scanner input2;
+        try  {
+            input2 = new Scanner(new File("../testing/unit/Main/multiple_files_triple.txt"));
+        } catch (FileNotFoundException e) {
+            fail("multiple_files_triple.txt not found");
+            return;
+        }
+        String[] expectedOut2 = {"filename1.txt", "filename2.txt", "filename3.txt"};
+        filename = Main.retrieveFilenames(args, input2);
+        assertArrayEquals(expectedOut2, filename);
+
+        // test, args not null/empty
+        String[] expectedOut3 = {"filename1.txt", "filename2.txt"};
+        filename = Main.retrieveFilenames(expectedOut3, null);
+        assertArrayEquals(expectedOut3, filename);
+
+        input.close();
+        System.setOut(oldOut);
     }
 }
