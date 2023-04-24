@@ -46,6 +46,7 @@ public class CPL_ElectionTests_MultipleFiles {
         files[0] = "../testing/unit/CPL_Election/CPL_Standard.csv";
         Scanner[] electionFileScanners = Main.loadElectionFile(files);
         electionFileScanners[0].nextLine();
+
         String date = "11-11-1111";
         CPL_Election test = new CPL_Election(electionFileScanners, date);
 
@@ -56,6 +57,7 @@ public class CPL_ElectionTests_MultipleFiles {
         files[1] = "../testing/unit/CPL_Election/CPL_Standard2.csv";
         electionFileScanners = Main.loadElectionFile(files);
         electionFileScanners[0].nextLine();
+
         date = "11-11-1111";
         test = new CPL_Election(electionFileScanners, date);
 
@@ -66,11 +68,13 @@ public class CPL_ElectionTests_MultipleFiles {
     @Test
     public void testMainScannerArray() throws IOException {
         
+
         String[] files = new String[1];
         files[0] = "../testing/unit/CPL_Election/CPL_Standard.csv";
         
         Scanner[] electionFileScanners = Main.loadElectionFile(files);
         assertNotEquals(null, electionFileScanners[0]);
+
 
         electionFileScanners[0].close();
         
@@ -80,10 +84,12 @@ public class CPL_ElectionTests_MultipleFiles {
     @Test
     public void testCPL_ElectionReadInBallots() throws IOException {
         
+
         String[] files = new String[1];
         files[0] = "../testing/unit/CPL_Election/CPL_Standard.csv";
         Scanner[] electionFileScanners = Main.loadElectionFile(files);
         electionFileScanners[0].nextLine();
+
         String date = "11-11-1111";
         CPL_Election test = new CPL_Election(electionFileScanners, date);
         test.run();
@@ -93,6 +99,7 @@ public class CPL_ElectionTests_MultipleFiles {
         files[1] = "../testing/unit/CPL_Election/CPL_Standard2.csv";
         electionFileScanners = Main.loadElectionFile(files);
         electionFileScanners[0].nextLine();
+
         date = "11-11-1111";
         test = new CPL_Election(electionFileScanners, date);
         test.run();
