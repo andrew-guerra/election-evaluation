@@ -202,6 +202,10 @@ public class Main {
             }
 
             return election;
+        }  else if(electionType.equals("PO")) {
+            if (electionFiles.length == 1) {
+                return new IR_Election(electionFiles[0], date);      // One file in IR_Election
+            }
         }
         
         System.out.printf("\"%s\" is not a valid election type\n", electionType);
