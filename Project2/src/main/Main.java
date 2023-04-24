@@ -66,6 +66,28 @@ public class Main {
      * @param fileName  file name for election file
      * @return          Scanner object for election file 
      */
+    public static Scanner loadElectionFile(String fileName) {        
+        Scanner electionFile;
+        try {
+            electionFile = new Scanner(new FileInputStream(fileName));
+        } catch(FileNotFoundException e) {
+            System.out.printf("File \"%s\" cannot be found\n", fileName);
+            return null;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    
+        return electionFile;
+    }
+
+    /**
+     * Generates a Scanner object based on file name. File name is assumed relative to Project1/src. 
+     * Returns null when an exception occurs.
+     * 
+     * @param fileName  file name for election file
+     * @return          Scanner object for election file 
+     */
     public static Scanner[] loadElectionFile(String[] fileNames) {
         Scanner[] electionFiles = new Scanner[fileNames.length];            
         Scanner electionFile;
@@ -121,6 +143,35 @@ public class Main {
         }*/
 
         return dateStr;
+    }
+
+    /**
+     * Retrieves and validates election type in election file and generates an election object based on that election type.
+     * Returns null when an invalid election type is retrieved.
+     * 
+     * @param electionFile  Scanner of election file
+     * @return              Election object of election type in election file
+     */
+    public static Election retrieveElection(Scanner electionFile, String date) {
+        String electionType = electionFile.nextLine().strip();
+        Election election;
+
+        if(electionType.equals("IR")) {
+            return new IR_Election(electionFile, date);
+        } else if(electionType.equals("CPL")) {
+            try {
+                election = new CPL_Election(electionFile, date);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("CPL election not loaded");
+                election = null;
+            }
+
+            return election;
+        }
+        
+        System.out.printf("\"%s\" is not a valid election type\n", electionType);
+        return null;
     }
 
     /**
