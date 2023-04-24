@@ -5,10 +5,10 @@ echo "Running System Tests"
 if [ $# -eq 0 ]
 then
     # all test files
-    numUnitTest=$(ls -1 test/system | wc -l)
-    ls test/system | bash ../misc/read-class-names.sh .class ${numUnitTest} | bash ../misc/append-strings.sh test.unit. ${numUnitTest} | xargs java -cp .:../../lib/*:src/* org.junit.runner.JUnitCore 
+    numSystemTests=$(ls -1 test/system | wc -l)
+    ls test/system | bash ../misc/read-class-names.sh .class ${numSystemTests} | bash ../misc/append-strings.sh test.system. ${numSystemTests} | xargs java -cp .:../../lib/*:src/* org.junit.runner.JUnitCore 
 else 
     # specified test file
-    numUnitTest=1
-    echo "$1" | bash ../misc/read-class-names.sh .class ${numUnitTest} | bash ../misc/append-strings.sh test.system. ${numUnitTest} | xargs java -cp .:../../lib/*:src/* org.junit.runner.JUnitCore
+    numSystemTests=1
+    echo "$1" | bash ../misc/read-class-names.sh .class ${numSystemTests} | bash ../misc/append-strings.sh test.system. ${numSystemTests} | xargs java -cp .:../../lib/*:src/* org.junit.runner.JUnitCore
 fi
