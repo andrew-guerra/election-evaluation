@@ -3,6 +3,7 @@ package main;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
+import java.awt.print.PrinterException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -222,8 +223,9 @@ public class Main {
      * Runs program for running of elections
      * 
      * @param args      command line arguments for main, first arugment is filename, second is election date
+     * @throws PrinterException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws PrinterException {
         String[] filenames;
         String dateStr;
         Scanner[] electionFiles;
