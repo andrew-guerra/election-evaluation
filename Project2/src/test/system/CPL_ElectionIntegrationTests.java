@@ -84,12 +84,17 @@ public class CPL_ElectionIntegrationTests {
         }
 
         final long startTime = System.currentTimeMillis();
+        
+        InputStream oldIn = System.in;
         String date = "03-26-2023";
-        Main.main(new String[]{"../testing/system/CPL_ElectionIntegration/large-CPL.csv", date});
+        System.setIn(new ByteArrayInputStream(date.getBytes()));
+
+        Main.main(new String[]{"../testing/system/CPL_ElectionIntegration/large-CPL.csv"});
 
         final long elapsedTimeMinutes = (System.currentTimeMillis() - startTime) / 60000;
         assertTrue(elapsedTimeMinutes < 4.0);
 
         System.setOut(oldOut);
+        System.setIn(oldIn);
     }
 }
