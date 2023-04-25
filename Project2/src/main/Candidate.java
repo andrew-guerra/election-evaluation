@@ -119,4 +119,11 @@ public class Candidate {
         this.party = party;
     }
 
+    /**
+     * increments ballot count by 1
+     */
+    public void incrementBallotCount() {
+        this.ballotCount++;
+    }
+
 }

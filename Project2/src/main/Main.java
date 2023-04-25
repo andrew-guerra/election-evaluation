@@ -186,7 +186,7 @@ public class Main {
         Election election;
 
         if(electionType.equals("IR")) {
-            if (electionFiles.length == 1) {
+            if(electionFiles.length == 1) {
                 return new IR_Election(electionFiles[0], date);      // One file in IR_Election
             } else {
                 return new IR_Election(electionFiles, date);         // Multiple files in IR_Election
@@ -194,7 +194,11 @@ public class Main {
             
         } else if(electionType.equals("CPL")) {
             try {
-                election = new CPL_Election(electionFiles, date);
+                if(electionFiles.length == 1) {
+                    return new CPL_Election(electionFiles[0], date);
+                } else {
+                    return new CPL_Election(electionFiles, date);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("CPL election not loaded");
@@ -204,7 +208,9 @@ public class Main {
             return election;
         }  else if(electionType.equals("PO")) {
             if (electionFiles.length == 1) {
-                return new IR_Election(electionFiles[0], date);      // One file in IR_Election
+                return new PO_Election(electionFiles[0], date);      // One file in PO_Election
+            } else {
+                return new PO_Election(electionFiles, date);      // Multiple files in PO_Election
             }
         }
         
@@ -254,9 +260,9 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < electionFiles.length; i++) {
+
+        for(int i = 0; i < electionFiles.length; i++) {
             electionFiles[i].close();
         }
-        
     }
 }
