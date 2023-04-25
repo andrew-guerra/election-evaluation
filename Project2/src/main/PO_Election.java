@@ -1,6 +1,9 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 /** 
  * A class that represents an PO_Election and contains methods
@@ -15,6 +18,7 @@ public class PO_Election extends Election {
     private PO_Ballot[] ballots;
     private int ballotCount;
     private int[] filesBallotCount;
+    private Candidate winningCandidate;
     
     /**
      * Instantiates a PO_Election object. It is passed a Scanner object array of an election files to retrieve election data, and also 
@@ -43,6 +47,7 @@ public class PO_Election extends Election {
      */
     public PO_Election(Scanner electionFile, String date) {
         super(electionFile);
+        
         readPOHeader();
         readPOBallots();
     }
@@ -137,7 +142,7 @@ public class PO_Election extends Election {
      */
     private void readPOBallots() {
         int index = 0;
-        ballots = new PO_Ballot[ballotCount];
+        ballots = new PO_Ballot[numBallots]];
 
         if(electionFiles != null) {
             for(int i = 0; i < electionFiles.length; i++) {            // iterate through files
@@ -162,5 +167,73 @@ public class PO_Election extends Election {
                 index++;
             }
         }
+    }
+
+    /** 
+     * Runs the PO algorithm and writes audit information to the audit file and displays the results and winner
+     * information of the eleciton to the screen. Assumes the electionFile Scanner object begins on the second line, all
+     * information contained in the CPL election ballot file is entered properly, there is at least one ballot in the file and 
+     * at least one candidate. Takes no parameters and returns nothing. Generates an audit file.
+     * 
+     * Assumes election class has been initialized properly
+     */
+    public void run() {
+        shuffleBallots();                          // shuffle ballots
+        allocateBallots();
+        allocateSeat();    
+    }
+
+    /**
+     * Shuffles the array of ballots contained in PO_Election.
+     * Takes no parameters and returns nothing.
+     */
+    public void shuffleBallots() {
+        Random rnd = ThreadLocalRandom.current();
+        for(int i = ballots.length - 1; i > 0; i--) {
+            int index = rnd.nextInt(i + 1);
+            PO_Ballot a = ballots[index];            // swap ballots
+            ballots[index] = ballots[i];
+            ballots[i] = a;
+        }
+    }
+
+    /**
+     * Allocates ballots to corresponding candidates
+     */
+    public void allocateBallots() {
+        for(int i = 0; i < numBallots; i++) {
+            candidates[ballots[i].getPartyNum()].incrementBallotCount();  
+        }
+    }
+
+    /**
+     * Allocate winning seat to winning candidate based on allocated ballots
+     */
+    public void allocateSeat() {
+        ArrayList<Candidate> leadingCandidates = new ArrayList<>();
+        int highestVoteCount = -1;
+
+        for(Candidate candidate : candidates) {
+            if(candidate.getBallotCount() > highestVoteCount) {
+                leadingCandidates = new ArrayList<>();
+                leadingCandidates.add(candidate);
+                highestVoteCount = candidate.getBallotCount();
+            } else if(candidate.getBallotCount() == highestVoteCount) {
+                leadingCandidates.add(candidate);
+            }
+        }
+
+        if(leadingCandidates.size() != 0) {
+            winningCandidate = leadingCandidates.get(0);
+        }
+    }
+
+    /**
+     * Retrurns winning candidate of election
+     * 
+     * @return winning candidate
+     */
+    public Candidate getWinningCandidate() {
+        return winningCandidate;
     }
 }
