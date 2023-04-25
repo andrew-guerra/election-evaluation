@@ -58,6 +58,7 @@ public class CPL_Election extends Election {
         super(electionFile);
         auditer = new CPL_Audit(date);      
         this.readCPLHeader();
+        this.setFileScanners();
         this.readCPLBallots();
     }
     
@@ -169,19 +170,7 @@ public class CPL_Election extends Election {
                     electionFile.nextLine();                     // Scanner ready to read in ballots
                 }
             }
-        } else {
-            int numPartiesTemp = electionFile.nextInt();
-            electionFile.nextLine();
-            electionFile.nextLine();
-            for (int j = 0; j < numPartiesTemp; j++) {
-                electionFile.nextLine();
-                        
-            }
-            electionFile.nextLine();
-            numBallots = electionFile.nextInt();         // add to total number of ballots
-            electionFile.nextLine();                     // Scanner ready to read in ballots
-        }
-        
+        } 
         
         auditer.writeHeaderToFile("CPL", parties, numBallots, numSeats);
     }

@@ -41,7 +41,7 @@ public class CPL_ElectionIntegrationTests {
             return;
         }
 
-        Main.main(new String[]{"../testing/system/CPL_ElectionIntegration/small-CPL.csv", date});
+        Main.main(new String[]{"../testing/system/CPL_ElectionIntegration/small-CPL.csv"});
         actualAuditFile = new File("CPL_03-26-2023.txt");
 
         Scanner expectedAuditScanner;

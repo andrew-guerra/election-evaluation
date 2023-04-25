@@ -41,7 +41,7 @@ public class IR_ElectionIntegrationTests {
             return;
         }
 
-        Main.main(new String[]{"../testing/system/IR_ElectionIntegration/small-IR.csv", date});
+        Main.main(new String[]{"../testing/system/IR_ElectionIntegration/small-IR.csv"});
         actualAuditFile = new File("IR_03-26-2023.txt");
 
         Scanner expectedAuditScanner;
