@@ -1,8 +1,11 @@
 package main;
 
+import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+
+import javax.swing.JTable;
 
 import java.util.Random;
 
@@ -22,6 +25,7 @@ public class IR_Election extends Election {
     private int currentBallotCount;
     private IR_Audit audit; 
     private int numBallotsFile[];
+    private IR_Table ir_table;
 
     
     /**
@@ -123,8 +127,9 @@ public class IR_Election extends Election {
      * Updates the IR_Elections ballots list to include each ballot object and initalizes
      * each candidate to have an array of ballots that can hold the total number of ballots.
      * Takes no parameters and returns nothing. Used as a helper function for run().
+     * @throws PrinterException
      */
-    private void readIRBallots() {
+    private void readIRBallots() throws PrinterException {
         // create an array of ballots equal to the number of total ballots in the file
         IR_Ballot[] ballots = new IR_Ballot[numBallots];
 
@@ -201,6 +206,7 @@ public class IR_Election extends Election {
             candidates[i].setBallots(ballotbox);
         }
 
+        
         return;
     }
 
@@ -234,6 +240,8 @@ public class IR_Election extends Election {
                 candidates[candidateNum].addBallot(ballotToAllocate);
             }
         }
+
+        
 
         // IR_Election has distributed all ballots in position
         // so current ballots is set to null and current ballot count
@@ -455,7 +463,7 @@ public class IR_Election extends Election {
      * 
      * Assumes election class has been initalized properly and so has audit object.
      * 
-     * @throws IOException
+     * @throws PrinterException
      */
     public void run() throws IOException {
         // read the header infor form the file and write header to audit
@@ -469,10 +477,17 @@ public class IR_Election extends Election {
 
         // read in all ballots and shuffle the ballots
         if (electionFile != null) {
-            readIRBallots();
+            try {
+                readIRBallots();
+            } catch (PrinterException e) {
+                e.printStackTrace();
+            }
         } else {
             readIRBallotsMultiple();
         }
+        
+        // initialize IR_Table
+        ir_table = new IR_Table(candidates, numBallots);
         
         shuffleBallots();
 
@@ -481,6 +496,7 @@ public class IR_Election extends Election {
             // delegate ballots to candidates, and write the current vote count and
             // ballots given to each candidate still in the running
             allocateBallots();
+            ir_table.IR_Table_Round(candidates);
             audit.writeCandidatesBallots(candidates, numCandidates);
 
             // check if a candidate has won
@@ -498,6 +514,11 @@ public class IR_Election extends Election {
                 System.out.println("Votes Won: " + candidates[winner].getBallotCount());
                 System.out.println("Percentage of Votes Won: " + String.format("%.2f",percentage));
                 audit.close();
+                try {
+                    ir_table.IR_Table_Display();
+                } catch (PrinterException e) {
+                    e.printStackTrace();
+                }
                 return;
             }
 
@@ -509,6 +530,7 @@ public class IR_Election extends Election {
             removeLowestCandidate(lowest);
             audit.writeBallotsReallocated(this.currentBallots, this.currentBallotCount);
         }
+        
     }
     /** 
      * get the array of candidates contained in IR_eleciton 
@@ -763,6 +785,11 @@ public class IR_Election extends Election {
         }
 
         return;
+    }
+    public void IR_Election_Table() throws PrinterException {
+
+        JTable ir_election = new JTable();
+        ir_election.print();
     }
 
 }

@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -56,8 +57,9 @@ public class Election {
     /**
      * run method is inherited and overrided by CPL and IR
      * @throws IOException if write fails
+     * @throws PrinterException
      */
-    public void run() throws IOException {
+    public void run() throws IOException, PrinterException {
 
     }
 
