@@ -142,7 +142,7 @@ public class PO_Election extends Election {
      */
     private void readPOBallots() {
         int index = 0;
-        ballots = new PO_Ballot[numBallots]];
+        ballots = new PO_Ballot[numBallots];
 
         if(electionFiles != null) {
             for(int i = 0; i < electionFiles.length; i++) {            // iterate through files
