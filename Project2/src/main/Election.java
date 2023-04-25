@@ -26,18 +26,12 @@ public class Election {
      * @param fileName String, file name
      * @param electionFile Scanner, scanner parsing file
      */
-    /*public Election(int numBallots, String typeElection, String fileName, Scanner[] electionFiles) {
-        this.numBallots = numBallots;
-        this.typeElection = typeElection;
-        this.fileName = fileName;
-        this.electionFiles = Arrays.copyOf(electionFiles, electionFiles.length);
-    }
     public Election(int numBallots, String typeElection, String fileName, Scanner electionFile) {
         this.numBallots = numBallots;
         this.typeElection = typeElection;
         this.fileName = fileName;
         this.electionFile = electionFile;
-    }*/
+    }
 
     /**
      * Constructor for election
@@ -120,7 +114,15 @@ public class Election {
     }
 
     /**
-     * get the scanner scanning the election files
+     * set the scanner scanning the election file
+     * @param electionFile Scanner, the scanner scanning the election file
+     */
+    public void setElectionFile(Scanner electionFile) {
+        this.electionFile = electionFile;
+    }   
+
+    /**
+     * get the scanner[] scanning the election files
      * @return Scanner[], the scanner[] scanning the election file
      */
     public Scanner[] getElectionFiles() {
@@ -128,8 +130,8 @@ public class Election {
     }
 
     /**
-     * set the scanner scanning the election file
-     * @param electionFile Scanner, the scanner scanning the election file
+     * set the scanner[] scanning the election files
+     * @param electionFiles Scanner[], the scanner[] scanning the election files
      */
     public void setElectionFiles(Scanner[] electionFiles) {
         this.electionFiles = electionFiles;

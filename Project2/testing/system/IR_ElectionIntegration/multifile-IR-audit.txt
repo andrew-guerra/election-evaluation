@@ -1,0 +1,21 @@
+Election Type: IR Election
+
+Number of Candidates: 2
+
+Candidates: Rosen (D), Kleinberg (R)
+
+Total Ballot Count: 14
+
+Candidates Vote Counts and Ballots: 
+________________________
+
+Rosen's Vote Count: 6
+Rosen's Ballots: #1 #0 #1 #2 #0 #2 
+
+Kleinberg's Vote Count: 8
+Kleinberg's Ballots: #3 #3 #4 #5 #6 #5 #6 #4 
+
+________________________
+
+Candidate Winner: Kleinberg
+
