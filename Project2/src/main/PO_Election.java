@@ -19,11 +19,10 @@ public class PO_Election extends Election {
     /**
      * Instantiates a PO_Election object. It is passed a Scanner object array of an election files to retrieve election data, and also 
      * a String represenation of the date of the election.
-     * The constructor calls two private methods, readCPLHeader() and readCPLBallots() to set up the PO_Election.
+     * The constructor calls two private methods, readPOHeader() and readPOBallots() to set up the PO_Election.
      * 
-     * @param electionFile
+     * @param electionFiles
      * @param date
-     * @throws IOException
      */
     public PO_Election(Scanner[] electionFiles, String date) {
         super(electionFiles);  
@@ -41,7 +40,6 @@ public class PO_Election extends Election {
      * 
      * @param electionFile
      * @param date
-     * @throws IOException
      */
     public PO_Election(Scanner electionFile, String date) {
         super(electionFile);
@@ -141,13 +139,28 @@ public class PO_Election extends Election {
         int index = 0;
         ballots = new PO_Ballot[ballotCount];
 
-        String ballot;
-        for (int j = 0; j < numBallots; j++) {                      // iterate through a file and create ballots
-            ballot = electionFile.nextLine();
-            int partyNum = ballot.indexOf("1");                     // partyNum is index into parties[]
-            PO_Ballot temp = new PO_Ballot(partyNum, index);
-            ballots[index] = temp;                                  // store ballot in system
-            index++;
+        if(electionFiles != null) {
+            for(int i = 0; i < electionFiles.length; i++) {            // iterate through files
+                Scanner electionFile = electionFiles[i];
+                String ballot;
+                
+                for(int j = 0; j < filesBallotCount[i]; j++) {           // iterate through a file and create ballots
+                    ballot = electionFile.nextLine();
+                    int partyNum = ballot.indexOf("1");                 // partyNum is index into parties[]
+                    PO_Ballot temp = new PO_Ballot(partyNum, index);
+                    ballots[index] = temp;                       // store ballot in system
+                    index++;
+                }
+            }
+        } else {
+            String ballot;
+            for(int j = 0; j < numBallots; j++) {                       // iterate through a file and create ballots
+                ballot = electionFile.nextLine();
+                int partyNum = ballot.indexOf("1");                     // partyNum is index into parties[]
+                PO_Ballot temp = new PO_Ballot(partyNum, index);
+                ballots[index] = temp;                                  // store ballot in system
+                index++;
+            }
         }
     }
 }
