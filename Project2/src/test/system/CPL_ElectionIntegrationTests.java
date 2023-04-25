@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.print.PrinterException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +18,7 @@ import main.Main;
 
 public class CPL_ElectionIntegrationTests {
     @Test
-    public void testSmallCPL_Election() {
+    public void testSmallCPL_Election() throws PrinterException {
         File expectedAuditFile, actualAuditFile;
         try  {
             expectedAuditFile = new File("../testing/system/CPL_ElectionIntegration/small-CPL-audit.txt");
@@ -72,7 +73,7 @@ public class CPL_ElectionIntegrationTests {
     }
 
     @Test
-    public void testLargeCPL_Election() {
+    public void testLargeCPL_Election() throws PrinterException {
         PrintStream oldOut = System.out;
         try {
             System.setOut(new PrintStream(new File("../testing/output/testLargeCPL_Election.txt")));

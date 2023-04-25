@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.print.PrinterException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +18,7 @@ import main.Main;
 
 public class IR_ElectionIntegrationTests {
     @Test
-    public void testSmallIR_Election() {
+    public void testSmallIR_Election() throws PrinterException {
         File expectedAuditFile, actualAuditFile;
         try  {
             expectedAuditFile = new File("../testing/system/IR_ElectionIntegration/small-IR-audit.txt");
@@ -72,7 +73,7 @@ public class IR_ElectionIntegrationTests {
     }
 
     @Test
-    public void testLargeIR_Election() {
+    public void testLargeIR_Election() throws PrinterException {
         PrintStream oldOut = System.out;
         try {
             System.setOut(new PrintStream(new File("../testing/output/testSmallIR_Election.txt")));
@@ -93,7 +94,7 @@ public class IR_ElectionIntegrationTests {
     }
 
     @Test
-    public void testMultifileIR_Election() {
+    public void testMultifileIR_Election() throws PrinterException {
         File expectedAuditFile, actualAuditFile;
         try  {
             expectedAuditFile = new File("../testing/system/IR_ElectionIntegration/multifile-IR-audit.txt");
