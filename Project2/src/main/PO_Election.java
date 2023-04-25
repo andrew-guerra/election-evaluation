@@ -87,7 +87,7 @@ public class PO_Election extends Election {
             if(name.charAt(name.length() - 1) == ',') {
                 party = party.substring(0, party.length() - 2);
             } else {
-                party = party.substring(0, party.length() - 1);
+                party = party.substring(0, party.length() - 2);
             }
             
             //fill fields of candidates
@@ -180,7 +180,7 @@ public class PO_Election extends Election {
     public void run() {
         shuffleBallots();                          // shuffle ballots
         allocateBallots();
-        allocateSeat();    
+        allocateSeat();
     }
 
     /**
