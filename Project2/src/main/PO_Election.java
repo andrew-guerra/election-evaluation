@@ -224,8 +224,19 @@ public class PO_Election extends Election {
         }
 
         if(leadingCandidates.size() != 0) {
-            winningCandidate = leadingCandidates.get(0);
+            winningCandidate = coinToss(leadingCandidates);
         }
+    }
+
+    /** 
+     * Returns random Candidate from list of candidates in a simulated coin toss
+     * @param tiedParties   an ArrayList of Candidate objects that have tied 
+     * @return              winning Candidate of coin toss
+     */
+    private Candidate coinToss(ArrayList<Candidate> tiedCandidates) {
+        Random random = new Random();
+        int randomNumber = random.nextInt(tiedCandidates.size());
+        return tiedCandidates.get(randomNumber);
     }
 
     /**
