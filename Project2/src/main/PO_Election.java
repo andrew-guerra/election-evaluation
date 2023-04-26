@@ -16,7 +16,6 @@ public class PO_Election extends Election {
     private Candidate[] candidates;
     private int numCandidates;
     private PO_Ballot[] ballots;
-    private int ballotCount;
     private int[] filesBallotCount;
     private Candidate winningCandidate;
     
@@ -181,6 +180,7 @@ public class PO_Election extends Election {
         shuffleBallots();                          // shuffle ballots
         allocateBallots();
         allocateSeat();
+        displayElectionStats();
     }
 
     /**
@@ -226,6 +226,19 @@ public class PO_Election extends Election {
         if(leadingCandidates.size() != 0) {
             winningCandidate = coinToss(leadingCandidates);
         }
+    }
+
+    public void displayElectionStats() {
+        System.out.println("PO Election Results:");
+        System.out.printf("Total Ballot Count: %d\n", numBallots);
+
+        System.out.println();
+        for(Candidate candidate : candidates) {
+            System.out.printf("%s %s got %.2f%% of the vote\n", candidate.getName(), candidate.getParty(), (((float) candidate.getBallotCount()) / numBallots) * 100);
+        }
+        System.out.println();
+
+        System.out.printf("Election Winner: %s %s\n", winningCandidate.getName(), winningCandidate.getParty());
     }
 
     /** 
