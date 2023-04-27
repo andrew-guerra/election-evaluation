@@ -81,13 +81,7 @@ public class PO_Election extends Election {
             
             //get party of candidate   
             party = electionFile.next();
-
-            //get party name
-            if(name.charAt(name.length() - 1) == ',') {
-                party = party.substring(0, party.length() - 2);
-            } else {
-                party = party.substring(0, party.length() - 2);
-            }
+            party = party.substring(0, party.indexOf("]"));
             
             //fill fields of candidates
             candidates[i] = new Candidate();
