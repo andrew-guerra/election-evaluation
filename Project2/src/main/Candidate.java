@@ -125,5 +125,4 @@ public class Candidate {
     public void incrementBallotCount() {
         this.ballotCount++;
     }
-
 }

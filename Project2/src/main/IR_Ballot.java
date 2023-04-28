@@ -1,6 +1,5 @@
 package main;
 
-
 /**
  * A class that represents a ballot includes it's ID,
  * current rank, form, and candidate rankings
@@ -116,5 +115,4 @@ public class IR_Ballot {
             return candidateRanking[i];
         }
     }
-
 }

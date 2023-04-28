@@ -536,5 +536,4 @@ public class CPL_Election extends Election {
     public void setBallots(CPL_Ballot[] initialBallots) {
         this.initialBallots = initialBallots;
     }
-    
 }

@@ -4,18 +4,11 @@ import java.awt.print.PrinterException;
 import java.util.Arrays;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 
-import java.lang.Object.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.awt.Component;
 import java.awt.BorderLayout;
 
 /**
@@ -50,6 +43,7 @@ public class IR_Table {
         ir_table = new JTable(model);
         IR_Table_Initialize();
     }
+
     /**
      * Initializes the IR_Table using DefaultTableModel to add columns and rows. Creates headers for Candidate,
      * Party and listing the candidates. Initializes exhausted pile and total rows.
@@ -83,6 +77,7 @@ public class IR_Table {
         ir_table.setShowGrid(true);
         
     }
+
     /**
      * Takes in the state of a round of an IR_Election and generates new columns representing the round in the
      * IR_Election. Round is determined internally. Uses state of candidates and ballot count to determine fields.
@@ -158,6 +153,7 @@ public class IR_Table {
         roundNum++;
         
     }
+
     /**
      * Creates a JPanel for which the IR_Table is added to and eventually displayed with JFrame. 
      * Assumes the table has been properly created.
@@ -173,6 +169,7 @@ public class IR_Table {
         frame.setSize(800, 300);
         frame.setVisible(true);
     }
+
     /**
      * Creates a new JFrame to display the IR_Table as a seperate window. Stores the state internally. 
      * Takes no parameters and returns nothing.
@@ -187,6 +184,7 @@ public class IR_Table {
             }
         });
     }
+
     /**
      * sets JTable of an IR_Election
      * @param ir_table is a JTable that represents the table of an IR_Election
@@ -194,6 +192,7 @@ public class IR_Table {
     public void setTable(JTable ir_table) {
         this.ir_table = ir_table;
     }
+
     /**
      * gets the JTable of an IR_Election
      * @return a JTable representing the IR_Election
@@ -201,6 +200,7 @@ public class IR_Table {
     public JTable getTable() {
         return ir_table;
     }
+
     /**
      * sets the number of ballots in an IR_Election
      * @param numBallots is the number of ballots in an IR_Election
@@ -208,6 +208,7 @@ public class IR_Table {
     public void setNumBallots(int numBallots) {
         this.numBallots = numBallots;
     }
+
     /**
      * gets the number of ballots in an IR_Election
      * @return an int representing the number of ballots
@@ -215,6 +216,7 @@ public class IR_Table {
     public int getNumBallots() {
         return numBallots;
     }
+
     /**
      * sets the round number of an IR_Election
      * @param roundNum  is the round number of an IR_Election
@@ -222,6 +224,7 @@ public class IR_Table {
     public void setRoundNum(int roundNum) {
         this.roundNum = roundNum;
     }
+
     /**
      * gets the round number of an IR_Election
      * @return an int representing the round number
@@ -229,6 +232,7 @@ public class IR_Table {
     public int getRoundNum() {
         return roundNum;
     }
+
     /**
      * sets the candidates array of an IR_Election
      * @param candidates is an array of Candidate[] for an IR_Election
@@ -236,6 +240,7 @@ public class IR_Table {
     public void setCandidates(Candidate[] candidates) {
         this.candidates = candidates;
     }
+
     /**
      * gets the array representing the candidates in an IR_Election
      * @return array holding candidate objects
@@ -243,6 +248,7 @@ public class IR_Table {
     public Candidate[] getCandidates() {
         return candidates;
     }
+
     /**
      * sets an integer array representing vote counts of the previous round of an IR_Election
      * @param previousVoteCounts an int[] array that holds the previous vote counts
@@ -250,6 +256,7 @@ public class IR_Table {
     public void setPreviousVoteCounts(int[] previousVoteCounts) {
         this.previousVoteCounts = previousVoteCounts;
     }
+
     /**
      * gets an integer array representing vote counts of the previous round of an IR_Election
      * @return an integer array holding previous vote counts
@@ -257,6 +264,7 @@ public class IR_Table {
     public int[] getPreviousVoteCounts() {
         return previousVoteCounts;
     }
+
     /**
      * sets the integer representing the previous exhaust ballot totals
      * @param previousExhaust an integer representing the previous exhaust ballot totals
@@ -264,6 +272,7 @@ public class IR_Table {
     public void setPreviousExhaust(int previousExhaust) {
         this.previousExhaust = previousExhaust;
     }
+
     /**
      * gets the integer representing the previous exhaust ballots totals
      * @return an integer representing the previous exhaust ballot totals
@@ -271,5 +280,4 @@ public class IR_Table {
     public int getPreviousExhaust() {
         return previousExhaust;
     }
-    
 }

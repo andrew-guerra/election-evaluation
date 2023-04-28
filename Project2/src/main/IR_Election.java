@@ -786,10 +786,14 @@ public class IR_Election extends Election {
 
         return;
     }
+    
+    /**
+     * Displays IR Election results table
+     * 
+     * @throws PrinterException
+     */
     public void IR_Election_Table() throws PrinterException {
-
         JTable ir_election = new JTable();
         ir_election.print();
     }
-
 }
