@@ -171,30 +171,15 @@ public class PO_Election extends Election {
      * Assumes election class has been initialized properly
      */
     public void run() {
-        shuffleBallots();                          // shuffle ballots
         allocateBallots();
         allocateSeat();
         displayElectionStats();
     }
 
     /**
-     * Shuffles the array of ballots contained in PO_Election.
-     * Takes no parameters and returns nothing.
-     */
-    public void shuffleBallots() {
-        Random rnd = ThreadLocalRandom.current();
-        for(int i = ballots.length - 1; i > 0; i--) {
-            int index = rnd.nextInt(i + 1);
-            PO_Ballot a = ballots[index];            // swap ballots
-            ballots[index] = ballots[i];
-            ballots[i] = a;
-        }
-    }
-
-    /**
      * Allocates ballots to corresponding candidates
      */
-    public void allocateBallots() {
+    private void allocateBallots() {
         for(int i = 0; i < numBallots; i++) {
             candidates[ballots[i].getPartyNum()].incrementBallotCount();  
         }
@@ -203,7 +188,7 @@ public class PO_Election extends Election {
     /**
      * Allocate winning seat to winning candidate based on allocated ballots
      */
-    public void allocateSeat() {
+    private void allocateSeat() {
         ArrayList<Candidate> leadingCandidates = new ArrayList<>();
         int highestVoteCount = -1;
 
