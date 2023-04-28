@@ -137,4 +137,3 @@ public class Election {
         this.electionFiles = electionFiles;
     }   
 }
-

@@ -3,7 +3,6 @@ package main;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
 /** 
  * A class that represents an PO_Election and contains methods

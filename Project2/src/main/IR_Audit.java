@@ -291,7 +291,4 @@ public class IR_Audit{
     public void close() throws IOException {
         auditWriter.close();
     }
-
 }
-
-    

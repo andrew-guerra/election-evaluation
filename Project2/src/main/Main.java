@@ -1,6 +1,5 @@
 package main;
 
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 import java.awt.print.PrinterException;
@@ -133,15 +132,6 @@ public class Main {
 
             break;
         } while(true);
-        /*} /*else {
-            dateStr = args[args.length - 1];
-            try {
-                dateFormatter.parse(dateStr);
-            } catch(DateTimeParseException e) {
-                System.out.printf("%s is an invalid date format\n", dateStr);
-                return null;
-            }
-        }*/
 
         return dateStr;
     }
