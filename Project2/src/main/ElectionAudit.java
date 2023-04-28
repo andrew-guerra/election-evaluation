@@ -28,19 +28,19 @@ public abstract class ElectionAudit {
     }
 
     /**
+     * Returns tring stating winners of an election
      * 
      * @return string stating winners of an election
      */
     public abstract String getWinners();
 
     /**
-     * 
-     * @return writes audit data to audit file
+     * Writes audit data to audit file
      */
     public abstract void writeToAudit();
 
     /**
-     * @return 
+     * Returns audit
      */
     public abstract void returnAudit();
 }

@@ -207,6 +207,9 @@ public class PO_Election extends Election {
         }
     }
 
+    /**
+     * Writes to the terminal percentage of votes won by each candidate as well as the winner of the election.
+     */
     public void displayElectionStats() {
         System.out.println("PO Election Results:");
         System.out.printf("Total Ballot Count: %d\n", numBallots);
