@@ -1,0 +1,11 @@
+Enter date of election in format mm-dd-yyyy: PO Election Results:
+Total Ballot Count: 9
+
+Pike D got 33.33% of the vote
+Foster D got 22.22% of the vote
+Deutsch R got 0.00% of the vote
+Borg R got 22.22% of the vote
+Jones R got 11.11% of the vote
+Smith I got 11.11% of the vote
+
+Election Winner: Pike D
