@@ -97,4 +97,58 @@ public class CPL_ElectionIntegrationTests {
         System.setOut(oldOut);
         System.setIn(oldIn);
     }
+    @Test
+    public void testMultifileCPL_Election() throws PrinterException {
+        File expectedAuditFile, actualAuditFile;
+        try  {
+            expectedAuditFile = new File("../testing/system/CPL_ElectionIntegration/multifile-CPL-audit.txt");
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("multifile-CPL-audit.txt not found");
+            return;
+        }
+
+        InputStream oldIn = System.in;
+        String date = "11-11-1111";
+        System.setIn(new ByteArrayInputStream(date.getBytes()));
+
+        PrintStream oldOut = System.out;
+        try {
+            System.setOut(new PrintStream(new File("../testing/output/testMultifileCPL_Election.txt")));
+        } catch(Exception e) {
+            e.printStackTrace();
+            fail("testMultifileCPL_Election.txt not found");
+            return;
+        }
+
+        Main.main(new String[]{"../testing/system/CPL_ElectionIntegration/small-CPL.csv", "../testing/system/CPL_ElectionIntegration/small-CPL.csv"});
+        actualAuditFile = new File("CPL_11-11-1111.txt");
+
+        Scanner expectedAuditScanner;
+        Scanner actualAuditScanner;
+
+        try {
+            expectedAuditScanner = new Scanner(expectedAuditFile);
+            actualAuditScanner = new Scanner(actualAuditFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail("multifile-CPL-audit.txt or CPL_11-11-1111.txt not found");
+            return;
+        }
+
+        while(expectedAuditScanner.hasNextLine() && actualAuditScanner.hasNextLine()) {
+            String line1 = expectedAuditScanner.nextLine().trim();
+            String line2 = actualAuditScanner.nextLine().trim();
+            if(line1.contains("#") && line2.contains("#")) {
+                continue;
+            }
+            assertEquals(line1, line2);
+        }
+
+        expectedAuditScanner.close();
+        actualAuditScanner.close();
+        
+        System.setIn(oldIn);
+        System.setOut(oldOut);
+    }
 }
