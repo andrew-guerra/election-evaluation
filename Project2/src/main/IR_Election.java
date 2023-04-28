@@ -49,7 +49,7 @@ public class IR_Election extends Election {
 
      /**
      * Constructor for IR_Election. Initalizes fields
-     * @param electionFile is a Scanner that should read from
+     * @param electionFiles is a Scanner that should read from
      * a IR_Election ballot file. Scanner Should point at the second line
      * of the file or else other methods may fail.
      * @param date is a string that represent the date at which

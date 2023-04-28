@@ -33,7 +33,7 @@ public class CPL_Election extends Election {
      * a String represenation of the date of the election. The constructor instantiates a CPL_Audit object that is passed the date.
      * The constructor calls two private methods, readCPLHeader() and readCPLBallots() to set up the CPL_Election.
      * 
-     * @param electionFile
+     * @param electionFiles
      * @param date
      * @throws IOException
      */

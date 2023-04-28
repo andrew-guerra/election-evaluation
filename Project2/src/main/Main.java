@@ -86,8 +86,8 @@ public class Main {
      * Generates a Scanner object based on file name. File name is assumed relative to Project1/src. 
      * Returns null when an exception occurs.
      * 
-     * @param fileName  file name for election file
-     * @return          Scanner object for election file 
+     * @param fileNames  file names for election files
+     * @return           Scanner object for election file 
      */
     public static Scanner[] loadElectionFile(String[] fileNames) {
         Scanner[] electionFiles = new Scanner[fileNames.length];            
@@ -179,7 +179,7 @@ public class Main {
      * Retrieves and validates election type in election file and generates an election object based on that election type.
      * Returns null when an invalid election type is retrieved.
      * 
-     * @param electionFile  Scanner of election file
+     * @param electionFiles  Scanner of election files
      * @return              Election object of election type in election file
      */
     public static Election retrieveElection(Scanner[] electionFiles, String date) {
