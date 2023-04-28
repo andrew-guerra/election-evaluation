@@ -716,7 +716,7 @@ public class IR_Election extends Election {
                 // create a new ballot object and initalize rank, ballot number, and form
                 IR_Ballot ballot = new IR_Ballot();
                 ballot.setRank(0);
-                ballot.setBallotNum(i);
+                ballot.setBallotNum(index);
                 ballot.setForm(electionFile.next());
 
                 // create and initalize a candidate Ranking Array
