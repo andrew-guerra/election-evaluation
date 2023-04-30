@@ -93,7 +93,7 @@ java -cp locaion-of-build-package main.Main electionfile.csv
   * this contains the methods and attributes that is needed to an audit file for a CPL election 
 
 ##### IR_Ballot.java  
-  * this file contains the methods and attributes for a ballot in a CPL election 
+  * this file contains the methods and attributes for a ballot in a IR election 
 
 ##### IR_Election.java 
   * this java file contains what is needed to run a IR election   
@@ -103,6 +103,12 @@ java -cp locaion-of-build-package main.Main electionfile.csv
 
 ##### Party.java  
   * this file contains the information needed about parties in a CPL election. 
+
+##### PO_Ballot.java: 
+  * PO_Ballot class. Contains the methods and attributes for a ballot in a PO election.  
+
+##### PO_Election.java  
+  * PO_Election class. Contains methods and attribute needed to run a PO election
 
 
 ### System Overview 
@@ -118,9 +124,21 @@ java -cp locaion-of-build-package main.Main electionfile.csv
    * Fair Coin Toss: the system will flip a coin to determine a winner if there is a tie
    * Display Results: the system will display a brief description of the election after a winner is determined
    * Generate Audit File: the system will generate an in-depth report about the election.
+   * Bring in Multiple Election Files: the system will allow multiple file names to be brought into the syste,
+   * Read in Multiple IR Election File Headers: the system will handle multiple IR election headers
+   * Read in IR Ballots from Multiple Files: the system will process IR ballots from multiple files.
+   * Read in Multiple CPL Election File Headers: the system will handle multiple CPL election headers.
+   * Read in CPL Ballots from Multiple Files: the system will process CPL ballots from multiple files.
+   * Generate IR Process Table: the system will generate a table displaying how the IR election proceeded. 
+   * Process Headers in PO Election: the system will properly parse the header of a PO election.
+   * Process Ballots in PO Election: the system will properly parse the callots of a PO election.
+   * Bring in Multiple PO Files: the system will properly read in headers and ballots from multiple PO elections.
+   * Run a PO election: the system will run a PO election and determine a winner using the rules of PO.
+   * Display Stats of PO Election: Stats of a PO election are displayed on the screen.
  #### Background Information: 
    * The system will run on a Linux operating system, specifically version 20.03 of Ubuntu, and is not expected to behave or run properly under other operating systems
    * The system will process CSV files of a specified format and is not expected to be able to process files in a different format
+   * The system will display the IR table on a Linux operating system or through VOLE if using another system with ssh.
 
 #### Assumptions: 
   * It is assumed that the system is run on up-to-date Linux systems. 
