@@ -87,4 +87,18 @@ public class PO_ElectionTests {
         assertArrayEquals(expectedBytes, actualBytes);
 
     }
+
+    @Test
+    public void testPO_ElectionTie() throws FileNotFoundException {
+        Scanner[] fileScanners = new Scanner[]{ new Scanner(new File("../testing/unit/PO_Election/tie-PO.csv"))};
+
+        fileScanners[0].nextLine();
+
+        PO_Election election = new PO_Election(fileScanners, "11-11-1111");
+        
+        assertNotEquals(null, election.getElectionFiles());
+        assertEquals(10, election.getNumBallots());
+
+        election.run();
+    }
 }
