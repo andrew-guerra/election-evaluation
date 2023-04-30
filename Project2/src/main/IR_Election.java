@@ -632,7 +632,7 @@ public class IR_Election extends Election {
      * number of candidates, number of remaining candidates, current ballots, and current ballot count
      * information. Addtionally initalizes each candidates names, party, ballot count, and list of ballots.
      * Takes no parameters and returns nothing. Used as a helper function for run(). Used for multiple election
-     * csv files
+     * csv files. Does not check if all files contain the same header information and may fail if uncompatible files are used in tandam.
      */
     private void readIRHeaderMultiple() {
         // read second line of file and get the number of candidates
@@ -700,7 +700,7 @@ public class IR_Election extends Election {
      * Updates the IR_Elections ballots list to include each ballot object and initalizes
      * each candidate to have an array of ballots that can hold the total number of ballots.
      * Takes no parameters and returns nothing. Used as a helper function for run().
-     * Used for multiple election files
+     * Used for multiple election files.
      */
     private void readIRBallotsMultiple() {
         // create an array of ballots equal to the number of total ballots in the file
