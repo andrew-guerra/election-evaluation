@@ -630,8 +630,9 @@ public class IR_Election extends Election {
      * Reads header information from an IR_Election.csv file. Assumes the electionFile Scanner
      * is at the second line of a IR_Election ballot file. Updates an IR_elections list of candidates,
      * number of candidates, number of remaining candidates, current ballots, and current ballot count
-     * information. Addidtally initalizes each candidates names, party, ballot count, and list of ballots.
-     * Takes no parameters and returns nothing. Used as a helper function for run().
+     * information. Addtionally initalizes each candidates names, party, ballot count, and list of ballots.
+     * Takes no parameters and returns nothing. Used as a helper function for run(). Used for multiple election
+     * csv files
      */
     private void readIRHeaderMultiple() {
         // read second line of file and get the number of candidates
@@ -699,6 +700,7 @@ public class IR_Election extends Election {
      * Updates the IR_Elections ballots list to include each ballot object and initalizes
      * each candidate to have an array of ballots that can hold the total number of ballots.
      * Takes no parameters and returns nothing. Used as a helper function for run().
+     * Used for multiple election files
      */
     private void readIRBallotsMultiple() {
         // create an array of ballots equal to the number of total ballots in the file
